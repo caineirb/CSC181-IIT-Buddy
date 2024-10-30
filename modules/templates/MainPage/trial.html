@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %} Profile {%endblock%}
+
+{% block content %}
+<style>
+.withpad { margin:10px; padding:10px; }
+
+</style>
+<div class="d-flex justify-content-center py-3 position-relative">
+    <div class="input-group rounded d-flex justify-content-center mt-2">
+        <div class="form-outline" data-mdb-input-init>
+        <input id="input-search "type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="border-radius: 20px; width: 300px;" />
+        </div>
+        <div>
+          <button type="button" class="btn btn-outline-light" style="border: none;"><i class="fas fa-search"></i></button>
+        </div>
+      </div>
+      <div class="position-absolute top-0 end-0 mt-3 me-3"> <button type="button" class="btn btn-light btn-lg" style="border-radius: 30px;"> <i class="fa-regular fa-pen-to-square"></i> </button> </div>
+</div>
+<div class="ms-5"> <h2 style="font-family: inter;">Notes:</h2> </div>
+<div class="d-flex ms-5 mt-1">
+    <div class="row">
+   <div class="d-flex mt-0 justify-content-center position-relative col withpad" style="height: 250px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black;">
+    <a class="position-absolute top-50 start-50 translate-middle" href="#" target="_self"><i class="fa-solid fa-plus fa-2xl"></i></a>
+   </div>
+   <div class="d-flex mt-0 justify-content-center position-relative col withpad" style="height: 250px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black;">
+    <div></div>
+   </div>
+   </div>
+
+</div>
+
+<div>
+
+
+</div>
+{%endblock%}
