@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google OAuth2 Login</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <h2>Google OAuth2 Login</h2>
+  
+  <!-- Hidden input to store the login URL -->
+  <input type="hidden" name="login-url" id="login-url" value="{{ url_for('login') }}" />
+  <input type="hidden" name="_csrf_token" id="_csrf_token" value="{{ csrf_token() }}" />
+  <!-- Google sign-in button and configuration -->
+  <div id="g_id_onload"
+       data-client_id="{{ client_id }}"
+       data-auto_prompt="false"
+       data-callback="handleCredentialResponse">
+  </div>
+
+  <div class="g_id_signin"
+       data-type="standard"
+       data-size="large"
+       data-theme="outline"
+       data-text="sign_in_with"
+       data-shape="rectangular"
+       data-logo_alignment="left">
+  </div>
+
+  <!-- User info display area -->
+  <div id="user-info" style="display: none; margin-top: 20px;">
+    <h3>User Information</h3>
+    <p id="user-name"></p>
+    <p id="user-email"></p>
+    <p id="user-id"></p>
+    <img id="user-picture" alt="User Profile Picture" style="border-radius: 50%; width: 80px;">
+  </div>
+
+  <!-- Link to external JavaScript file -->
+  <script type="text/javascript" src="{{ url_for('static', filename='javascript/oauth/oauth.js') }}"></script>
+</body>
+</html>

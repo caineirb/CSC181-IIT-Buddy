@@ -1,40 +1,39 @@
 '''
 Every function that have a route, place here
 '''
-from . import app, oauth
-from flask import session, redirect, url_for
+from . import app
+from flask import session, redirect, url_for, render_template, request, jsonify, make_response
+from modules.controller import checkStudent, createStudent
+from config import CLIENT_ID
+
 
 @app.route('/')
 def index():
-    email = dict(session).get('email', None)
-    id = dict(session).get('id', None)
-    if id:
-        return f"Hello {email} with id: {id}" 
+    if 'user-id' not in session:
+        return render_template('index.html', client_id = CLIENT_ID)
     
-    # Display the landing page if not signed in
-    return f'Hello! Log in with your Google account: <a href="/login">Log in</a>'
+    return f"Welcome {session['user-id']}"
 
-@app.route('/login')
+@app.route('/login', methods=["POST"])
 def login():
-    google = oauth.create_client('google')
-    redirect_uri = url_for('authorize', _external=True)
-    return google.authorize_redirect(redirect_uri)
+    try:
+        req = request.get_json()
 
-@app.route('/authorize')
-def authorize():
-    google = oauth.create_client('google')
-    token = google.authorize_access_token()
-    resp = google.get('userinfo')
-    user_info = resp.json()
-    print(user_info)
-    session['email'] = user_info['email']
-    session['id'] = user_info['id']
-    return redirect('/')
+        # If the user is new, create a new student in the database
+        if len(checkStudent(req['id'])) == 0:
+            student = (req['id'], req['name'], req['email'])
+            createStudent(student)
+        
+        # add the user/student id to the session
+        session['user-id'] = req['id']
+        print(session['user-id'])
 
+        return jsonify({'redirect_url': url_for('index')})
+    except Exception as e:
+        return make_response(jsonify({'message': 'Invalid JSON format'}), 400)
 
 @app.route('/logout')
 def logout():
     # Clear the session
-    # session.pop('email', None)
-    session.clear()
+    session.pop('user-id', None)
     return redirect(url_for('index'))

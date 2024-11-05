@@ -29,6 +29,8 @@ wtforms = "==3.1.2"
 flask-oauthlib = "*"
 authlib = "*"
 requests = "*"
+google = "*"
+google-api-python-client = "*"
 
 [dev-packages]
 
