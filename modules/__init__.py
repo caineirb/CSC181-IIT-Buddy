@@ -24,20 +24,6 @@ def start_app():
         MYSQL_HOST=DB_HOST,
         BOOTSTRAP_SERVE_LOCAL=BOOTSTRAP_SERVE_LOCAL
     )
-
-    # oauth.register(
-    #     name='google',
-    #     client_id=CLIENT_ID,
-    #     client_secret=CLIENT_SECRET,
-    #     client_kwargs={ 'scope': 'openid profile email'},
-    #     api_base_url='https://www.googleapis.com/oauth2/v1/',
-    #     access_token_params=None,
-    #     access_token_method='POST',
-    #     # access_token_url='https://accounts.google.com/o/oauth2/token',
-    #     # authorize_url='https://accounts.google.com/o/oauth2/auth',
-    #     jwks_uri="https://www.googleapis.com/oauth2/v1/certs",
-    #     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration'
-    # )
     
     '''
     Add the blueprints here to the app
