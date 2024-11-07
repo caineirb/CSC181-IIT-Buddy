@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title> IIT Buddy </title>
+        
+        <!-- linking custom css -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+        <!-- linking boxicons-->
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        
+        <!-- linking font awesome icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+        
+        <!-- linking swiper css -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+<body>
+  <!-- header | navbar -->
+  <header>
+    <nav class="navbar section-content">
+      <a href="#" class="nav-logo">
+        <h2 class="logo-text">.</h2>
+      </a>
+      <ul class="nav-menu">
+        <button id="menu-close-button" class="fas fa-times"></button>
+        
+        <li class="nav-item">
+          <a href="#" class="nav-link">Home</a>
+        </li>
+        
+        <li class="nav-item">
+          <a href="#features" class="nav-link">Features</a>
+        </li>
+        
+        <li class="nav-item">
+          <a href="#creators" class="nav-link">Creators</a>
+        </li>
+        
+        <li class="nav-item">
+          <a href="#google" class="nav-link signin">Sign In</a>
+        </li>
+
+      </ul>
+      <button id="menu-open-button" class="fas fa-bars"></button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- home section -->
+    <section class="hero-section">
+      <div class="section-content">
+        <div class="hero-details">
+          <div class="logo-imagereal">
+            <img src="static/img/logo.png" alt="Quick Notes" class="logo-image">
+          </div>
+          <h3 class="subtitle">A study tool website application
+            that is designed to help MSU-IIT students 
+            study more effectively.</h3>
+
+          <div class="buttons">
+            <a href="#" class="button sign-in">Sign In</a>
+          </div>
+        </div>
+        <div class="Group14">
+          <div class="Rectangle49"></div>
+          <div class="Rectangle47"></div>
+          <div class="Rectangle46"></div>
+          <div class="Rectangle44"></div>
+          <div class="Rectangle41">
+            <img src="static/img/welcome aboard.png" alt="card image" class="card__img50">
+          </div>
+          <div class="Rectangle42"></div>
+          <div class="Rectangle45"></div>
+          <div class="Rectangle43"></div>
+          <div class="Rectangle39"></div>
+          <div class="Rectangle38"></div>
+          <div class="Rectangle40">
+            <p class="text">Welcome Aboard!</p>
+          </div>
+          <div class="Rectangle48"></div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- features section real -->
+    <section class="features-section" id="features">     
+      <div class="section-content">
+        <div class="Group16">
+          <div class="Our">our</div>
+          <div class="Features">features</div>
+        </div> 
+
+        <div class="container">
+          <div class="box box-cyan box-push">
+            <h2 class="box-cyan">Quick Notes</h2>
+            <p>Easily accessible small notes helpful for studying.</p>
+            <img src="static/img/quick notes.png" alt="Quick Notes">
+          </div>
+
+          <div class="box box-red box-push">
+            <h2 class="box-red">Tasks</h2>
+            <p>Tasks for easy reminders.</p>
+            <img src="static/img/task.png" alt="Tasks">
+          </div>
+
+          <div class="box box-blue box-push">
+            <h2 class="box-blue">External Notes</h2>
+            <p>Add personalized and shareable notes to help your fellow students to better study.</p>
+            <img src="static/img/external notes.png" alt="External Notes">
+          </div>
+
+          <div class="box box-orange box-push">
+            <h2 class="box-orange">Flashcards</h2>
+            <p>Study better using flashcards.</p>
+            <img src="static/img/flashcards.png" alt="Flashcards">
+          </div>
+
+          <div class="box box-yellow box-push">
+            <h2 class="box-yellow">Reviewers</h2>
+            <p>Create reviewers that simulates an actual exam.</p>
+            <img src="static/img/reviewers.png" alt="Reviewers">
+          </div>
+
+          <div class="box box-purple box-push">
+            <h2 class="box-purple">Timer</h2>
+            <p>Have a timer that follows you and reminding you to rest sometimes.</p>
+            <img src="static/img/timer.png" alt="Timer">
+          </div>
+        </div>
+    </section>
+
+    <!-- web creators real -->
+    <section class="htmlcss" id="creators">
+      <div class="section-content">
+        <div class="creatorss">
+          <div class="rectangle rectangle50">
+            <div class="card50">
+              <div class="card__border50">
+                <div class="card__perfil50">
+                  <img src="static/img/Garbanzos_LouiseAntondy.jpg" alt="card image" class="card__img50">
+                </div>
+              </div>
+    
+              <h3 class="card__name50">Louise Antondy Garbanzos</h3>
+              <span class="card__profession50">Computer Science Student</span>
+    
+              <div class="infos50">
+                <div class="info__icon50">
+                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+                </div>
+    
+                <div class="info__border50">
+                  <div class="info__perfil50">
+                    <img src="static/img/Garbanzos_LouiseAntondy.jpg" alt="card image" class="info__img50">
+                  </div>
+                </div>
+    
+                <div class="info__data50">
+                  <h3 class="info__name50">Louise Antondy Garbanzos</h3>
+                  <span class="info__profession50">Computer Science Student</span>
+                  <span class="info__location50">Iligan City, Philippines</span>
+                </div>
+    
+                <div class="info__social50">
+                  <a href="https://www.linkedin.com/" target="_blank" class="info__social-link50">
+                    <span class="info__social-icon50">
+                      <i class='bx bxl-linkedin-square'></i>
+                    </span>
+                  </a>
+                  <a href="https://github.com/" target="_blank" class="info__social-link50">
+                    <span class="info__social-icon50">
+                      <i class='bx bxl-github'></i>
+                    </span>
+                  </a>
+                  <a href="https://www.google.com/intl/en_in/gmail/about/" target="_blank" class="info__social-link50">
+                    <span class="info__social-icon50">
+                      <i class='bx bxl-google'></i>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rectangle rectangle51">
+            <div class="card51">
+              <div class="card__border51">
+                <div class="card__perfil51">
+                  <img src="static/img/Connor_ShirKeilah.jpg" alt="card image" class="card__img51">
+                </div>
+              </div>
+    
+              <h3 class="card__name51">Shir <br/>Keilah <br/>Connor </h3>
+              <span class="card__profession51">Computer Science Student</span>
+    
+              <div class="infos51">
+                <div class="info__icon51">
+                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+                </div>
+    
+                <div class="info__border51">
+                  <div class="info__perfil51">
+                    <img src="static/img/Connor_ShirKeilah.jpg" alt="card image" class="info__img51">
+                  </div>
+                </div>
+    
+                <div class="info__data51">
+                  <h3 class="info__name51">Shir Keilah Connor</h3>
+                  <span class="info__profession51">Computer Science Student</span>
+                  <span class="info__location51">Iligan City, Philippines</span>
+                </div>
+    
+                <div class="info__social51">
+                  <a href="https://www.linkedin.com/" target="_blank" class="info__social-link51">
+                    <span class="info__social-icon51">
+                      <i class='bx bxl-linkedin-square'></i>
+                    </span>
+                  </a>
+                  <a href="https://github.com/" target="_blank" class="info__social-link51">
+                    <span class="info__social-icon51">
+                      <i class='bx bxl-github'></i>
+                    </span>
+                  </a>
+                  <a href="https://www.google.com/intl/en_in/gmail/about/" target="_blank" class="info__social-link51">
+                    <span class="info__social-icon51">
+                      <i class='bx bxl-google'></i>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="rectangle rectangle52">
+            <div class="card52">
+              <div class="card__border52">
+                <div class="card__perfil52">
+                  <img src="static/img/Ruelo_EarlAndrew.jpg" alt="card image" class="card__img52">
+                </div>
+              </div>
+    
+              <h3 class="card__name52">Earl Andrew Ruelo</h3>
+              <span class="card__profession52">Computer Science Student</span>
+    
+              <div class="infos52">
+                <div class="info__icon52">
+                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+                </div>
+    
+                <div class="info__border52">
+                  <div class="info__perfil52">
+                    <img src="static/img/Ruelo_EarlAndrew.jpg" alt="card image" class="info__img52">
+                  </div>
+                </div>
+    
+                <div class="info__data52">
+                  <h3 class="info__name52">Earl Andrew Ruelo</h3>
+                  <span class="info__profession52">Computer Science Student</span>
+                  <span class="info__location52">Iligan City, Philippines</span>
+                </div>
+    
+                <div class="info__social52">
+                  <a href="https://www.linkedin.com/" target="_blank" class="info__social-link52">
+                    <span class="info__social-icon52">
+                      <i class='bx bxl-linkedin-square'></i>
+                    </span>
+                  </a>
+                  <a href="https://github.com/" target="_blank" class="info__social-link52">
+                    <span class="info__social-icon52">
+                      <i class='bx bxl-github'></i>
+                    </span>
+                  </a>
+                  <a href="https://www.google.com/intl/en_in/gmail/about/" target="_blank" class="info__social-link52">
+                    <span class="info__social-icon52">
+                      <i class='bx bxl-google'></i>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+          <div class="rectangle rectangle53">
+            <div class="card53">
+              <div class="card__border53">
+                <div class="card__perfil53">
+                  <img src="static/img/Bautista_CaineIvan.jpg" alt="card image" class="card__img53">
+                </div>
+              </div>
+    
+              <h3 class="card__name53">Caine </br>Ivan </br>Bautista </h3>
+              <span class="card__profession53">Computer Science Student</span>
+    
+              <div class="infos53">
+                <div class="info__icon53">
+                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+                </div>
+    
+                <div class="info__border53">
+                  <div class="info__perfil53">
+                    <img src="static/img/Bautista_CaineIvan.jpg" alt="card image" class="info__img53">
+                  </div>
+                </div>
+    
+                <div class="info__data53">
+                  <h3 class="info__name53">Caine Ivan Bautista</h3>
+                  <span class="info__profession53">Computer Science Student</span>
+                  <span class="info__location53">Iligan City, Philippines</span>
+                </div>
+    
+                <div class="info__social53">
+                  <a href="https://www.linkedin.com/" target="_blank" class="info__social-link53">
+                    <span class="info__social-icon53">
+                      <i class='bx bxl-linkedin-square'></i>
+                    </span>
+                  </a>
+                  <a href="https://github.com/" target="_blank" class="info__social-link53">
+                    <span class="info__social-icon53">
+                      <i class='bx bxl-github'></i>
+                    </span>
+                  </a>
+                  <a href="https://www.google.com/intl/en_in/gmail/about/" target="_blank" class="info__social-link53">
+                    <span class="info__social-icon53">
+                      <i class='bx bxl-google'></i>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="titles creatorss-text">creators</div>
+          <div class="titles web-text">web</div>
+          <div class="rectangle rectangle56"></div>
+          <div class="rectangle rectangle55"></div>
+          <div class="rectangle rectangle54"></div>
+          <div class="rectangle rectangle57"></div>
+          <div class="rectangle rectangle58"></div>
+          <div class="rectangle rectangle59"></div>
+          <div class="rectangle rectangle60"></div>
+          <div class="rectangle rectangle61"></div>
+          <div class="rectangle rectangle62"></div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- footer section -->
+    <footer class="footer-section" id="footers">
+      <div class="section-content">
+        <p class="copyright-text">ⓒ 2024 IIT Buddy</p>
+      
+        <div class="social-linkd-list">
+          <a href="https://www.facebook.com/" target="_blank" class="social-linkd"><i class="fa-brands fa-facebook"></i></a>
+          <a href="https://www.instagram.com/" target="_blank" class="social-linkd"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://x.com/" target="_blank" class="social-linkd"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+
+        <p class="policy-text">
+          <a href="#" class="policy-link">Privacy Policy</a>
+          <span class="separator">|</span>
+          <a href="#" class="policy-link">Website Accessibility</a>
+        </p>
+      </div>
+    </footer>
+  </main>
+
+  <!-- linking swiper src -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  
+  <!-- linking custom script -->
+  <script src="static/js/script.js"></script>
+</body>
+</html>
