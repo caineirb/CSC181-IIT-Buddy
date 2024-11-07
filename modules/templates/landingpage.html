@@ -16,6 +16,9 @@
         <!-- linking swiper css -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- HTML API for Google OAuth2 -->
+        <script src="https://accounts.google.com/gsi/client?hl=en" async defer></script>
     </head>
 <body>
   <!-- header | navbar -->
@@ -39,9 +42,24 @@
           <a href="#creators" class="nav-link">Creators</a>
         </li>
         
-        <li class="nav-item">
-          <a href="#google" class="nav-link signin">Sign In</a>
-        </li>
+        <!-- Google sign-in button and configuration -->
+        <div id="g_id_onload"
+            data-client_id="{{ client_id }}"
+            data-auto_prompt="false"
+            data-locale="en"
+            data-callback="handleCredentialResponse">
+        </div>
+
+        <div class="g_id_signin"
+            data-use_fedcm_for_prompt="true"
+            data-type="icon"
+            data-size="large"
+            data-theme="filled_blue"
+            data-text="continue_with"
+            data-shape="pill"
+            data-logo_alignment="left"
+            data-locale="en">
+        </div>
 
       </ul>
       <button id="menu-open-button" class="fas fa-bars"></button>
@@ -61,7 +79,28 @@
             study more effectively.</h3>
 
           <div class="buttons">
-            <a href="#" class="button sign-in">Sign In</a>
+            <!-- Hidden input to store the login URL -->
+            <input type="hidden" name="login-url" id="login-url" value="{{ url_for('login') }}" />
+            <input type="hidden" name="_csrf_token" id="_csrf_token" value="{{ csrf_token() }}" />
+            <!-- Google sign-in button and configuration -->
+            <div id="g_id_onload"
+                data-client_id="{{ client_id }}"
+                data-auto_prompt="false"
+                data-locale="en"
+                data-callback="handleCredentialResponse">
+            </div>
+
+            <div class="g_id_signin"
+                data-use_fedcm_for_prompt="true"
+                data-type="standard"
+                data-size="large"
+                data-theme="filled_blue"
+                data-text="continue_with"
+                data-shape="circle"
+                data-logo_alignment="left"
+                data-locale="en"
+                data-width=200>
+            </div>
           </div>
         </div>
         <div class="Group14">
@@ -373,5 +412,8 @@
   
   <!-- linking custom script -->
   <script src="static/js/script.js"></script>
+
+  <!-- Link to external JavaScript file for Google OAuth -->
+  <script type="text/javascript" src="{{ url_for('static', filename='javascript/oauth/oauth.js') }}"></script>
 </body>
 </html>

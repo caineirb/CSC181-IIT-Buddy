@@ -10,7 +10,7 @@ from config import CLIENT_ID
 @app.route('/')
 def index():
     if 'user-id' not in session:
-        return render_template('landingpage.html')
+        return render_template('landingpage.html', client_id = CLIENT_ID)
     
     return f"Welcome {session['user-id']}"
 
