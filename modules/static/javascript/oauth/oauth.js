@@ -6,7 +6,7 @@ function parseJwt(token) {
     }).join(''));
 
     return JSON.parse(jsonPayload);
-  }
+}
 
 function handleCredentialResponse(response) {
     // Decode the ID token

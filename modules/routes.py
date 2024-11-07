@@ -26,6 +26,8 @@ def login():
         
         # add the user/student id to the session
         session['user-id'] = req['id']
+        session['user-name'] = req['name']
+        session['user-email'] = req['email']
         print(session['user-id'])
 
         return jsonify({'redirect_url': url_for('index')})
@@ -36,4 +38,6 @@ def login():
 def logout():
     # Clear the session
     session.pop('user-id', None)
+    session.pop('user-name', None)
+    session.pop('user-email', None)
     return redirect(url_for('index'))
