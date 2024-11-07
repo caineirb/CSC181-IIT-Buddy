@@ -29,6 +29,7 @@ def start_app():
     e.g "app.register_blueprint(<blueprint_name>, url_prefix="/<something>")"
     '''    
 
+    # Make sure the session/login of the user is valid for 1 day only
     app.permanent_session_lifetime = timedelta(days=1)
     mysql.init_app(app)
     # oauth.init_app(app)
@@ -36,4 +37,4 @@ def start_app():
     return app
 
 
-from . import routes
+from . import routes, RequireLogin
