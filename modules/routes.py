@@ -2,15 +2,9 @@
 Every function that have a route, place here
 '''
 
-from flask import Blueprint, render_template, url_for
+from flask import Blueprint, render_template
+from . import app
 
-routes = Blueprint('routes', __name__)
-
-
-@routes.route("/")
-def base():
-    return render_template('base.html')
-
-@routes.route('/landing_page')
-def landing_page():
+@app.route('/')
+def index():
     return render_template('landingpage.html')

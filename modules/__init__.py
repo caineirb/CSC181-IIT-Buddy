@@ -1,5 +1,4 @@
 from flask import Flask
-from .routes import routes
 from flask_mysqldb import MySQL
 from config import SECRET_KEY,DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST,BOOTSTRAP_SERVE_LOCAL
 from flask_wtf.csrf import CSRFProtect
@@ -28,9 +27,6 @@ def start_app():
     Add the blueprints here to the app
     e.g "app.register_blueprint(<blueprint_name>, url_prefix="/<something>")"
     '''
-
-    app = Flask(__name__)
-    app.register_blueprint(routes, url_prefix="/")
 
     mysql.init_app(app)
     CSRFProtect(app)

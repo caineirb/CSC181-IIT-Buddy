@@ -148,7 +148,7 @@ header .navbar{
 /* styling for main section */
 .hero-section{
     min-height: 100vh;
-    background: #FAFAFA;
+    background: #ffffff;
 }
 
 .hero-section .hero-details {
@@ -1159,7 +1159,7 @@ header .navbar{
     justify-content: center;
     align-items: center;
     place-items: center;
-    transform: translateY(50px) translateX(70px);
+    transform: translateY(70px) translateX(70px);
 }
   
 .rectangle {
