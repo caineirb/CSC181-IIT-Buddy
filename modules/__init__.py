@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_mysqldb import MySQL
-from config import SECRET_KEY,DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST,BOOTSTRAP_SERVE_LOCAL, CLIENT_ID, CLIENT_SECRET
+from config import SECRET_KEY,DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST,BOOTSTRAP_SERVE_LOCAL
 from flask_wtf.csrf import CSRFProtect
 from datetime import timedelta
 
@@ -29,11 +29,10 @@ def start_app():
     e.g "app.register_blueprint(<blueprint_name>, url_prefix="/<something>")"
     '''    
 
-    app.permanent_session_lifetime = timedelta(days=1)
+    app.permanent_session_lifetime = timedelta(days=1)  # Make sure the session/login of the user is valid for 1 day only
     mysql.init_app(app)
-    # oauth.init_app(app)
     CSRFProtect(app)
     return app
 
 
-from . import routes
+from . import routes, RequireLogin

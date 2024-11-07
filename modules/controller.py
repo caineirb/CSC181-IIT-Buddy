@@ -6,6 +6,24 @@ def checkStudent(id :str):
         cur = mysql.connection.cursor()
 
         check_query = """
+            SELECT COUNT(*) FROM `students` WHERE `id` = %s;
+        """
+        
+        cur.execute(check_query, (id, ))
+        return cur.fetchall()[0][0] == 0
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()
+
+
+# Use this to get the details of the student
+def fetchStudent(id :str):
+    try:
+        cur = mysql.connection.cursor()
+
+        check_query = """
             SELECT * FROM `students` WHERE `id` = %s;
         """
         
