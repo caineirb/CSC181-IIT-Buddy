@@ -10,7 +10,7 @@ from config import CLIENT_ID
 @app.route('/')
 def index():
     if 'user-id' not in session:
-        return render_template('index.html', client_id = CLIENT_ID)
+        return render_template('landingpage.html')
     
     return f"Welcome {session['user-id']}"
 
@@ -41,3 +41,4 @@ def logout():
     session.pop('user-name', None)
     session.pop('user-email', None)
     return redirect(url_for('index'))
+    
