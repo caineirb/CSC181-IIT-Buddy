@@ -35,4 +35,4 @@ def start_app():
     return app
 
 
-from . import routes, RequireLogin
+from . import routes, controller
