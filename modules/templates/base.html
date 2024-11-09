@@ -14,9 +14,20 @@
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 </head>
 <body style="background-color: #D9D9D9;">
+    <style>
+        .logo-img{
+            max-width: 100%;
+            aspect-ratio: 1;
+            object-fit: contain; 
+            height: 120px; 
+            
+            top: 80px; 
+            right: 30px;
+        }
+    </style>
     
-    <header style="border-bottom: 1px solid black;">
-        <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+    <header style="height: 70px; display: flex;   width: 100%;">
+        <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary" style="width: 100%; display: flex; justify-content: space-between;">
             <div class="container-fluid">
                 <button
                 data-mdb-collapse-init
@@ -33,8 +44,8 @@
                 <!--logo-->
                 <div class="collapse navbar-collapse" id="allofnavbar">
                     
-                    <a class="navbar-logo mt-2 mt-lg-0" href="#">
-                        <h1>IIT BUDDY</h1>
+                    <a class="navbar-logo mt-2 mt-lg-0" href="/">
+                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo" class="logo-img"/>
                     </a>
                 </div>
                 <!--Buttons and profile-->
@@ -54,7 +65,7 @@
                     </a>
                     
                     <div class="dropdown">
-                        <button class="btn btn-dark dropdown-toggle d-flex align-items-center" type="button" id="navbarDropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 300px; height: 50px;">
+                        <button class="btn btn-dark dropdown-toggle d-flex align-items-center" type="button" id="navbarDropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: auto; height: 50px;">
                             <div style="box-sizing: border-box; margin-left: 50px; margin-right: 40px; margin-top: 10px;">
                                 {% block name %} 
                                     <p>placeholder</p> 
@@ -70,10 +81,10 @@
                         aria-labelledby="navbarDropdownMenu"
                         >
                         <li>
-                            <a class="dropdown-item" href="#">My Profile</a>
+                            <a class="dropdown-item" href="/">My Profile</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">Logout</a>
+                            <a class="dropdown-item" href="/logout">Logout</a>
                         </li>
                     
                         </ul>
