@@ -11,7 +11,7 @@ def index():
     if 'user-id' not in session:
         return render_template('landingpage.html', client_id = CLIENT_ID)
     
-    return f"Welcome {session['user-id']} <img src='{session['user-photo']}'>"     # Pulihi nalang ni sa unsa ang e render pag naka login na
+    return render_template('main.html', userID = session['user-id'], userIMG = session['user-photo'])    # Pulihi nalang ni sa unsa ang e render pag naka login na
 
 @app.route('/login', methods=["POST"])
 def login():

@@ -1,5 +1,11 @@
 {% extends "base.html" %}
-{% block title %} Profile {%endblock%}
+
+{% block title %} Profile {% endblock %}
+
+{% block name %} {{ userID }} {% endblock %}
+
+{% block image %} {{ userIMG }} {% endblock %}
+
 
 {% block content %}
 <style>
