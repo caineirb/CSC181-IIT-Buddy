@@ -1,6 +1,6 @@
 from . import mysql
 from functools import wraps
-from flask import session, redirect, url_for
+from flask import session, redirect, url_for, request
 
 
 '''
@@ -16,6 +16,7 @@ def require_login(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
         if 'user-id' not in session:
+            session['next_url'] = request.url   # store the url being accessed
             return redirect(url_for('index'))
         return func(*args, **kwargs)
     return decorated_function

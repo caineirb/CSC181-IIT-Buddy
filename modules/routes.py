@@ -6,12 +6,13 @@ from flask import session, redirect, url_for, render_template, request, jsonify,
 from modules.controller import checkStudent, createStudent, require_login, decode_google_jwt
 from config import CLIENT_ID
 
-@app.route('/')
+@app.route('/', methods=["GET"])
 def index():
     if 'user-id' not in session:
         return render_template('landingpage.html', client_id = CLIENT_ID)
     
-    return f"Welcome {session['user-id']} <img src='{session['user-photo']}'>"     # Pulihi nalang ni sa unsa ang e render pag naka login na
+    return render_template('temp_index.html')
+         # Pulihi nalang ni sa unsa ang e render pag naka login na
 
 @app.route('/login', methods=["POST"])
 def login():
@@ -44,7 +45,7 @@ def login():
         session['user-id'] = student_id
         session['user-photo'] = student_picture  # URL
 
-        return make_response(jsonify({'redirect_url': url_for('index')}), success_code)
+        return make_response(jsonify({'redirect_url': session.pop('next_url', url_for('index'))}), success_code)
     except Exception as e:
         print(f"Error: {str(e)}")  # Log the full error for debugging
         return make_response(jsonify({'message': 'Invalid JSON format', 'error': str(e)}), 400)

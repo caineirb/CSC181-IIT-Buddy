@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flashcards/style.css') }}">
+    <title>IIT BUDDY</title>
+</head>
+<body>
+    <h1>Welcome {{ session['user-id'] }}</h1>
+    <img src="{{session['user-photo']}}">
+
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="modal-overlay">
+        <!-- Modal Content -->
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            
+            <form action="{{url_for('flashcards.create')}}" method="post">
+                <!-- CSRF Token -->
+                <input type="hidden" name="_csrf_token" id="_csrf_token" value="{{ csrf_token() }}" />
+
+                <!-- Input Field -->
+                <input type="text" name="reviewer-title" id="reviewer-title" class="title-input" placeholder="Title" maxlength="100" required>
+                
+                <!-- Dropdowns -->
+                <div class="dropdowns">
+                    <div class="dropdown">
+                        {% set types = ["Flashcard", "Identification", "Multiple Choice", "Mixed"] %}
+                        <select name="reviewer-type" id="reviewer-type">
+                            {% for type in types %}
+                            <option value="{{ type }}" {% if not type == "Flashcard" %}disabled{% endif %}>{{ type }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="dropdown">
+                        <select name="reviewer-privacy" id="reviewer-privacy">
+                            {% set privacy = ["Private", "Public", "Shared"] %}
+                            {% for priv in privacy %}
+                            <option value="{{ priv }}">{{ priv }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Create Button -->
+                <button type="submit" class="create-button">Create</button>
+            </form>
+        </div>
+    </div>
+
+    <button onclick="openModal()">Open Modal</button>
+
+    <script>
+        function openModal() {
+            document.getElementById("modalOverlay").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("modalOverlay").style.display = "none";
+        }
+
+    </script>
+</body>
+</html>

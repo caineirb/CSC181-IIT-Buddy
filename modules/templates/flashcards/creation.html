@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flashcards/flashcards.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <title>Create Flashcard</title>
+</head>
+
+<body>
+    <form action="{{ url_for('flashcards.review') }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf_token" id="_csrf_token" value="{{ csrf_token() }}" />
+
+        <input type="text" name="reviewer-title" id="reviewer-title" value="{{ data['title'] }}" placeholder="Title" maxlength="100">
+        
+        <!-- Dropdowns -->
+        <div class="dropdowns">
+            <div class="dropdown">
+                <select name="reviewer-type" id="reviewer-type">
+                    <option value="{{ data['type'] }}">{{ data['type'] }}</option>
+                </select>
+            </div>
+            <div class="dropdown">
+                <select name="reviewer-privacy" id="reviewer-privacy">
+                    {% set privacy = ["Private", "Public", "Shared"] %}
+                    {% for priv in privacy %}
+                    <option value="{{ priv }}" {% if data['privacy'] == priv %}selected{% endif %}>{{ priv }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <input type="text" name="reviewer-description" id="reviewer-description" placeholder="Description" maxlength="300">
+
+        <!-- Flashcards Container -->
+        <div class="flashcards-container">
+            <!-- Flashcard template will be appended here -->
+        </div>
+        <div class="add-button-container">
+            <button type="button" id="add-card-btn" class="add-card-btn">Add Flashcard</button>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        let flashcardCount = 1;
+
+        // Function to create a new flashcard
+        function createFlashcard() {
+            const flashcardContainer = document.querySelector('.flashcards-container');
+            const newFlashcard = document.createElement('div');
+            newFlashcard.classList.add('flashcard');
+            newFlashcard.setAttribute('data-id', flashcardCount);
+
+            newFlashcard.innerHTML = `
+                <div class="flashcard-header">
+                    <span class="flashcard-number">${flashcardCount}</span>
+                    <div class="flashcard-actions">
+                        <button type="button" class="drag-button"><i class="material-icons">dehaze</i></button>
+                        <button type="button" class="delete-button"><i class="material-icons">remove_circle_outline</i></button>
+                    </div>
+                </div>
+                <div class="flashcard-content">
+                    <div class="input-container">
+                        <textarea class="term-input" name="term-${flashcardCount}" placeholder="Enter term"></textarea>
+                        <label class="input-label">TERM</label>
+                    </div>
+                    <div class="input-container">
+                        <textarea class="definition-input" name="definition-${flashcardCount}" placeholder="Enter definition"></textarea>
+                        <label class="input-label">DEFINITION</label>
+                    </div>
+                    <input type="file" name="flashcard-image-${flashcardCount}" id="flashcard-image-${flashcardCount}" style="display: none;" accept="image/*" onchange="previewImage(event, ${flashcardCount})">
+                    <label for="flashcard-image-${flashcardCount}" class="image-button">
+                        <span class="button-label">IMAGE</span>
+                    </label>
+                </div>
+            `;
+
+            flashcardContainer.appendChild(newFlashcard);
+            flashcardCount++;
+        }
+
+        // Function to handle image preview
+        function previewImage(event, id) {
+            const input = event.target;
+            const label = document.querySelector(`label[for='${input.id}']`);
+            const buttonLabel = label.querySelector('.button-label');
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    label.style.backgroundImage = `url('${e.target.result}')`;
+                    label.style.backgroundSize = "cover";
+                    label.style.backgroundPosition = "center";
+                    label.style.backgroundRepeat = "no-repeat";
+                    label.style.height = "100px";
+                    label.style.width = "100px";
+                    buttonLabel.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                label.style.backgroundImage = '';
+                label.style.height = '';
+                label.style.width = '';
+                buttonLabel.style.display = 'inline';
+            }
+        }
+
+        // Remove flashcard
+        document.addEventListener('click', function(event) {
+            if (event.target.closest('.delete-button')) {
+                const card = event.target.closest('.flashcard');
+                card.remove();
+                flashcardCount--;
+                updateFlashcardNumbers();
+            }
+        });
+
+        // Update flashcard numbers
+        function updateFlashcardNumbers() {
+            document.querySelectorAll('.flashcard-number').forEach((number, index) => {
+                number.textContent = index + 1;
+            });
+        }
+
+        // Event listener for the "Add Flashcard" button
+        document.getElementById('add-card-btn').addEventListener('click', function() {
+            createFlashcard();
+        });
+
+        // Initialize Sortable
+        Sortable.create(document.querySelector('.flashcards-container'), {
+            animation: 150,
+            handle: '.drag-button',
+            ghostClass: 'sortable-ghost',
+            filter: '#add-card-btn',
+            onEnd: updateFlashcardNumbers
+        });
+    </script>
+</body>
+
+</html>
