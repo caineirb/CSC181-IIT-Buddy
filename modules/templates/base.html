@@ -66,30 +66,21 @@
                     </a>
                     
                     <div class="dropdown">
-                        <button class="btn btn-dark dropdown-toggle d-flex align-items-center" type="button" id="navbarDropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: auto; height: 50px;">
-                            <div style="box-sizing: border-box; margin-left: 50px; margin-right: 40px; margin-top: 10px;">
-                                {% block name %} 
-                                    <p>placeholder</p> 
+                        <button class="btn btn-dark dropdown-toggle d-flex align-items-center justify-content-between" type="button" id="navbarDropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: auto; height: 50px; padding: 0 10px;">
+                            <div class="d-flex flex-grow-1 justify-content-center" style="margin-right: 10px;"> <!-- Center the text with Flexbox -->
+                                {% block name %}
+                                    <p class="m-0" style="font-size: 16px;">placeholder</p> <!-- Inline font size for example -->
                                 {% endblock %}
                             </div>
                             <img src="{% block image %}{{ url_for('static', filename='images/LOUISE/placeholderprofile.jpg') }}{% endblock %}" class="rounded-circle" height="40" alt="placeholder" loading="lazy"/>
                         </button>
-                        
-                        
-                       
-                        <ul
-                        class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
-                        aria-labelledby="navbarDropdownMenu"
-                        >
-                        <li>
-                            <a class="dropdown-item" href="/">My Profile</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="/logout">Logout</a>
-                        </li>
                     
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenu">
+                            <li><a class="dropdown-item" href="/">My Profile</a></li>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
                         </ul>
                     </div>
+                    
                 </div>
             </div>
         
