@@ -1,1 +1,30 @@
-this is flashcard review
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Flashcards</title>
+</head>
+<body>
+    <h1>Review Flashcards</h1>
+    <div>
+        {% for info in flashcards['information'] %}
+        <h3>{{ info }}</h3>
+        {% endfor %}
+    </div>
+    <div class="flashcards-container">
+        {% for flashcard in flashcards['cards'] %}
+        <div class="flashcard">
+            <h2>Flashcard {{ flashcard['number'] }}</h2>
+            <p><strong>Question:</strong> {{ flashcard['question'] }}</p>
+            
+            {% if flashcard['image'] %}
+                <img src="data:image/jpeg;base64,{{ flashcard['image'] }}" alt="Flashcard Image" style="max-width: 200px; height: auto;">
+            {% endif %}
+            
+            <p><strong>Answer:</strong> {{ flashcard['answer'] }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

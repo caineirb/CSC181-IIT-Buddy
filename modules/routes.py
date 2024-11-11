@@ -4,6 +4,7 @@ Every function that have a route, place here
 from . import app
 from flask import session, redirect, url_for, render_template, request, jsonify, make_response
 from modules.controller import checkStudent, createStudent, require_login, decode_google_jwt, fetchStudent
+from modules.flashcards.controller import fetchPreview
 from config import CLIENT_ID
 
 @app.route('/', methods=["GET"])
@@ -13,7 +14,23 @@ def index():
     
     studentData = fetchStudent(session['user-id'])
     GetName = studentData[0][1] if studentData else None
-    return render_template('main.html', userName = GetName, userIMG = session['user-photo'])    # Pulihi nalang ni sa unsa ang e render pag naka login na
+    # Flashcards
+    flashcards_data = {
+        'data': fetchPreview(session['user-id']),
+        'bgcolor': {
+            'Flashcard': "#0C203E",
+            'Identification': "#D1E078",
+            'Multiple Choice': "#E07878",
+            'Mixed': "#004456"
+        },
+        'fgcolor': {
+            'Flashcard': "#FFFFFF",
+            'Identification': "#000000",
+            'Multiple Choice': "#000000",
+            'Mixed': "#FFFFFF"
+        }
+    }
+    return render_template('main.html', userName = GetName, userIMG = session['user-photo'], flashcards_data=flashcards_data)    # Pulihi nalang ni sa unsa ang e render pag naka login na
 
 @app.route('/login', methods=["POST"])
 def login():

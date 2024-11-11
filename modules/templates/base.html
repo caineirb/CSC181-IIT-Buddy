@@ -72,7 +72,7 @@
                                     <p class="m-0" style="font-size: 16px;">placeholder</p> <!-- Inline font size for example -->
                                 {% endblock %}
                             </div>
-                            <img src="{% block image %}{{ url_for('static', filename='images/LOUISE/placeholderprofile.jpg') }}{% endblock %}" class="rounded-circle" height="40" alt="placeholder" loading="lazy"/>
+                            <img src="{{ session['user-photo'] }}" class="rounded-circle" height="40" alt="placeholder" loading="lazy"/>
                         </button>
                     
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenu">
