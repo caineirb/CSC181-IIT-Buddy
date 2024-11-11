@@ -3,7 +3,7 @@ Every function that have a route, place here
 '''
 from . import app
 from flask import session, redirect, url_for, render_template, request, jsonify, make_response
-from modules.controller import checkStudent, createStudent, require_login, decode_google_jwt
+from modules.controller import checkStudent, createStudent, require_login, decode_google_jwt, fetchStudent
 from config import CLIENT_ID
 
 @app.route('/', methods=["GET"])
@@ -11,8 +11,9 @@ def index():
     if 'user-id' not in session:
         return render_template('landingpage.html', client_id = CLIENT_ID)
     
-    return render_template('temp_index.html')
-         # Pulihi nalang ni sa unsa ang e render pag naka login na
+    studentData = fetchStudent(session['user-id'])
+    GetName = studentData[0][1] if studentData else None
+    return render_template('main.html', userName = GetName, userIMG = session['user-photo'])    # Pulihi nalang ni sa unsa ang e render pag naka login na
 
 @app.route('/login', methods=["POST"])
 def login():
@@ -57,4 +58,3 @@ def logout():
     session.pop('user-id', None)
     session.pop('user-photo', None)
     return redirect(url_for('index'))
-    
