@@ -62,7 +62,8 @@
 }
 
 .drag-button,
-.delete-button {
+.delete-button,
+.switch-button {
     background: none;
     border: none;
     font-size: 16px;

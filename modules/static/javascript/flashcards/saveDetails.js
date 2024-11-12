@@ -43,6 +43,7 @@ function sendDataToBackend(data) {
         body: JSON.stringify(data)
     })
     .then(response => {
+        console.log(data);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congrats</title>
+</head>
+<body>
+    Yippie! You’ve reviewed all the cards.
+    <button type="button" onclick="window.location.href='{{ url_for('flashcards.review', id=info['data'][0], isRandom=info['isRandom']) }}'">Restart</button>
+    <button type="button" onclick="window.location.href='{{ url_for('flashcards.edit', id=info['data'][0]) }}'">Edit</button>
+    <button type="button" onclick="window.location.href='{{ url_for('index') }}'">Go Home</button>
+</body>
+</html>

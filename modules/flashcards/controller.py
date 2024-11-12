@@ -170,7 +170,7 @@ def fetchFlashcardInfo(id :str):
     try:
         cur = mysql.connection.cursor()
         fetch_id = """
-            SELECT `title`, `description`, `type`, `privacy`, `owner_id` FROM `reviewers`
+            SELECT `id`, `title`, `description`, `type`, `privacy`, `owner_id` FROM `reviewers`
             WHERE `id` = %s and `type` = 'Flashcard';
         """
         cur.execute(fetch_id, (id,))

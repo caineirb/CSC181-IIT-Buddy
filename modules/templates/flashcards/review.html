@@ -4,18 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review Flashcards</title>
+    <style>
+        .flashcard {
+            display: none; /* Only show the active flashcard */
+        }
+        .counter {
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        .navigation-buttons {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
+    <button type="button" onclick='window.location.href="{{ url_for("flashcards.edit", id=flashcards["id"]) }}"' class="go-back-button">Go Back</button>
     <h1>Review Flashcards</h1>
     <div>
         {% for info in flashcards['information'] %}
         <h3>{{ info }}</h3>
         {% endfor %}
     </div>
+
+    <div class="counter">
+        Flashcard <span id="current-count">1</span> of {{ flashcards['cards']|length }}
+    </div>
+
     <div class="flashcards-container">
         {% for flashcard in flashcards['cards'] %}
-        <div class="flashcard">
-            <h2>Flashcard {{ flashcard['number'] }}</h2>
+        <div class="flashcard" id="flashcard-{{ loop.index }}">
+            <!-- Removed the sequence display: <h2>Flashcard {{ flashcard['number'] }}</h2> -->
             <p><strong>Question:</strong> {{ flashcard['question'] }}</p>
             
             {% if flashcard['image'] %}
@@ -26,5 +45,53 @@
         </div>
         {% endfor %}
     </div>
+
+    <div class="navigation-buttons">
+        <button type="button" id="prev-btn" onclick="showPreviousFlashcard()">Previous</button>
+        <button type="button" id="next-btn" onclick="showNextFlashcard()">Next</button>
+    </div>
+
+    <script>
+        let currentFlashcard = 1;
+        const totalFlashcards = {{ flashcards['cards'] | length }};
+        
+        function updateFlashcardDisplay() {
+            // Hide all flashcards
+            document.querySelectorAll('.flashcard').forEach((flashcard) => {
+                flashcard.style.display = 'none';
+            });
+            
+            // Show the current flashcard
+            document.getElementById(`flashcard-${currentFlashcard}`).style.display = 'block';
+            
+            // Update the counter display
+            document.getElementById('current-count').textContent = currentFlashcard;
+
+            // Update button states and text
+            const nextButton = document.getElementById('next-btn');
+            const prevButton = document.getElementById('prev-btn');
+            prevButton.disabled = currentFlashcard === 1;
+            nextButton.textContent = currentFlashcard === totalFlashcards ? 'Finish' : 'Next';
+        }
+
+        function showNextFlashcard() {
+            if (currentFlashcard < totalFlashcards) {
+                currentFlashcard++;
+                updateFlashcardDisplay();
+            } else {
+                window.location.href = "{{ url_for('flashcards.congrats', id=flashcards['id'], isRandom=flashcards['isRandom']) }}";  // Change this to your target URL
+            }
+        }
+
+        function showPreviousFlashcard() {
+            if (currentFlashcard > 1) {
+                currentFlashcard--;
+                updateFlashcardDisplay();
+            }
+        }
+
+        // Initial display
+        updateFlashcardDisplay();
+    </script>
 </body>
 </html>
