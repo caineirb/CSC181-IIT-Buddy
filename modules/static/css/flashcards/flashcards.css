@@ -30,12 +30,13 @@
 }
 
 .add-card-btn {
-    width: 92%; /* Full width of the container */
+    width: 88%; /* Full width of the container */
     background-color: #d3d3d3;
     border: 2px solid black;
     border-radius: 5px;
     padding: 10px;
     box-sizing: border-box;
+    margin-bottom: 20px;
 }
 
 .add-card-btn:hover {

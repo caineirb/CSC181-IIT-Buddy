@@ -1,6 +1,6 @@
 from flask import flash, render_template, request, redirect, url_for, session, make_response, jsonify
-from modules.controller import require_login
-from modules.flashcards.controller import createFlashcard, fetchFlashcard, fetchFlashcards, editFlashcard, addCard, removeCards, fetchFlashcardInfo
+from modules.controller import require_login, fetchStudent
+from modules.flashcards.controller import createFlashcard, fetchFlashcard, fetchFlashcards, editFlashcard, addCard, removeCards, fetchFlashcardInfo, deleteFlashcard
 from . import flashcards_bp
 
 
@@ -20,12 +20,15 @@ def create():
 @flashcards_bp.route('/edit/<string:id>', methods=["GET"])
 @require_login
 def edit(id :str):
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+
     data = fetchFlashcard(id)
     if not session['user-id'] == data['information'][4]:
         return "Can't edit, not the owner."
     
     data['id'] = id
-    return render_template('flashcards/creation.html', data=data)
+    return render_template('flashcards/creation.html', data=data, user_name=user_name)
 
 @flashcards_bp.route('/save-info', methods=["POST"])
 @require_login
@@ -96,6 +99,8 @@ from flask import request, render_template
 @flashcards_bp.route('/review/<string:id>/random=<string:isRandom>', methods=["GET"])
 @require_login
 def review(id: str, isRandom: str):
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
     flashcards = fetchFlashcard(id)
     flashcards['id'] = id
     flashcards['isRandom'] = isRandom
@@ -107,14 +112,31 @@ def review(id: str, isRandom: str):
         else:
             return "Invalid Parameter."
 
-    return render_template('flashcards/review.html', flashcards=flashcards)
+    return render_template('flashcards/review.html', flashcards=flashcards, user_name=user_name)
 
 @flashcards_bp.route('/review/finished/<string:id>/<string:isRandom>', methods=["GET"])
 @require_login
 def congrats(id: str, isRandom: str):
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+
     info = {
         'data': fetchFlashcardInfo(id),
         'isRandom': isRandom.lower()
     }
 
-    return render_template('flashcards/congrats.html', info=info)
+    return render_template('flashcards/congrats.html', info=info, user_name=user_name)
+
+
+@flashcards_bp.route('/delete', methods=["DELETE"])
+@require_login
+def delete():
+    try:
+        req = request.get_json()
+        
+        deleteFlashcard(req['reviewerId'])
+
+        return make_response(jsonify({'message': 'Data Saved.'}), 200)
+    except Exception as e:
+        print(f"Error: {e}")  # Or log it to your logger
+        return make_response(jsonify({'message': 'Invalid Request.'}), 400)

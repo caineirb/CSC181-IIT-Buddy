@@ -1,66 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/flashcards/flashcards.css') }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-    <title>Create Flashcard</title>
-</head>
+{% block title %} Create Flashcard {% endblock %}
 
-<body>
-    <button type="button" onclick='window.location.href="{{ url_for('index') }}"' class="go-back-button">Go Back</button>
-    <div class="reviewer-info">
-        <input type="hidden" name="save_url" id="save_url" value="{{ url_for('flashcards.saveInfo') }}">
-        <input type="hidden" name="_token_csrf" id="_token_csrf" value="{{ csrf_token() }}">
-        <input type="hidden" name="reviewer-id" id="reviewer-id" value="{{ data['id'] }}" />
-        <input type="text" name="reviewer-title" id="reviewer-title" value="{{data['information'][0] }}" placeholder="Title" maxlength="100">
-        
-        <!-- Dropdowns -->
-        <div class="dropdowns">
-            <div class="dropdown">
-                <select name="reviewer-type" id="reviewer-type">
-                    <option value="{{ data['information'][2] }}">{{ data['information'][2] }}</option>
-                </select>
-            </div>
-            <div class="dropdown">
-                <select name="reviewer-privacy" id="reviewer-privacy">
-                    {% set privacy = ["Private", "Public", "Shared"] %}
-                    {% for priv in privacy %}
-                    <option value="{{ priv }}" {% if data['information'][3] == priv %}selected{% endif %}>{{ priv }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+{% block name %} {{ user_name }} {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/flashcards/flashcards.css') }}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+
+<!-- Go Back Button -->
+<button type="button" class="go-back-button" onclick="handleGoBack()">Go Back</button>
+
+<div class="reviewer-info">
+    <input type="hidden" name="save_url" id="save_url" value="{{ url_for('flashcards.saveInfo') }}">
+    <input type="hidden" name="deleteURL" id="deleteURL" value="{{ url_for('flashcards.delete') }}">
+    <input type="hidden" name="_token_csrf" id="_token_csrf" value="{{ csrf_token() }}">
+    <input type="hidden" name="reviewer-id" id="reviewer-id" value="{{ data['id'] }}" />
+    <input type="text" name="reviewer-title" id="reviewer-title" value="{{ data['information'][0] }}" placeholder="Title" maxlength="100">
+    
+    <!-- Dropdowns -->
+    <div class="dropdowns">
+        <div class="dropdown">
+            <select name="reviewer-type" id="reviewer-type">
+                <option value="{{ data['information'][2] }}">{{ data['information'][2] }}</option>
+            </select>
         </div>
-        
-        <input type="text" name="reviewer-description" id="reviewer-description" value="{{ data['information'][1] }}" placeholder="Description" maxlength="300">
+        <div class="dropdown">
+            <select name="reviewer-privacy" id="reviewer-privacy">
+                {% set privacy = ["Private", "Public", "Shared"] %}
+                {% for priv in privacy %}
+                <option value="{{ priv }}" {% if data['information'][3] == priv %}selected{% endif %}>{{ priv }}</option>
+                {% endfor %}
+            </select>
+        </div>
     </div>
-    <div class="shuffle-toggle">
-        <label for="shuffle-switch">Randomize Order:</label>
-        <input type="checkbox" id="shuffle-switch">
-    </div>
-    <button type="button" id="save-flashcards-btn" class="save-flashcards-btn" onclick="sendFlashcardsToBackend()">Play</button>
-    <input type="hidden" name="save_flashcard_url" id="save_flashcard_url" value="{{ url_for('flashcards.save_flashcard') }}">
     
-    
-    <!-- Flashcards Container -->
-    <div class="flashcards-container">
-        <!-- Flashcard template will be appended here -->
-    </div>
-    <div class="add-button-container">
-        <button type="button" id="add-card-btn" class="add-card-btn">Add Flashcard</button>
-    </div>
+    <textarea name="reviewer-description" id="reviewer-description" placeholder="Description" maxlength="300">{{ data['information'][1] | e }}</textarea>
+</div>
 
-    <script type="application/json" id="data-json">
-        {{ data['cards'] | tojson}}
-    </script>
-    s
-    <script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/saveDetails.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/functionalities.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/saveFlashcards.js') }}"></script>
+<div class="shuffle-toggle">
+    <label for="shuffle-switch">Randomize Order:</label>
+    <input type="checkbox" id="shuffle-switch">
+</div>
 
-</body>
+<button type="button" id="save-flashcards-btn" class="save-flashcards-btn" onclick="sendFlashcardsToBackend()">Play</button>
+<input type="hidden" name="save_flashcard_url" id="save_flashcard_url" value="{{ url_for('flashcards.save_flashcard') }}">
 
-</html>
+<!-- Delete Button -->
+<button type="button" id="delete-flashcards-btn" class="delete-flashcards-btn" onclick="deleteCard()">Delete</button>
+
+<!-- Flashcards Container -->
+<div class="flashcards-container">
+    <!-- Flashcard template will be appended here -->
+</div>
+
+<div class="add-button-container">
+    <button type="button" id="add-card-btn" class="add-card-btn">Add Flashcard</button>
+</div>
+
+<script type="application/json" id="data-json">
+    {{ data['cards'] | tojson }}
+</script>
+
+<!-- JavaScript Files -->
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/saveFlashcards.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/functionalities.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/deleteFlashcard.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/saveDetails.js') }}"></script>
+
+{% endblock %}

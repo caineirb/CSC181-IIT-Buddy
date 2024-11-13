@@ -1,97 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Review Flashcards</title>
-    <style>
-        .flashcard {
-            display: none; /* Only show the active flashcard */
-        }
-        .counter {
-            font-size: 18px;
-            margin: 20px 0;
-        }
-        .navigation-buttons {
-            display: flex;
-            gap: 10px;
-        }
-    </style>
-</head>
-<body>
-    <button type="button" onclick='window.location.href="{{ url_for("flashcards.edit", id=flashcards["id"]) }}"' class="go-back-button">Go Back</button>
-    <h1>Review Flashcards</h1>
-    <div>
-        {% for info in flashcards['information'] %}
-        <h3>{{ info }}</h3>
-        {% endfor %}
-    </div>
+{% extends "base.html" %}
 
-    <div class="counter">
-        Flashcard <span id="current-count">1</span> of {{ flashcards['cards']|length }}
-    </div>
+{% block title %}{{ flashcards['information'][0] }}: {{ flashcards['information'][2] }}{% endblock %}
 
-    <div class="flashcards-container">
-        {% for flashcard in flashcards['cards'] %}
-        <div class="flashcard" id="flashcard-{{ loop.index }}">
-            <!-- Removed the sequence display: <h2>Flashcard {{ flashcard['number'] }}</h2> -->
-            <p><strong>Question:</strong> {{ flashcard['question'] }}</p>
-            
-            {% if flashcard['image'] %}
-                <img src="data:image/jpeg;base64,{{ flashcard['image'] }}" alt="Flashcard Image" style="max-width: 200px; height: auto;">
-            {% endif %}
-            
-            <p><strong>Answer:</strong> {{ flashcard['answer'] }}</p>
-        </div>
-        {% endfor %}
-    </div>
+{% block name %} {{ user_name }} {% endblock %}
 
-    <div class="navigation-buttons">
-        <button type="button" id="prev-btn" onclick="showPreviousFlashcard()">Previous</button>
-        <button type="button" id="next-btn" onclick="showNextFlashcard()">Next</button>
-    </div>
+{% block content %}
+<style>
+    .flashcard {
+        display: none; /* Only show the active flashcard */
+    }
+    .counter {
+        font-size: 18px;
+        margin: 20px 0;
+    }
+    .navigation-buttons {
+        display: flex;
+        gap: 10px;
+    }
+</style>
 
-    <script>
-        let currentFlashcard = 1;
-        const totalFlashcards = {{ flashcards['cards'] | length }};
+<button type="button" onclick='window.location.href="{{ url_for("flashcards.edit", id=flashcards["id"]) }}"' class="go-back-button">Go Back</button>
+<h1>Review Flashcards</h1>
+<div>
+    {% for info in flashcards['information'] %}
+    <h3>{{ info }}</h3>
+    {% endfor %}
+</div>
+
+<div class="counter">
+    Flashcard <span id="current-count">1</span> of {{ flashcards['cards'] | length }}
+</div>
+
+<div class="flashcards-container">
+    {% for flashcard in flashcards['cards'] %}
+    <div class="flashcard" id="flashcard-{{ loop.index }}">
+        <p><strong>Question:</strong> {{ flashcard['question'] }}</p>
         
-        function updateFlashcardDisplay() {
-            // Hide all flashcards
-            document.querySelectorAll('.flashcard').forEach((flashcard) => {
-                flashcard.style.display = 'none';
-            });
-            
-            // Show the current flashcard
-            document.getElementById(`flashcard-${currentFlashcard}`).style.display = 'block';
-            
-            // Update the counter display
-            document.getElementById('current-count').textContent = currentFlashcard;
+        {% if flashcard['image'] %}
+            <img src="data:image/jpeg;base64,{{ flashcard['image'] }}" alt="Flashcard Image" style="max-width: 200px; height: auto;">
+        {% endif %}
+        
+        <p><strong>Answer:</strong> {{ flashcard['answer'] }}</p>
+    </div>
+    {% endfor %}
+</div>
 
-            // Update button states and text
-            const nextButton = document.getElementById('next-btn');
-            const prevButton = document.getElementById('prev-btn');
-            prevButton.disabled = currentFlashcard === 1;
-            nextButton.textContent = currentFlashcard === totalFlashcards ? 'Finish' : 'Next';
-        }
+<div class="navigation-buttons">
+    <button type="button" id="prev-btn" onclick="showPreviousFlashcard()">Previous</button>
+    <button type="button" id="next-btn" onclick="showNextFlashcard()">Next</button>
+</div>
 
-        function showNextFlashcard() {
-            if (currentFlashcard < totalFlashcards) {
-                currentFlashcard++;
-                updateFlashcardDisplay();
-            } else {
-                window.location.href = "{{ url_for('flashcards.congrats', id=flashcards['id'], isRandom=flashcards['isRandom']) }}";  // Change this to your target URL
-            }
-        }
+<input type="hidden" name="congrats-url" id="congrats-url" value="{{ url_for('flashcards.congrats', id=flashcards['id'], isRandom=flashcards['isRandom']) }}">
+<script type="application/json" id="data-json">
+    {{ flashcards['cards'] | tojson }}
+</script>
 
-        function showPreviousFlashcard() {
-            if (currentFlashcard > 1) {
-                currentFlashcard--;
-                updateFlashcardDisplay();
-            }
-        }
+<script type="application/json" id="data-length">
+    {{ flashcards['cards'] | length }}
+</script>
 
-        // Initial display
-        updateFlashcardDisplay();
-    </script>
-</body>
-</html>
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/reviewFunctionalities.js') }}"></script>
+{% endblock %}

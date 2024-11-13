@@ -30,7 +30,7 @@ def index():
             'Mixed': "#FFFFFF"
         }
     }
-    return render_template('main.html', userName = GetName, userIMG = session['user-photo'], flashcards_data=flashcards_data)    # Pulihi nalang ni sa unsa ang e render pag naka login na
+    return render_template('main.html', userName = GetName, flashcards_data=flashcards_data)    # Pulihi nalang ni sa unsa ang e render pag naka login na
 
 @app.route('/login', methods=["POST"])
 def login():

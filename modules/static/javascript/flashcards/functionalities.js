@@ -1,3 +1,4 @@
+
 /**
  * Handles the functionalities of the flashcards. Adding, deleting, editing, moving, etc.
  */
@@ -156,45 +157,6 @@ function previewImage(event, id) {
     }
 }
 
-
-// Updated previewImage function to handle initial base64 data
-function previewImage(event, id) {
-    const input = event.target;
-    const label = document.querySelector(`label[for='${input.id}']`);
-    const buttonLabel = label.querySelector('.button-label');
-    const file = input.files[0];
-
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            label.style.backgroundImage = `url('${e.target.result}')`;
-            label.style.backgroundSize = "cover";
-            label.style.backgroundPosition = "center";
-            label.style.backgroundRepeat = "no-repeat";
-            label.style.height = "100px";
-            label.style.width = "100px";
-            buttonLabel.style.display = 'none';
-        };
-        reader.readAsDataURL(file);
-    } else {
-        const initialImageBase64 = document.getElementById(`flashcard-image-base64-${id}`).value;
-        if (initialImageBase64) {
-            label.style.backgroundImage = `url('${initialImageBase64}')`;
-            label.style.backgroundSize = "cover";
-            label.style.backgroundPosition = "center";
-            label.style.backgroundRepeat = "no-repeat";
-            label.style.height = "100px";
-            label.style.width = "100px";
-            buttonLabel.style.display = 'none';
-        } else {
-            label.style.backgroundImage = '';
-            label.style.height = '';
-            label.style.width = '';
-            buttonLabel.style.display = 'inline';
-        }
-    }
-}
-
 // Remove flashcard
 document.addEventListener('click', function (event) {
     if (event.target.closest('.delete-button')) {
@@ -254,7 +216,6 @@ function updateFlashcardNumbers() {
         }
     });
 }
-
 
 // Initialize Sortable
 Sortable.create(document.querySelector('.flashcards-container'), {

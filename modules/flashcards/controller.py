@@ -180,3 +180,18 @@ def fetchFlashcardInfo(id :str):
         raise e
     finally:
         cur.close()  # Ensure the cursor is closed
+
+def deleteFlashcard(id :str):
+    try:
+        cur = mysql.connection.cursor()
+        delete_statement =  """
+            DELETE FROM `reviewers` WHERE `id` = %s;
+        """
+        
+        cur.execute(delete_statement, (id,))
+        mysql.connection.commit()
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed

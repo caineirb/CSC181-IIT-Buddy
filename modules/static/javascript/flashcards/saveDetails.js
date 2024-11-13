@@ -17,7 +17,7 @@ function handleChange(event) {
     const title = document.getElementById('reviewer-title').value;
     const type = document.getElementById('reviewer-type').value;
     const privacy = document.getElementById('reviewer-privacy').value;
-    const description = document.getElementById('reviewer-description').value;
+    const description = document.getElementById('reviewer-description').value.trim();
 
     const data = {
         reviewerId: reviewerId,
