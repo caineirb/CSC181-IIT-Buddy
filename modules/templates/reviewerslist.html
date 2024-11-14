@@ -71,17 +71,17 @@
               <div class="d-flex">
                 <select name="sort-by" id="sort-by" class="form-select me-2" style="max-width: 200px; color: black;">
                   <option value="" disabled selected><b>Sort by</b></option>
-                  <option value="Most Recent">
-                    Most Recent <i class="bi bi-arrow-down"></i>
+                  <option value="Most Recent" class="arrow-option">
+                    Most Recent &darr;
                   </option>
-                  <option value="Oldest">
-                    Oldest <i class="bi bi-arrow-up"></i>
+                  <option value="Oldest" class="arrow-option">
+                    Oldest &uarr;
                   </option>
                 </select>
               </div>
             </form>
-          </div>
-          
+        </div>
+           
     </div>
     </div>
 </div>
@@ -328,6 +328,10 @@
     left: 900px;
 }
 
+#dropdownMenuButton {
+  width: 100%; 
+}
+
 .sort {
     display: flex;
     position: relative;
@@ -405,7 +409,7 @@
     background-color: #D0D0D0;
     border-radius: 15px;
     text-decoration: none;
-    border: 3px dashed black;
+    border: 3px dashed var(--primary-color);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -421,14 +425,12 @@
 
 .card-name {
     font-size: 18px;
-    font-family: 'DM Mono', monospace;
-    color: black;
+    color: var(--primary-color);
 }
 
 .card-type {
     font-size: 14px;
-    font-family: 'DM Mono', monospace;
-    color: black;
+    color: var(--primary-color);
 }
 
 .card-footer {
@@ -438,7 +440,6 @@
 }
 
 .card-owner, .card-share-type {
-    font-family: 'DM Mono', monospace;
     color: rgba(0, 0, 0, 0.5);
 }
 
@@ -491,7 +492,7 @@
     height: 245px;
     background-color: #FFFFF0;
     border-radius: 15px;
-    border: 3px dashed black;
+    border: 3px dashed var(--primary-color);
     text-decoration: none;
     position: absolute;
     margin-top: 10px;
@@ -499,11 +500,12 @@
 }
 
 .add-button .bi {
-    color: black;
+    color: var(--primary-color);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    font-size: 40px;
 }
 
 </style>
