@@ -103,7 +103,7 @@ def fetchFlashcard(id: str):
             FROM `items` AS `i` 
             LEFT JOIN `answers` AS `a` 
             ON `i`.`reviewer_id` = `a`.`reviewer_id` AND `i`.`number` = `a`.`question_number`
-            WHERE `i`.`reviewer_id` = %s;
+            WHERE `i`.`reviewer_id` = %s ORDER BY `i`.`number` ASC;
         """
         cur.execute(fetch_cards, (id,))
         cards = cur.fetchall()
@@ -129,8 +129,7 @@ def fetchFlashcard(id: str):
     finally:
         cur.close()  # Ensure the cursor is closed
 
-
-
+# Modify this for the Reviewers List
 def fetchFlashcards(owner_id :str):
     try:
         cur = mysql.connection.cursor()

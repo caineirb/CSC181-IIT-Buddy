@@ -140,3 +140,13 @@ def delete():
     except Exception as e:
         print(f"Error: {e}")  # Or log it to your logger
         return make_response(jsonify({'message': 'Invalid Request.'}), 400)
+    
+
+@flashcards_bp.route('/duplicate', methods=["POST"])
+@require_login
+def checkDuplicate():
+    try:
+        req = request.get_json()
+    except Exception as e:
+        print(f"Error: {e}")  # Or log it to your logger
+        return make_response(jsonify({'message': 'Invalid Request.'}), 400)

@@ -1,8 +1,3 @@
-/**
- * Handles the saving of the flashcard's information when something is changed.
- * It automatically saves it to the database.
- */
-
 document.addEventListener('DOMContentLoaded', function () {
     // Trigger on 'blur' for text fields and 'change' for dropdowns
     document.getElementById('reviewer-title').addEventListener('blur', handleChange);
@@ -14,20 +9,41 @@ document.addEventListener('DOMContentLoaded', function () {
 // Function to handle input changes
 function handleChange(event) {
     const reviewerId = document.getElementById('reviewer-id').value;
-    const title = document.getElementById('reviewer-title').value;
+    const titleInput = document.getElementById('reviewer-title');
+    const title = titleInput.value.trim();
     const type = document.getElementById('reviewer-type').value;
     const privacy = document.getElementById('reviewer-privacy').value;
     const description = document.getElementById('reviewer-description').value.trim();
 
-    const data = {
-        reviewerId: reviewerId,
-        title: title,
-        type: type,
-        privacy: privacy,
-        description: description
-    };
+    // Get or create a warning message element
+    let warningMessage = document.getElementById('title-warning');
+    if (!warningMessage) {
+        warningMessage = document.createElement('div');
+        warningMessage.id = 'title-warning';
+        warningMessage.style.color = 'red';
+        warningMessage.style.fontSize = '0.9em';
+        warningMessage.style.marginTop = '5px';
+        titleInput.insertAdjacentElement('afterend', warningMessage);
+    }
 
-    sendDataToBackend(data);
+    // Check if title is empty and display a required-like warning
+    if (title === "") {
+        titleInput.style.borderColor = 'red';
+        warningMessage.textContent = "Title is required. Please fill in the title.";
+    } else {
+        titleInput.style.borderColor = '';
+        warningMessage.textContent = "";
+
+        // Prepare data for backend update
+        const data = {
+            reviewerId: reviewerId,
+            title: title,
+            type: type,
+            privacy: privacy,
+            description: description
+        };
+        sendDataToBackend(data); // Only send data if title is not empty
+    }
 }
 
 function sendDataToBackend(data) {
@@ -43,7 +59,6 @@ function sendDataToBackend(data) {
         body: JSON.stringify(data)
     })
     .then(response => {
-        console.log(data);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
