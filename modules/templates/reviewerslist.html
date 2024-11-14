@@ -98,68 +98,13 @@
 <!-- kay rag nag act na ang ibabaw nga html ani as header -->
 <!-- maong need naay 'content' para below sa header ma place ang below na ani nga mga html attributes -->
 
-<!-- below kay mga templates rani -->
+<!-- add button for new reviewers list flashcards -->
+<button type="button" class="add-button" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+    <i class="bi bi-plus"></i>
+</button>
+
+<!-- below kay mga templates rani sa flashcards  -->
 <section class="content sample one" style="display: flex; margin-top: 250px;"> <!-- first flashcard content must have this kind of style -->
-    <a href="/" class="card">
-        <div class="card-content">
-            <div>
-                <div class="card-name"><b>Name</b></div>
-                <div class="card-type">Type</div>
-            </div>
-            <div class="card-footer">
-                <span class="card-owner">Owner</span>
-                <span class="card-share-type">Share Type</span>
-            </div>
-        </div>
-    </a>
-</section>
-
-<section class="content sample two">
-    <a href="/" class="card">
-        <div class="card-content">
-            <div>
-                <div class="card-name"><b>Name</b></div>
-                <div class="card-type">Type</div>
-            </div>
-            <div class="card-footer">
-                <span class="card-owner">Owner</span>
-                <span class="card-share-type">Share Type</span>
-            </div>
-        </div>
-    </a>
-</section>
-
-<section class="content sample three">
-    <a href="/" class="card">
-        <div class="card-content">
-            <div>
-                <div class="card-name"><b>Name</b></div>
-                <div class="card-type">Type</div>
-            </div>
-            <div class="card-footer">
-                <span class="card-owner">Owner</span>
-                <span class="card-share-type">Share Type</span>
-            </div>
-        </div>
-    </a>
-</section>
-
-<section class="content sample four">
-    <a href="/" class="card">
-        <div class="card-content">
-            <div>
-                <div class="card-name"><b>Name</b></div>
-                <div class="card-type">Type</div>
-            </div>
-            <div class="card-footer">
-                <span class="card-owner">Owner</span>
-                <span class="card-share-type">Share Type</span>
-            </div>
-        </div>
-    </a>
-</section>
-
-<section class="content sample five">
     <a href="/" class="card">
         <div class="card-content">
             <div>
@@ -408,9 +353,9 @@
 
 .content {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
 }
 
 .content.sample {
@@ -421,13 +366,9 @@
     justify-content: center;
 }
 
-.content.sample.one {
-    margin-top: 60px; 
-}
-
 .card {
-    width: 200px; 
-    height: 300px;
+    width: 500px;
+    height: 245px;
     margin: 10px; 
     background-color: #D0D0D0;
     border-radius: 15px;
@@ -478,15 +419,16 @@
     align-self: flex-end;
 }
 
-.content.sample .card:nth-child(odd),
-.content.sample .card:nth-child(even) {
-    width: 45%;
-}
-
 .pagination-nav {
     display: flex;
     justify-content: flex-end;
     padding-right: 20px;
+    position: fixed; 
+    bottom: 0;
+    left: 0;  
+    width: 100%;  
+    z-index: 1000;
+    padding: 10px 20px;
 }
 
 .pagination-nav .page-link {
@@ -508,6 +450,31 @@
     margin: 0 auto;
     box-sizing: border-box;
 }
+
+.add-button {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center; 
+    width: 500px;
+    height: 245px;
+    background-color: #FFFFF0;
+    border-radius: 15px;
+    border: 3px dashed black;
+    text-decoration: none;
+    position: absolute;
+    margin-top: 10px;
+    left: 215px;  
+}
+
+.add-button .bi {
+    color: black;
+    font-size: 2rem; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 </style>
 
 <script>
