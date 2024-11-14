@@ -46,28 +46,96 @@ function handleChange(event) {
     }
 }
 
-function sendDataToBackend(data) {
+async function sendDataToBackend(data) {
     const csrfToken = document.getElementById("_token_csrf").value;
     const saveUrl = document.getElementById("save_url").value;
 
-    fetch(saveUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            "X-CSRFToken": csrfToken
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => {
+    // Wait for the duplicate check before proceeding
+    const isDuplicate = await checkDuplicate(data);
+    
+    if (!isDuplicate) {
+        removeDuplicateWarning();
+        // Only proceed if there is no duplicate
+        fetch(saveUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "X-CSRFToken": csrfToken
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(responseData => {
+            console.log('Successfully updated:', responseData);
+        })
+        .catch(error => {
+            console.error('Error updating:', error);
+        });
+    } else {
+        // Display a warning if a duplicate is detected
+        displayDuplicateWarning();
+    }
+}
+
+async function checkDuplicate(data) {
+    const csrfToken = document.getElementById("_token_csrf").value;
+    const checkDuplicateURL = document.getElementById("check_duplicate_url").value;
+
+    try {
+        const response = await fetch(checkDuplicateURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "X-CSRFToken": csrfToken
+            },
+            body: JSON.stringify({
+                'id': data.reviewerId,
+                'title': data.title
+            })
+        });
+
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
-    })
-    .then(responseData => {
-        console.log('Successfully updated:', responseData);
-    })
-    .catch(error => {
-        console.error('Error updating:', error);
-    });
+
+        const responseData = await response.json();
+        return responseData['isDuplicate'];
+    } catch (error) {
+        console.error('Error checking for duplicates:', error);
+        return false; // Return false if there's an error, so it doesn't block saving
+    }
+}
+
+// Display warning for duplicate titles without using an alert
+function displayDuplicateWarning() {
+    const titleInput = document.getElementById("reviewer-title");
+    titleInput.style.borderColor = "red";
+
+    // Create or display a warning message
+    let warning = document.getElementById("duplicate-warning");
+    if (!warning) {
+        warning = document.createElement("div");
+        warning.id = "duplicate-warning";
+        warning.textContent = "Title is already in use. Please choose a different title.";
+        warning.style.color = "red";
+        warning.style.marginTop = "5px";
+        titleInput.parentNode.insertBefore(warning, titleInput.nextSibling);
+    } else {
+        warning.style.display = "block"; // Make sure it's visible if it was hidden before
+    }
+}
+
+
+function removeDuplicateWarning() {
+    const warning = document.getElementById("duplicate-warning");
+    if (warning) {
+        warning.style.display = "none"; // Hide the warning
+        const titleInput = document.getElementById("reviewer-title");
+        titleInput.style.borderColor = ""; // Reset border color
+    }
 }

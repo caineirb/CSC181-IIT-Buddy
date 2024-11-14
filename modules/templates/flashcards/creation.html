@@ -47,6 +47,7 @@
 <button type="button" id="save-flashcards-btn" class="save-flashcards-btn" onclick="sendFlashcardsToBackend()">Play</button>
 <input type="hidden" name="save_flashcard_url" id="save_flashcard_url" value="{{ url_for('flashcards.save_flashcard') }}">
 
+<input type="hidden" name="check_duplicate_url" id="check_duplicate_url" value="{{ url_for('flashcards.check_duplicate') }}">
 <!-- Delete Button -->
 <button type="button" id="delete-flashcards-btn" class="delete-flashcards-btn" onclick="deleteCard()">Delete</button>
 

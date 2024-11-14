@@ -8,8 +8,6 @@ function handleGoBack() {
 }
 
 function sendFlashcardsToBackend(next_url = null) {
-    console.log("Saving flashcards...");  // Debug: check if function is triggered
-
     const formData = new FormData();
     const csrfToken = document.getElementById("_token_csrf").value;
     const sFlashcardUrl = document.getElementById("save_flashcard_url").value;

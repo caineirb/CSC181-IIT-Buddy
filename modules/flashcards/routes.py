@@ -1,21 +1,28 @@
 from flask import flash, render_template, request, redirect, url_for, session, make_response, jsonify
 from modules.controller import require_login, fetchStudent
-from modules.flashcards.controller import createFlashcard, fetchFlashcard, fetchFlashcards, editFlashcard, addCard, removeCards, fetchFlashcardInfo, deleteFlashcard
+from modules.flashcards.controller import createFlashcard, fetchFlashcard, fetchFlashcards, editFlashcard, addCard, removeCards, fetchFlashcardInfo, deleteFlashcard, checkDuplicateTitle, customErrorMessages
 from . import flashcards_bp
+from modules import mysql
 
 
 @flashcards_bp.route('/create', methods=["POST"])
 @require_login
 def create():
-    data = {
-        'title': request.form.get('reviewer-title'),
-        'type': request.form.get('reviewer-type'),
-        'privacy': request.form.get('reviewer-privacy'),
-        'owner_id': session['user-id']
-    }
-    flashcard_id = createFlashcard(data)
-    return redirect(url_for('flashcards.edit', id=flashcard_id))
-
+    from_url = request.form.get('from_url')
+    try:
+        data = {
+            'title': request.form.get('reviewer-title'),
+            'type': request.form.get('reviewer-type'),
+            'privacy': request.form.get('reviewer-privacy'),
+            'owner_id': session['user-id']
+        }
+        flashcard_id = createFlashcard(data)
+        return redirect(url_for('flashcards.edit', id=flashcard_id))
+    except mysql.connection.Error as e:
+        # Flash error message and redirect back to the page with the modal
+        print(e)
+        flash(customErrorMessages(e), "error")
+        return redirect(from_url)  # Redirect to the same route to open the modal
 
 @flashcards_bp.route('/edit/<string:id>', methods=["GET"])
 @require_login
@@ -144,9 +151,11 @@ def delete():
 
 @flashcards_bp.route('/duplicate', methods=["POST"])
 @require_login
-def checkDuplicate():
+def check_duplicate():
     try:
         req = request.get_json()
+        idDuplicate = checkDuplicateTitle(req['title'], req['id'])[0] > 0
+        return make_response(jsonify({'isDuplicate': idDuplicate}), 200)
     except Exception as e:
         print(f"Error: {e}")  # Or log it to your logger
         return make_response(jsonify({'message': 'Invalid Request.'}), 400)

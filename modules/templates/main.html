@@ -174,11 +174,24 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- ILISI SAD NG ACTION ANI ARUN MA HATAG SA ROUTE NA ASA NI PADULONGAY NA VALUES -->
-        <form action="{{url_for('flashcards.create')}}" method="post">
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            {% if category == 'error' %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+        <!-- Form for Creating Flashcard -->
+        <form action="{{ url_for('flashcards.create') }}" method="post">
           <!-- CSRF Token -->
           <input type="hidden" name="_csrf_token" id="_csrf_token" value="{{ csrf_token() }}" />
-
+          <input type="hidden" name="from_url" id="from_url" value="{{ url_for('index') }}" />
           <!-- Input Field -->
           <div class="input-group mb-3">
             <input type="text" class="title-input form-control"
@@ -212,5 +225,15 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Check if there's an error message and open the modal if true
+    if (document.querySelector('.alert-danger')) {
+      var createReviewerModal = new bootstrap.Modal(document.getElementById('exampleModal2'), {});
+      createReviewerModal.show();
+    }
+  });
+</script>
 
 {%endblock%}

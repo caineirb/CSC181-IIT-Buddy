@@ -194,3 +194,33 @@ def deleteFlashcard(id :str):
         raise e
     finally:
         cur.close()  # Ensure the cursor is closed
+
+
+def checkDuplicateTitle(title :str, id :str = None):
+    try:
+        cur = mysql.connection.cursor()
+        fetch_count = """
+            SELECT COUNT(`title`) FROM `reviewers`
+            WHERE `title` = %s AND `type` = 'Flashcard'
+        """
+        fetch_param = [title]
+        if id:
+            fetch_count += " AND NOT (`id` = %s);"
+            fetch_param.append(id)
+
+        cur.execute(fetch_count, tuple(fetch_param))
+        return cur.fetchone()
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
+def customErrorMessages(error):
+    if (error.args[0] == 1062): # Check the error code first
+        value = error.args[1].split("'")[1]
+
+        full_name = value.split("-")
+        return f"{full_name[3]} named '{full_name[0]} {full_name[1]}' already exist."
+    else:
+        return f"Error {error.args[0]} occurred. Please contact the developers."
