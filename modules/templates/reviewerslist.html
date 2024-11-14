@@ -103,6 +103,46 @@
     <i class="bi bi-plus"></i>
 </button>
 
+<!-- modal sa add button sa pag create -->
+<!-- gi copy ra nakong modal sa main -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- ILISI SAD NG ACTION ANI ARUN MA HATAG SA ROUTE NA ASA NI PADULONGAY NA VALUES -->
+          <form action="#" method="POST">
+            <!-- ILISI LANG ANG UNSA NAKA SULOD DIRI SA NAME UG ID SA TEXT INPUTS ARUN MA MATCH SA DATABASE-->
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Title" aria-label="Title" name="title" id="title">
+            </div>
+            
+            <div class="d-flex">
+              <select name="ReviewersType" id="ReviewersType" class="form-select me-2" style="max-width: 150px; color: black;">
+                <option value="Flashcard">Flashcard</option>
+                <option value="Identification">Identification</option>
+                <option value="Multiple Choice">Multiple Choice</option>
+                <option value="Mixed">Mixed</option>
+              </select>
+            
+              <select name="PrivacyValue" id="PrivacyValue" class="form-select me-2" style="max-width: 150px; color: black;">
+                <option value="private">Private</option>
+                <option value="public">Public</option>
+                <option value="shared">Shared</option>
+              </select>
+            </div>
+  
+           <div class="modal-footer justify-content-center w-100 mt-3">
+            <button type="submit" class="btn btn-dark">Create</button>
+           </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>  
+
 <!-- below kay mga templates rani sa flashcards  -->
 <section class="content sample one" style="display: flex; margin-top: 250px;"> <!-- first flashcard content must have this kind of style -->
     <a href="/" class="card">
