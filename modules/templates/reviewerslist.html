@@ -19,9 +19,9 @@
 
     <!-- back button, pabalik sa main -->
     <button type="button" class="btn btn-light btn-m ms-5 back-button">
-        <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> <b>Back</b>
+        <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> <b style="font-weight: normal;">Back</b>
     </button>
-
+    
     <!-- gi group nakong tanan search: filters and sort -->
     <div class="searchbar">
         
@@ -53,16 +53,14 @@
         <!-- diri tong by filter nga privacy option -->
         <div class="ms-5 filter">
             <form action="#" method="POST" id="ReviewersOptions">
-              <div class="dropdown-filter">
-                <button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                  <b>Privacy Option</b>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li><button type="submit" name="privacy-option" value="All" class="dropdown-item">All</button></li>
-                  <li><button type="submit" name="privacy-option" value="Private" class="dropdown-item">Private</button></li>
-                  <li><button type="submit" name="privacy-option" value="Public" class="dropdown-item">Public</button></li>
-                  <li><button type="submit" name="privacy-option" value="Shared" class="dropdown-item">Shared</button></li>
-                </ul>
+              <div class="d-flex">
+                <select name="privacy-option" id="privacy-option" class="form-select" style="max-width: 200px; color: black;">
+                  <option value="" disabled selected><b>Privacy Option</b></option>
+                  <option value="All">All</option>
+                  <option value="Private">Private</option>
+                  <option value="Public">Public</option>
+                  <option value="Shared">Shared</option>
+                </select>
               </div>
             </form>
         </div>
@@ -70,30 +68,24 @@
         <!-- while diri sab tong sort by like ang most recent etc. -->
         <div class="ms-5 sort">
             <form action="#" method="POST" id="ReviewersOptions">
-              <div class="dropdown-sort">
-                <button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                  <b>Sort by</b>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li>
-                        <button type="submit" name="sort-by" value="Most Recent" class="dropdown-item">
-                            Most Recent
-                            <i class="bi bi-arrow-down"></i> 
-                        </button>
-                    </li>
-                    <li>
-                        <button type="submit" name="sort-by" value="Oldest" class="dropdown-item">
-                            Oldest
-                            <i class="bi bi-arrow-up"></i>
-                        </button>
-                    </li>
+              <div class="d-flex">
+                <select name="sort-by" id="sort-by" class="form-select me-2" style="max-width: 200px; color: black;">
+                  <option value="" disabled selected><b>Sort by</b></option>
+                  <option value="Most Recent">
+                    Most Recent <i class="bi bi-arrow-down"></i>
+                  </option>
+                  <option value="Oldest">
+                    Oldest <i class="bi bi-arrow-up"></i>
+                  </option>
+                </select>
               </div>
             </form>
-        </div>
-    
+          </div>
+          
     </div>
     </div>
 </div>
+
 <!-- starting from here: mag use na og 'section class: content' -->
 <!-- kay rag nag act na ang ibabaw nga html ani as header -->
 <!-- maong need naay 'content' para below sa header ma place ang below na ani nga mga html attributes -->
@@ -508,7 +500,6 @@
 
 .add-button .bi {
     color: black;
-    font-size: 2rem; 
     position: absolute;
     top: 50%;
     left: 50%;
