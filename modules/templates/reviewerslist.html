@@ -91,9 +91,16 @@
 <!-- maong need naay 'content' para below sa header ma place ang below na ani nga mga html attributes -->
 
 <!-- add button for new reviewers list flashcards -->
-<button type="button" class="add-button" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-    <i class="bi bi-plus"></i>
-</button>
+<section class="content sample one" style="display: flex; margin-top: 250px;">
+    <!-- Add Button as Card -->
+    <button type="button" class="card add-button" data-bs-toggle="modal" data-bs-target="#exampleModal2" style="background-color: #fffff0;">
+        <div class="card-content">
+            <div class="add-icon">
+                <i class="bi bi-plus"></i>
+            </div>
+        </div>
+    </button>
+</section>
 
 <!-- modal sa add button sa pag create -->
 <!-- gi copy ra nakong modal sa main -->
@@ -482,21 +489,6 @@
     height: 150px;
     margin: 0 auto;
     box-sizing: border-box;
-}
-
-.add-button {
-    display: flex;
-    justify-content: flex-start; 
-    align-items: center; 
-    width: 500px;
-    height: 245px;
-    background-color: #FFFFF0;
-    border-radius: 15px;
-    border: 3px dashed var(--primary-color);
-    text-decoration: none;
-    position: absolute;
-    margin-top: 10px;
-    left: 215px;  
 }
 
 .add-button .bi {
