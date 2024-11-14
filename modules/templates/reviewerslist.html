@@ -1,0 +1,562 @@
+{% extends "base.html" %}
+
+{% block title %} IIT Buddy {% endblock %}
+
+{% block name %} {{ userName }} {% endblock %}
+
+{% block image %} {{ userIMG }} {% endblock %}
+
+{% block content %}
+
+<div class="subheader">
+    <div class="ForBgFixed">
+    
+    <!-- title ni diri -->
+    <div class="reviewerslist">
+        <div class="reviewers">reviewers</div>
+        <div class="list">list</div>
+    </div>
+
+    <!-- back button, pabalik sa main -->
+    <button type="button" class="btn btn-light btn-m ms-5 back-button">
+        <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> <b>Back</b>
+    </button>
+
+    <!-- gi group nakong tanan search: filters and sort -->
+    <div class="searchbar">
+        
+        <!-- types sa reviewers -->
+        <div class="search-bar">
+            <div class="dropdown-type">
+                <div id="drop-text" class="dropdown-text">
+                    <span id="span">All</span>
+                    <i id="icon" class="bi bi-chevron-down"></i>
+                </div>
+                <ul id="list" class="dropdown-list">
+                    <li class="dropdown-list-item" data-field="All">All</li>
+                    <li class="dropdown-list-item" data-field="Flashcards">Flashcards</li>
+                    <li class="dropdown-list-item" data-field="Multiple Choice">Multiple Choice</li>
+                    <li class="dropdown-list-item" data-field="Mixed">Mixed</li>
+                <input type="hidden" id="search-field" name="search_field" value="all">
+            </div>
+
+            <!-- search-bar and searchbar kay LAHI -->
+            <!-- same group ra ni sa search-bar and kadto ning mag search naka like inig type -->
+            <div class="search-line">
+                <input type="text" id="search-input" name="search_query" placeholder="Search here...">
+                <button type="submit" class="search-btn">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- diri tong by filter nga privacy option -->
+        <div class="ms-5 filter">
+            <form action="#" method="POST" id="ReviewersOptions">
+              <div class="dropdown-filter">
+                <button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                  <b>Privacy Option</b>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li><button type="submit" name="privacy-option" value="All" class="dropdown-item">All</button></li>
+                  <li><button type="submit" name="privacy-option" value="Private" class="dropdown-item">Private</button></li>
+                  <li><button type="submit" name="privacy-option" value="Public" class="dropdown-item">Public</button></li>
+                  <li><button type="submit" name="privacy-option" value="Shared" class="dropdown-item">Shared</button></li>
+                </ul>
+              </div>
+            </form>
+        </div>
+
+        <!-- while diri sab tong sort by like ang most recent etc. -->
+        <div class="ms-5 sort">
+            <form action="#" method="POST" id="ReviewersOptions">
+              <div class="dropdown-sort">
+                <button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                  <b>Sort by</b>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li>
+                        <button type="submit" name="sort-by" value="Most Recent" class="dropdown-item">
+                            Most Recent
+                            <i class="bi bi-arrow-down"></i> 
+                        </button>
+                    </li>
+                    <li>
+                        <button type="submit" name="sort-by" value="Oldest" class="dropdown-item">
+                            Oldest
+                            <i class="bi bi-arrow-up"></i>
+                        </button>
+                    </li>
+              </div>
+            </form>
+        </div>
+    
+    </div>
+    </div>
+</div>
+<!-- starting from here: mag use na og 'section class: content' -->
+<!-- kay rag nag act na ang ibabaw nga html ani as header -->
+<!-- maong need naay 'content' para below sa header ma place ang below na ani nga mga html attributes -->
+
+<!-- below kay mga templates rani -->
+<section class="content sample one" style="display: flex; margin-top: 250px;"> <!-- first flashcard content must have this kind of style -->
+    <a href="/" class="card">
+        <div class="card-content">
+            <div>
+                <div class="card-name"><b>Name</b></div>
+                <div class="card-type">Type</div>
+            </div>
+            <div class="card-footer">
+                <span class="card-owner">Owner</span>
+                <span class="card-share-type">Share Type</span>
+            </div>
+        </div>
+    </a>
+</section>
+
+<section class="content sample two">
+    <a href="/" class="card">
+        <div class="card-content">
+            <div>
+                <div class="card-name"><b>Name</b></div>
+                <div class="card-type">Type</div>
+            </div>
+            <div class="card-footer">
+                <span class="card-owner">Owner</span>
+                <span class="card-share-type">Share Type</span>
+            </div>
+        </div>
+    </a>
+</section>
+
+<section class="content sample three">
+    <a href="/" class="card">
+        <div class="card-content">
+            <div>
+                <div class="card-name"><b>Name</b></div>
+                <div class="card-type">Type</div>
+            </div>
+            <div class="card-footer">
+                <span class="card-owner">Owner</span>
+                <span class="card-share-type">Share Type</span>
+            </div>
+        </div>
+    </a>
+</section>
+
+<section class="content sample four">
+    <a href="/" class="card">
+        <div class="card-content">
+            <div>
+                <div class="card-name"><b>Name</b></div>
+                <div class="card-type">Type</div>
+            </div>
+            <div class="card-footer">
+                <span class="card-owner">Owner</span>
+                <span class="card-share-type">Share Type</span>
+            </div>
+        </div>
+    </a>
+</section>
+
+<section class="content sample five">
+    <a href="/" class="card">
+        <div class="card-content">
+            <div>
+                <div class="card-name"><b>Name</b></div>
+                <div class="card-type">Type</div>
+            </div>
+            <div class="card-footer">
+                <span class="card-owner">Owner</span>
+                <span class="card-share-type">Share Type</span>
+            </div>
+        </div>
+    </a>
+</section>
+
+<!-- mao ang sa pagination -->
+<nav aria-label="Page navigation example" class="pagination-nav d-flex justify-content-end w-100">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="btn btn-light  sr-only">Next</span>
+        </a>
+      </li>
+    </ul>
+</nav>
+
+
+<style>
+        
+    /* don't forget to put this (root) sa base aron di na ni ibutang per html since diri namn ta gabutang for styling */
+
+    :root {
+    /* colors */
+    --white-color: #fff;
+    --black-color: #000;
+    --primary-color: #0D1A26;
+    --secondary-color: #0E7373;
+
+    /* font size */
+    --font-size-s: 0.9rem;
+    --font-size-n: 1rem;
+    --font-size-m: 1.12rem;
+    --font-size-l: 1.5rem;
+    --font-size-xl: 2rem;
+    --font-size-xxl: 2.3rem;
+
+    /* font weight */
+    --font-weight-norml: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* border radius */
+    --border-radius-s: 0.8px;
+    --border-radius-m: 30px;
+    --border-radius-circle: 50%;
+}
+
+.header {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    padding: 20px;
+    text-align: center;
+    font-size: var(--font-size-xl);
+}
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 40px;
+    position: relative;
+    top: 100px;
+    left: 700px;
+}
+
+.dropdown-type {
+    position: relative;
+    width: 280px;
+    border-radius: 10px;
+    border: 1px solid var(--white-color);
+    background-color: var(--primary-color);
+    box-shadow: var(--light-main-color);
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.dropdown-text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--white-color);
+    padding: .5rem 1rem;
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    width: 100%;
+    border-radius: 10px;
+    max-height: 0;
+    overflow: hidden;
+    background-color: var(--white-color);
+    transition: max-height 0.5s;
+}
+
+#list.show {
+    max-height: 300px;
+}
+
+.dropdown-list-item {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.15rem 0 1rem 1rem;
+    cursor: pointer;
+    transition: margin-left 0.2s ease;
+}
+
+.dropdown-text .bi {
+    color: var(--white-color);
+}
+
+.dropdown-list-item:hover {
+    margin-left: 0.5rem;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.search-line {
+    display: flex;
+    align-items: center;
+    padding-right: 1rem;
+    width: 100%;
+    color: var(--primary-color);
+    border-radius: 10px;
+    padding: 0.2rem 1rem;
+    background-color: var(--white-color);
+}
+
+.search-line input {
+    padding: 0.2rem 1rem;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    border: 0;
+    outline: 0;
+    border-radius: 10px;
+    background-color: var(--white-color);
+}
+
+.search-line i {
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.search-line input::placeholder {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.search-btn {
+    background-color: var(--white-color);
+    color: var(--primary-color);
+    border: none;
+}
+
+.searchbar {
+    display: flex;
+}
+
+.filter {
+    display: flex;
+    position: relative;
+    top: 100px;
+    left: 900px;
+}
+
+.sort {
+    display: flex;
+    position: relative;
+    top: 100px;
+    left: 870px;
+}
+
+.reviewerslist {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+}
+
+.subheader{
+    margin-top: 70px;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    transition: top 0.3s ease-in-out;
+}
+
+.subheader.show{
+    top: 0;
+}
+
+.reched{
+    background-color: #d9d9d9;
+    width: 100%;
+    position: fixed;
+}
+
+.reviewers {
+    color: var(--secondary-color);
+    font-size: 48px;
+    word-wrap: break-word;
+    position: relative;
+    top: 12px;
+}
+
+.list {
+    color: var(--primary-color);
+    font-size: 60px;
+    word-wrap: break-word;
+}
+
+.back-button{
+    position: fixed;
+    transform: translateX(-20px) translateY(40px);
+    display: flex;
+    z-index: 1000;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.content.sample {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.content.sample.one {
+    margin-top: 60px; 
+}
+
+.card {
+    width: 200px; 
+    height: 300px;
+    margin: 10px; 
+    background-color: #D0D0D0;
+    border-radius: 15px;
+    text-decoration: none;
+    border: 3px dashed black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.card-name {
+    font-size: 18px;
+    font-family: 'DM Mono', monospace;
+    color: black;
+}
+
+.card-type {
+    font-size: 14px;
+    font-family: 'DM Mono', monospace;
+    color: black;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.card-owner, .card-share-type {
+    font-family: 'DM Mono', monospace;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.card-owner {
+    font-size: 12px;
+}
+
+.card-share-type {
+    font-size: 12px;
+    align-self: flex-end;
+}
+
+.content.sample .card:nth-child(odd),
+.content.sample .card:nth-child(even) {
+    width: 45%;
+}
+
+.pagination-nav {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+}
+
+.pagination-nav .page-link {
+    font-weight: var(--font-weight-medium); 
+    color: var(--primary-color); 
+    text-decoration: none; 
+    border-radius: var(--border-radius-s); 
+    padding: 6px 12px;
+}
+
+.pagination-nav .page-link:hover {
+    color: var(--white-color);
+    background-color: var(--primary-color);
+}
+
+.subheader .ForBgFixed {
+    width: 100%;
+    height: 150px;
+    background: #D9D9D9;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+</style>
+
+<script>
+    // js for kadtong sa types and search
+    let dropdownBtnText = document.getElementById("drop-text");
+    let list = document.getElementById("list");
+    let icon = document.getElementById("icon");
+    let span = document.getElementById("span");
+    let input = document.getElementById("search-input");
+    let listItems = document.querySelectorAll(".dropdown-list-item");
+    let searchFieldInput = document.getElementById("search-field");
+          
+    dropdownBtnText.onclick = function(){
+        if (list.classList.contains("show")) {
+            icon.style.transform = "rotate(0deg)";
+        } else {
+            icon.style.transform = "rotate(-180deg)";
+        }
+            list.classList.toggle("show");
+        };
+          
+        window.onclick = function(e) {
+        if (!dropdownBtnText.contains(e.target)) {
+            list.classList.remove("show");
+                icon.style.transform = "rotate(0deg)";
+            }
+        };
+    
+    // diri kay ma functional if tuplokon ang isa ka type and ma reflect sa search input
+    for (let item of listItems) {
+        item.onclick = function(e) {
+            let selectedField = e.target.getAttribute('data-field');
+            span.innerText = selectedField;
+          
+            searchFieldInput.value = selectedField;
+          
+            if (selectedField === "All") {
+                input.placeholder = "Search here...";
+            } else {
+                input.placeholder = "Search in " + selectedField + "...";
+            }
+          
+            list.classList.remove("show");
+            icon.style.transform = "rotate(0deg)";
+            };
+    }
+
+</script>
+
+          
+{% endblock %}
