@@ -137,7 +137,7 @@
 
     <!-- Button that triggers the modal -->
     <button type="button" class="d-flex justify-content-center position-relative col-4 withpad"
-      style=" width: 30%; height: 245px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none;"
+      style="width: 450px; height: 245px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none;"
       data-bs-toggle="modal" data-bs-target="#exampleModal2">
       <i class="fa-solid fa-plus fa-2xl position-absolute top-50 start-50 translate-middle" style="color: black;"></i>
     </button>
@@ -145,7 +145,7 @@
     <!-- Second Box: This one links to a different page -->
     {% for flashcard in flashcards_data['data'] %}
     <a href="{{ url_for('flashcards.edit', id=flashcard[0]) }}" class="d-flex justify-content-start position-relative col-4 withpad"
-    style="width: 30%; height: 245px; background-color: {{ flashcards_data['bgcolor'][flashcard[3]] }}; border-radius: 15px; text-decoration: none; border: 2px dashed black;">
+    style="width: 450px; height: 245px; background-color: {{ flashcards_data['bgcolor'][flashcard[3]] }}; border-radius: 15px; text-decoration: none; border: 2px dashed black;">
     <div class="d-flex flex-column justify-content-between" style="height: 100%; padding: 10px; color: {{ flashcards_data['fgcolor'][flashcard[3]] }};">
 
       <div>

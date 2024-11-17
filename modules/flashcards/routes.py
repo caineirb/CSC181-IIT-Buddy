@@ -1,8 +1,11 @@
 from flask import flash, render_template, request, redirect, url_for, session, make_response, jsonify
-from modules.controller import require_login, fetchStudent
-from modules.flashcards.controller import createFlashcard, fetchFlashcard, fetchFlashcards, editFlashcard, addCard, removeCards, fetchFlashcardInfo, deleteFlashcard, checkDuplicateTitle, customErrorMessages
+from modules.controller import require_login, fetchStudent, customErrorMessages
+from modules.flashcards.controller import createFlashcard, fetchFlashcard, editFlashcard, addCard, removeCards, fetchFlashcardInfo, deleteFlashcard, checkDuplicateTitle
 from . import flashcards_bp
 from modules import mysql
+import random
+from flask import request, render_template
+import base64
 
 
 @flashcards_bp.route('/create', methods=["POST"])
@@ -16,28 +19,62 @@ def create():
             'privacy': request.form.get('reviewer-privacy'),
             'owner_id': session['user-id']
         }
+        print("Here")
         flashcard_id = createFlashcard(data)
         return redirect(url_for('flashcards.edit', id=flashcard_id))
     except mysql.connection.Error as e:
         # Flash error message and redirect back to the page with the modal
-        print(e)
         flash(customErrorMessages(e), "error")
         return redirect(from_url)  # Redirect to the same route to open the modal
 
 @flashcards_bp.route('/edit/<string:id>', methods=["GET"])
 @require_login
 def edit(id :str):
-    studentData = fetchStudent(session['user-id'])
-    user_name = studentData[0][1] if studentData else None
-
     data = fetchFlashcard(id)
     if not session['user-id'] == data['information'][4]:
         return "Can't edit, not the owner."
-    
+
     data['id'] = id
+
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
     return render_template('flashcards/creation.html', data=data, user_name=user_name)
 
-@flashcards_bp.route('/save-info', methods=["POST"])
+@flashcards_bp.route('/review/<string:id>/r=<string:isRandom>', methods=["GET"])
+@require_login
+def review(id: str, isRandom: str):
+    flashcards = fetchFlashcard(id)
+    flashcards['id'] = id
+    flashcards['isRandom'] = isRandom
+
+    if not isRandom.lower() == 'false':
+        # Convert isRandom to a boolean based on the string value
+        if isRandom.lower() == 'true':
+            random.shuffle(flashcards['cards'])
+        else:
+            return "Invalid Parameter."
+        
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+    return render_template('flashcards/review.html', flashcards=flashcards, user_name=user_name)
+
+@flashcards_bp.route('/review/finished/<string:id>/<string:isRandom>', methods=["GET"])
+@require_login
+def congrats(id: str, isRandom: str):
+    info = {
+        'data': fetchFlashcardInfo(id),
+        'isRandom': isRandom.lower()
+    }
+
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+    return render_template('flashcards/congrats.html', info=info, user_name=user_name)
+
+
+'''
+APIs
+'''
+@flashcards_bp.route('/save-info', methods=["PUT"])
 @require_login
 def saveInfo():
     try:
@@ -55,10 +92,8 @@ def saveInfo():
     except Exception as e:
         print(f"Error: {e}")  # Or log it to your logger
         return make_response(jsonify({'message': 'Invalid Request.'}), 400)
-
-import base64
-
-@flashcards_bp.route('/save-flashcard', methods=["POST"])
+    
+@flashcards_bp.route('/save-flashcard', methods=["PUT"])
 @require_login
 def save_flashcard():
     try:
@@ -71,6 +106,7 @@ def save_flashcard():
             term = request.form.get(f"flashcards[{f}][term]")
             definition = request.form.get(f"flashcards[{f}][definition]")
             data_number = request.form.get(f"flashcards[{f}][dataNumber]", type=int)
+            isRandom=request.form.get("isRandom", type=str)
 
             # Attempt to retrieve image as file or base64 string
             image_file = request.files.get(f"flashcards[{f}][image]", None)
@@ -92,47 +128,12 @@ def save_flashcard():
                 'image': image_data
             }
             addCard(data)
-        
-        return make_response(jsonify({'redirect_url': url_for('flashcards.review', id=reviewer_id, isRandom=request.form.get("isRandom", type=str))}))
+
+        return make_response(jsonify({'redirect_url': url_for('flashcards.review', id=reviewer_id, isRandom=isRandom)}), 200)
 
     except Exception as e:
         print(f"Error saving flashcards: {e}")
         return jsonify({'message': 'Error saving flashcards'}), 500
-
-    
-import random
-from flask import request, render_template
-
-@flashcards_bp.route('/review/<string:id>/random=<string:isRandom>', methods=["GET"])
-@require_login
-def review(id: str, isRandom: str):
-    studentData = fetchStudent(session['user-id'])
-    user_name = studentData[0][1] if studentData else None
-    flashcards = fetchFlashcard(id)
-    flashcards['id'] = id
-    flashcards['isRandom'] = isRandom
-
-    if not isRandom.lower() == 'false':
-        # Convert isRandom to a boolean based on the string value
-        if isRandom.lower() == 'true':
-            random.shuffle(flashcards['cards'])
-        else:
-            return "Invalid Parameter."
-
-    return render_template('flashcards/review.html', flashcards=flashcards, user_name=user_name)
-
-@flashcards_bp.route('/review/finished/<string:id>/<string:isRandom>', methods=["GET"])
-@require_login
-def congrats(id: str, isRandom: str):
-    studentData = fetchStudent(session['user-id'])
-    user_name = studentData[0][1] if studentData else None
-
-    info = {
-        'data': fetchFlashcardInfo(id),
-        'isRandom': isRandom.lower()
-    }
-
-    return render_template('flashcards/congrats.html', info=info, user_name=user_name)
 
 
 @flashcards_bp.route('/delete', methods=["DELETE"])
@@ -140,10 +141,9 @@ def congrats(id: str, isRandom: str):
 def delete():
     try:
         req = request.get_json()
-        
         deleteFlashcard(req['reviewerId'])
 
-        return make_response(jsonify({'message': 'Data Saved.'}), 200)
+        return make_response(jsonify({'message': 'Data deleted.'}), 200)
     except Exception as e:
         print(f"Error: {e}")  # Or log it to your logger
         return make_response(jsonify({'message': 'Invalid Request.'}), 400)

@@ -8,9 +8,22 @@
 
 
 {% block content %}
-<h1>Yippie! You've reviewed all the cards.</h1>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/flashcards/congrats.css') }}">
 
-<button type="button" onclick="window.location.href='{{ url_for('flashcards.review', id=info['data'][0], isRandom=info['isRandom']) }}'">Restart</button>
-<button type="button" onclick="window.location.href='{{ url_for('flashcards.edit', id=info['data'][0]) }}'">Edit</button>
-<button type="button" onclick="window.location.href='{{ url_for('index') }}'">Go Home</button>
+<div class="congrats">
+    <div class="confetti">
+        <img src="{{ url_for('static', filename='img/confetti.png') }}" alt="Confetti" />
+    </div>
+    <h1>Yippie! You've reviewed all the cards.</h1>
+
+    <div class="button-group">
+        <button type="button" onclick="window.location.href='{{ url_for('flashcards.review', id=info['data'][0], isRandom=info['isRandom']) }}'"> Restart </button>
+        <button type="button" onclick="window.location.href='{{ url_for('flashcards.edit', id=info['data'][0]) }}'"> Edit </button>
+        <button type="button" onclick="window.location.href='{{ url_for('index') }}'"> Go Home </button>
+    </div>
+</div>
+
+<canvas id="congrats-confetti"></canvas>
+
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/congrats.js') }}"></script>
 {% endblock %}

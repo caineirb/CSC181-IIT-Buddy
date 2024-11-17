@@ -2,7 +2,7 @@ function handleCredentialResponse(response) {
     const studentURL = document.getElementById("login-url").value;
     const csrfToken = document.getElementById("_csrf_token").value;
     const jwtToken = response.credential;  // The raw JWT token
-
+    console.log("Sent");
     fetch(studentURL, {
         headers: {
             "Content-Type": "application/json",
