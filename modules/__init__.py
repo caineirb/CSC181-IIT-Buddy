@@ -11,6 +11,7 @@ Place the blueprints here
 
 e.g "from <modules.feature_module> import <blueprint_name>"
 '''
+from modules.flashcards import flashcards_bp
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -28,6 +29,7 @@ def start_app():
     Add the blueprints here to the app
     e.g "app.register_blueprint(<blueprint_name>, url_prefix="/<something>")"
     '''    
+    app.register_blueprint(flashcards_bp, url_prefix="/flashcards")
 
     app.permanent_session_lifetime = timedelta(days=1)  # Make sure the session/login of the user is valid for 1 day only
     mysql.init_app(app)
