@@ -11,9 +11,6 @@
 <!-- linking custom css for reviewers list-->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/reviewersList/reviewerslist.css') }}">
 
-<!-- linking custom js for reviewers list -->
-<link rel="stylesheet" href="{{ url_for('static', filename='js/reviewersList/reviewerslist.js') }}">
-
 <div class="subheader">
     <div class="ForBgFixed">
         <!-- title ni diri -->
@@ -246,6 +243,5 @@
     {% endfor %}
 </section>
     
-
-          
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewersList/reviewerslist.js') }}"></script>          
 {% endblock %}

@@ -21,9 +21,9 @@ def index():
         page = request.args.get('page', 1, type=int)
 
         reviewers_data = {
-            'data': fetchReviewers(session['user-id'], type, searched_item, order, page, ITEMS_PER_PAGE),
+            'data': fetchReviewers(type, searched_item, order, page, ITEMS_PER_PAGE),
             'details': {
-                'totalCount': countReviewers(session['user-id'], type, searched_item, order),
+                'totalCount': countReviewers(type, searched_item, order),
                 'countPerPage': ITEMS_PER_PAGE
             },
             'searchParams': {

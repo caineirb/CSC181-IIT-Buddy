@@ -6,16 +6,16 @@ Controllers for the Reviewers List
 '''
 
 # Count how many reviewers there are based on the parameters
-def countReviewers(owner_id: str, type: str, param: str, order: str):
+def countReviewers(type: str, param: str, order: str):
     try:
         cur = mysql.connection.cursor()
         
         # Base SQL query
         fetch_cards = """
             SELECT COUNT(`id`) from `reviewers`
-            WHERE `owner_id` = %s AND `privacy` = "Public"
+            WHERE `privacy` = "Public"
         """
-        fetch_param = [owner_id]
+        fetch_param = []
 
         # Apply filters if any
         if param:
@@ -37,16 +37,16 @@ def countReviewers(owner_id: str, type: str, param: str, order: str):
         cur.close()  # Ensure the cursor is closed
 
 # Fetch the reviewers based on the parameters n pieces at a time for pagination
-def fetchReviewers(owner_id: str, type: str, param: str, order: str, page: int, items_per_page: int):
+def fetchReviewers(type: str, param: str, order: str, page: int, items_per_page: int):
     try:
         cur = mysql.connection.cursor()
         
         # Base SQL query
         fetch_cards = """
             SELECT `id`, `title`, `type`, `created_on`, `owner_id` FROM `reviewers`
-            WHERE `owner_id` = %s AND `privacy` = "Public"
+            WHERE `privacy` = "Public"
         """
-        fetch_param = [owner_id]
+        fetch_param = []
 
         # Apply filters if any
         if param:
