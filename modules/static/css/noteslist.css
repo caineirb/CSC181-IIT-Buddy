@@ -1,0 +1,267 @@
+:root {
+    /* colors */
+    --white-color: #fff;
+    --black-color: #000;
+    --primary-color: #0D1A26;
+    --secondary-color: #0E7373;
+
+    /* font size */
+    --font-size-s: 0.9rem;
+    --font-size-n: 1rem;
+    --font-size-m: 1.12rem;
+    --font-size-l: 1.5rem;
+    --font-size-xl: 2rem;
+    --font-size-xxl: 2.3rem;
+
+    /* font weight */
+    --font-weight-norml: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* border radius */
+    --border-radius-s: 0.8px;
+    --border-radius-m: 30px;
+    --border-radius-circle: 50%;
+}
+
+.header {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    padding: 20px;
+    text-align: center;
+    font-size: var(--font-size-xl);
+}
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 40px;
+    position: relative;
+    top: 100px;
+    left: 700px;
+}
+
+.search-bar input {
+    flex-grow: 1; /* Allow the input to grow and fill the container */
+    border: none;
+    outline: none;
+    padding: 0.2rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    border-radius: 10px;
+    background-color: var(--white-color);
+}
+
+.dropdown-type {
+    position: relative;
+    width: 280px;
+    border-radius: 10px;
+    border: 1px solid var(--white-color);
+    background-color: var(--primary-color);
+    box-shadow: var(--light-main-color);
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.dropdown-text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--white-color);
+    padding: .5rem 1rem;
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    width: 100%;
+    border-radius: 10px;
+    max-height: 0;
+    overflow: hidden;
+    background-color: var(--white-color);
+    transition: max-height 0.5s;
+}
+
+#list.show {
+    max-height: 300px;
+}
+
+.dropdown-list-item {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.15rem 0 1rem 1rem;
+    cursor: pointer;
+    transition: margin-left 0.2s ease;
+}
+
+.dropdown-text .bi {
+    color: var(--white-color);
+}
+
+.dropdown-list-item:hover {
+    margin-left: 0.5rem;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.search-line {
+    display: flex;
+    align-items: center;
+    padding-right: 1rem;
+    width: 544px; /* Adjusted width to fit with search-bar */
+    height: 45px; /* Adjusted height to fit with search-bar */
+    color: var(--primary-color);
+    border-radius: 10px;
+    padding: 0.2rem 1rem;
+    background-color: var(--white-color);
+}
+
+.search-line input {
+    padding: 0.2rem 1rem;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    border: 0;
+    outline: 0;
+    border-radius: 10px;
+    background-color: var(--white-color);
+}
+
+.search-line i {
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.search-line input::placeholder {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.search-btn {
+    background-color: var(--white-color);
+    color: var(--primary-color);
+    border: none;
+}
+
+.searchbar {
+    display: flex;
+}
+
+.filter {
+    display: flex;
+    position: relative;
+    top: 100px;
+    left: 900px;
+}
+
+#dropdownMenuButton {
+  width: 100%; 
+}
+
+.sort {
+    display: flex;
+    position: relative;
+    top: 100px;
+    left: 870px;
+}
+
+.reviewerslist {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+}
+
+.subheader{
+    margin-top: 70px;
+    position: fixed; /* Added */
+    top: 0; /* Added */
+    z-index: 1000; /* Added */
+    transition: top 0.3s ease-in-out;
+}
+
+.subheader.show{
+    top: 0;
+}
+
+.reched{
+    background-color: #d9d9d9;
+    width: 100%;
+    position: fixed;
+}
+
+.reviewers {
+    color: var(--primary-color); /* Changed from secondary-color to primary-color */
+    font-size: 48px;
+    word-wrap: break-word;
+    position: relative;
+    top: 12px;
+}
+
+.list {
+    color: var(--secondary-color); /* Changed from primary-color to secondary-color */
+    font-size: 60px;
+    word-wrap: break-word;
+}
+
+.back-button{
+    position: fixed;
+    transform: translateX(-20px) translateY(40px);
+    display: flex;
+    z-index: 1000;
+}
+
+.pagination-nav {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+    position: fixed; 
+    bottom: 0;
+    left: 0;  
+    width: 100%;  
+    z-index: 1000;
+    padding: 10px 20px;
+}
+
+.pagination-nav .page-link {
+    font-weight: var(--font-weight-medium); 
+    color: var(--primary-color); 
+    text-decoration: none; 
+    border-radius: var(--border-radius-s); 
+    padding: 6px 12px;
+}
+
+.pagination-nav .page-link:hover {
+    color: var(--white-color);
+    background-color: var(--primary-color);
+}
+
+.subheader .ForBgFixed {
+    width: 100%;
+    height: 150px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Add margin to note elements */
+.withpad {
+    margin: 5px;
+}
+
+.note-box {
+    width: 250px; /* Ensure the width is fixed */
+    max-width: 250px; /* Ensure the width does not exceed 250px */
+    background-color: #FFFFF0;
+    border-radius: 15px;
+    text-decoration: none;
+}

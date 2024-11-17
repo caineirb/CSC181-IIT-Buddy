@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_mysqldb import MySQL
-from config import SECRET_KEY,DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST,BOOTSTRAP_SERVE_LOCAL
+from config import SECRET_KEY, DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST, BOOTSTRAP_SERVE_LOCAL
 from flask_wtf.csrf import CSRFProtect
 from datetime import timedelta
 
@@ -33,6 +33,5 @@ def start_app():
     mysql.init_app(app)
     CSRFProtect(app)
     return app
-
 
 from . import routes, controller
