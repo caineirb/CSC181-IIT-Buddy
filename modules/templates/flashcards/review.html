@@ -12,7 +12,11 @@
     <b style="font-weight: normal;">Go Back</b>
 </button>
 
+<<<<<<< HEAD
 <div class="review-flashcards-header">
+=======
+<div class="review-flashcards-header" style="margin-top: -60px;">
+>>>>>>> dbce20b1b844fc5c62f623c98bdbe3bd4910cd4a
     <div>
         <h1>{{ flashcards['information'][0] }}</h1>
         <!-- hidden na ni sila -->
@@ -30,6 +34,10 @@
         <div class="flashcard-inner">
             <!-- front ni sa card = ang question diri -->
             <div class="flashcard-front">
+<<<<<<< HEAD
+=======
+                <p><strong>Question:</strong></p>
+>>>>>>> dbce20b1b844fc5c62f623c98bdbe3bd4910cd4a
                 <p>{{ flashcard['question'] }}</p>
                 {% if flashcard['image'] %}
                     <img src="data:image/jpeg;base64,{{ flashcard['image'] }}" alt="Flashcard Image" class="flashcard-image" style="max-width: 100%; height: auto;">
@@ -38,6 +46,10 @@
 
             <!-- back ni sa card = ang answer diri -->
             <div class="flashcard-back">
+<<<<<<< HEAD
+=======
+                <p><strong>Answer:</strong></p>
+>>>>>>> dbce20b1b844fc5c62f623c98bdbe3bd4910cd4a
                 <p>{{ flashcard['answer'] }}</p>
             </div>
         </div>
