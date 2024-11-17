@@ -43,6 +43,9 @@
                     </select>
                     
                     <div class="search-line">
+                        <button type="submit" class="clear-btn" onclick="document.getElementById('search_input').value = ''; this.form.submit();">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
                         <input type="text" 
                                id="search_input" 
                                name="search_input" 
@@ -50,12 +53,12 @@
                                {% if flashcards_data['searchParams'] and flashcards_data['searchParams']['searched_item'] %}
                                value="{{ flashcards_data['searchParams']['searched_item'] }}"
                                {% endif %}>
-                        <button type="submit" class="search-btn">
-                            <i class="bi bi-search"></i>
+                        <button type="button" class="btn btn-light btn-m ms-5 search-btn" style="margin-left: 1rem;">
+                            <i class="bi bi-search"></i> <b style="font-weight: normal;"></b>
                         </button>
                     </div>
                 </div>
-        
+
                 <!-- Privacy option filter -->
                 <div class="ms-5 filter">
                     <div class="d-flex">
@@ -92,7 +95,7 @@
                 {% set total_items = flashcards_data['details']['totalCount'] %}
                 {% set items_per_page = flashcards_data['details']['countPerPage'] %}
                 {% set total_pages = (total_items // items_per_page) + (1 if total_items % items_per_page > 0 else 0) %}
-                
+
                 <!-- Pagination -->
                 <nav aria-label="Page navigation example" class="pagination-nav d-flex justify-content-center w-100">
                     <ul class="pagination pagination-lg">
