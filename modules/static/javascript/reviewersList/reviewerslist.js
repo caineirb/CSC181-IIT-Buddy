@@ -11,11 +11,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const dropdownList = document.getElementById("list");
     const input = document.getElementById("search_input");
 
-    // Handle dropdown change event
-    dropdownList.addEventListener("change", function() {
+    // Function to update the placeholder
+    function updatePlaceholder() {
         const selectedField = dropdownList.options[dropdownList.selectedIndex].getAttribute("data-field");
-
-        // Update search input placeholder based on selected option
         input.placeholder = selectedField === "All" ? "Search here..." : `Search in ${selectedField}...`;
-    });
+    }
+
+    // Initialize placeholder on page load
+    updatePlaceholder();
+
+    // Update placeholder on dropdown change
+    dropdownList.addEventListener("change", updatePlaceholder);
 });
