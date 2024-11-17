@@ -1,6 +1,6 @@
 from . import mysql
 from functools import wraps
-from flask import session, redirect, url_for
+from flask import session, redirect, url_for, request
 
 
 '''
@@ -16,6 +16,7 @@ def require_login(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
         if 'user-id' not in session:
+            session['next_url'] = request.url   # store the url being accessed
             return redirect(url_for('index'))
         return func(*args, **kwargs)
     return decorated_function
@@ -88,3 +89,13 @@ def decode_google_jwt(token):
         # Catch any other errors and print the exception
         print(f"Error during token verification: {e}")
         return None
+
+
+def customErrorMessages(error):
+    if (error.args[0] == 1062): # Check the error code first
+        value = error.args[1].split("'")[1]
+
+        full_name = value.split("-")
+        return f"{full_name[3]} named '{full_name[0]} {full_name[1]}' already exist."
+    else:
+        return f"Error {error.args[0]} occurred. Please contact the developers."

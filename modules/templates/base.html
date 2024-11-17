@@ -11,7 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -22,8 +23,9 @@
             max-width: 100%;
             aspect-ratio: 1;
             object-fit: contain; 
-            height: 120px; 
-            
+            height: 80px; 
+            width: 100px; 
+            transform: translateX(20px);
             top: 80px; 
             right: 30px;
         }
@@ -48,7 +50,7 @@
                 <div class="collapse navbar-collapse" id="allofnavbar">
                     
                     <a class="navbar-logo mt-2 mt-lg-0" href="/">
-                        <img src="{{ url_for('static', filename='img/logo.png') }}" style="transform: translateX(20px);" alt="logo" class="logo-img"/>
+                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo" class="logo-img"/>
                     </a>
                 </div>
                 <!--Buttons and profile-->
@@ -70,11 +72,9 @@
                     <div class="dropdown">
                         <button class="btn btn-dark dropdown-toggle d-flex align-items-center justify-content-between" type="button" id="navbarDropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: auto; height: 50px; padding: 0 10px;">
                             <div class="d-flex flex-grow-1 justify-content-center" style="margin-right: 10px;"> <!-- Center the text with Flexbox -->
-                                {% block name %}
-                                    <p class="m-0" style="font-size: 16px;">placeholder</p> <!-- Inline font size for example -->
-                                {% endblock %}
+                                {% block name %}{% endblock %}
                             </div>
-                            <img src="{% block image %}{{ url_for('static', filename='images/LOUISE/placeholderprofile.jpg') }}{% endblock %}" class="rounded-circle" height="40" alt="placeholder" loading="lazy"/>
+                            <img src="{{ session['user-photo'] }}" class="rounded-circle" height="40" alt="placeholder" loading="lazy"/>
                         </button>
                     
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenu">
@@ -100,7 +100,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-   
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
 </body>
 </html>

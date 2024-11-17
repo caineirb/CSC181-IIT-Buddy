@@ -392,7 +392,7 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   
   <!-- linking custom script -->
-  <script src="static/js/script.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='javascript/script.js') }}"></script>
 
   <!-- Link to external JavaScript file for Google OAuth -->
   <script type="text/javascript" src="{{ url_for('static', filename='javascript/oauth/oauth.js') }}"></script>
