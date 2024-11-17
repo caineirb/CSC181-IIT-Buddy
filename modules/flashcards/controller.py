@@ -8,10 +8,10 @@ def createFlashcard(data :dict):
             INSERT INTO `reviewers` (`title`, `type`, `privacy`, `owner_id`)
             VALUE (%s, %s, %s, %s);
         """
-        print("Before Commit")
+        
         cur.execute(insert_statement, (data['title'], data['type'], data['privacy'], data['owner_id']))
         mysql.connection.commit()
-        print("After Commit")
+        
         fetch_id = """
             SELECT `id` FROM `reviewers`
             WHERE `title` = %s AND `type` = %s AND `privacy` = %s AND `owner_id` = %s;

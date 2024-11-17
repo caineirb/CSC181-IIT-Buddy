@@ -19,7 +19,6 @@ def create():
             'privacy': request.form.get('reviewer-privacy'),
             'owner_id': session['user-id']
         }
-        print("Here")
         flashcard_id = createFlashcard(data)
         return redirect(url_for('flashcards.edit', id=flashcard_id))
     except mysql.connection.Error as e:

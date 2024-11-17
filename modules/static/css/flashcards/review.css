@@ -62,12 +62,8 @@
     justify-content: center;
     min-height: 200px;
     text-align: center;
-<<<<<<< HEAD
     margin-top: -50px;
     margin-bottom: 0px;
-=======
-    margin-top: -20px;
->>>>>>> dbce20b1b844fc5c62f623c98bdbe3bd4910cd4a
 }
 
 .flashcards {
@@ -124,10 +120,6 @@
     transform: scale(1.05);
 }
 
-<<<<<<< HEAD
-=======
-/* adjust ni siya sa spacing sa flashcards 1 of 1 */
->>>>>>> dbce20b1b844fc5c62f623c98bdbe3bd4910cd4a
 .counter span {
     margin: 0 5px;
 }
@@ -149,18 +141,11 @@
     width: 900px;
     height: 630px;
     perspective: 1000px;
-<<<<<<< HEAD
     margin-top: -20px;
-=======
->>>>>>> dbce20b1b844fc5c62f623c98bdbe3bd4910cd4a
     cursor: pointer;
     font-size: var(--font-size-xl);
 }
 
-<<<<<<< HEAD
-=======
-/* size sa image kay galisod kog set sa container kay di mo cooperate si flashcard front */
->>>>>>> dbce20b1b844fc5c62f623c98bdbe3bd4910cd4a
 .flashcard .flashcard-front .flashcard-image {
     width: 300px;
     max-height: 200px;
@@ -175,10 +160,6 @@
     transform-style: preserve-3d;
 }
 
-<<<<<<< HEAD
-=======
-/* INIG FLIP NA NI */
->>>>>>> dbce20b1b844fc5c62f623c98bdbe3bd4910cd4a
 .flashcard.flipped .flashcard-inner {
     transform: rotateY(180deg);
 }
@@ -201,11 +182,7 @@
 
 .flashcard-back {
     transform: rotateY(180deg);
-<<<<<<< HEAD
     background-color: var(--secondary-color);
-=======
-    background-color: var(--primary-color);
->>>>>>> dbce20b1b844fc5c62f623c98bdbe3bd4910cd4a
 }
    
 .counter {
