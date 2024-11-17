@@ -37,9 +37,9 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => {
                 if (!response.ok) {
-                    return response.text().then(text => {
-                        console.error('Error response text:', text);
-                        throw new Error(text);
+                    return response.json().then(data => {
+                        console.error('Error response:', data);
+                        throw new Error(data.message);
                     });
                 }
                 return response.json();
@@ -81,18 +81,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error('Error:', data.message);
                 }
             })
-            .catch(error => console.error('Error:', error));
-    });
-
-    // Ensure modal resets properly when hidden
-    modalElement.addEventListener('hidden.bs.modal', () => {
-        form.reset(); // Reset form fields
-        document.body.classList.remove('modal-open'); // Fix lingering modal-open class
-        document.body.style.paddingRight = ''; // Reset padding-right
-        const backdrop = document.querySelector('.modal-backdrop');
-        if (backdrop) {
-            backdrop.remove(); // Remove any lingering backdrop
-        }
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message); // Display the error message to the user
+            });
     });
 
     // Ensure notes are fetched when the main page is loaded
@@ -108,7 +100,11 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
         const userName = userNameElement.value;
-        const notesContainer = document.querySelector('.row');
+        const notesContainer = document.querySelector('#notes-container .row');
+        if (!notesContainer) {
+            console.error('Notes container not found');
+            return;
+        }
         const noteBox = document.createElement('a');
         noteBox.href = link;
         noteBox.className = 'd-flex justify-content-center align-items-center position-relative col withpad';
@@ -124,6 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         `;
         notesContainer.appendChild(noteBox);
+        console.log('Note added:', { title, link, privacy });
     }
 
     // Fetch notes and update the notes list
