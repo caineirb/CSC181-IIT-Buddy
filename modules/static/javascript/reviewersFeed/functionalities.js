@@ -1,0 +1,67 @@
+document.addEventListener("DOMContentLoaded", function () {
+    // Elements
+    const dropdownList = document.getElementById("list");
+    const input = document.getElementById("search_input");
+
+    // Function to update the placeholder
+    function updatePlaceholder() {
+        const selectedField = dropdownList.options[dropdownList.selectedIndex].getAttribute("data-field");
+        input.placeholder = selectedField === "All" ? "Search here..." : `Search in ${selectedField}...`;
+    }
+
+    // Initialize placeholder on page load
+    updatePlaceholder();
+
+    // Update placeholder on dropdown change
+    dropdownList.addEventListener("change", updatePlaceholder);
+});
+
+
+let dropdownBtnText = document.getElementById("drop-text");
+let list = document.getElementById("list");
+let icon = document.getElementById("icon");
+let span = document.getElementById("span");
+let input = document.getElementById("search-input");
+let listItems = document.querySelectorAll(".dropdown-list-item");
+let searchFieldInput = document.getElementById("search-field");
+        
+dropdownBtnText.onclick = function(){
+    if (list.classList.contains("show")) {
+        icon.style.transform = "rotate(0deg)";
+    } else {
+        icon.style.transform = "rotate(-180deg)";
+    }
+        list.classList.toggle("show");
+    };
+        
+    window.onclick = function(e) {
+    if (!dropdownBtnText.contains(e.target)) {
+        list.classList.remove("show");
+            icon.style.transform = "rotate(0deg)";
+        }
+    };
+
+// diri kay ma functional if tuplokon ang isa ka type and ma reflect sa search input
+for (let item of listItems) {
+    item.onclick = function(e) {
+        let selectedField = e.target.getAttribute('data-field');
+        span.innerText = selectedField;
+        
+        searchFieldInput.value = selectedField;
+        
+        if (selectedField === "All") {
+            input.placeholder = "Search here...";
+        } else {
+            input.placeholder = "Search in " + selectedField + "...";
+        }
+        
+        list.classList.remove("show");
+        icon.style.transform = "rotate(0deg)";
+        };
+}
+
+
+function clearSearch(form){
+    document.getElementById('search_input').value = ''; 
+    form.submit();
+}
