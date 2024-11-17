@@ -57,7 +57,7 @@ async function sendDataToBackend(data) {
         removeDuplicateWarning();
         // Only proceed if there is no duplicate
         fetch(saveUrl, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 "X-CSRFToken": csrfToken

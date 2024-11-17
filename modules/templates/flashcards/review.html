@@ -5,52 +5,64 @@
 {% block name %} {{ user_name }} {% endblock %}
 
 {% block content %}
-<style>
-    .flashcard {
-        display: none; /* Only show the active flashcard */
-    }
-    .counter {
-        font-size: 18px;
-        margin: 20px 0;
-    }
-    .navigation-buttons {
-        display: flex;
-        gap: 10px;
-    }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/flashcards/review.css') }}">
 
-<button type="button" onclick='window.location.href="{{ url_for("flashcards.edit", id=flashcards["id"]) }}"' class="go-back-button">Go Back</button>
-<h1>Review Flashcards</h1>
-<div>
-    {% for info in flashcards['information'] %}
-    <h3>{{ info }}</h3>
-    {% endfor %}
+<button type="button" class="go-back-button" onclick='window.location.href="{{ url_for("flashcards.edit", id=flashcards["id"]) }}"'>
+    <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> 
+    <b style="font-weight: normal;">Go Back</b>
+</button>
+
+<div class="review-flashcards-header" style="margin-top: -60px;">
+    <div>
+        <h1>{{ flashcards['information'][0] }}</h1>
+        <!-- hidden na ni sila -->
+        <p style="display: none;">Description: {{ flashcards['information'][1] }}</p>
+        <p style="display: none;">Type: {{ flashcards['information'][2] }}</p>
+        <p style="display: none;">Privacy: {{ flashcards['information'][3] }}</p>
+        <p style="display: none;">Owner ID: {{ flashcards['information'][4] }}</p>
+    </div>    
 </div>
 
-<div class="counter">
-    Flashcard <span id="current-count">1</span> of {{ flashcards['cards'] | length }}
-</div>
-
+<!-- for flashcards na ni diri literal -->
 <div class="flashcards-container">
     {% for flashcard in flashcards['cards'] %}
     <div class="flashcard" id="flashcard-{{ loop.index }}">
-        <p><strong>Question:</strong> {{ flashcard['question'] }}</p>
-        
-        {% if flashcard['image'] %}
-            <img src="data:image/jpeg;base64,{{ flashcard['image'] }}" alt="Flashcard Image" style="max-width: 200px; height: auto;">
-        {% endif %}
-        
-        <p><strong>Answer:</strong> {{ flashcard['answer'] }}</p>
+        <div class="flashcard-inner">
+            <!-- front ni sa card = ang question diri -->
+            <div class="flashcard-front">
+                <p><strong>Question:</strong></p>
+                <p>{{ flashcard['question'] }}</p>
+                {% if flashcard['image'] %}
+                    <img src="data:image/jpeg;base64,{{ flashcard['image'] }}" alt="Flashcard Image" class="flashcard-image" style="max-width: 100%; height: auto;">
+                {% endif %}
+            </div>
+
+            <!-- back ni sa card = ang answer diri -->
+            <div class="flashcard-back">
+                <p><strong>Answer:</strong></p>
+                <p>{{ flashcard['answer'] }}</p>
+            </div>
+        </div>
     </div>
     {% endfor %}
 </div>
 
 <div class="navigation-buttons">
-    <button type="button" id="prev-btn" onclick="showPreviousFlashcard()">Previous</button>
-    <button type="button" id="next-btn" onclick="showNextFlashcard()">Next</button>
+    <button type="button" id="prev-btn" class="prev-btn" onclick="showPreviousFlashcard()">
+        <i class="bi bi-caret-left-fill"></i>
+    </button>
+
+    <div class="counter">
+        Flashcard <span id="current-count"> 1 </span> of {{ flashcards['cards'] | length }}
+    </div>
+
+    <button type="button" id="next-btn" class="next-btn" onclick="showNextFlashcard()">
+        <i class="bi bi-caret-right-fill"></i>
+    </button>
 </div>
 
 <input type="hidden" name="congrats-url" id="congrats-url" value="{{ url_for('flashcards.congrats', id=flashcards['id'], isRandom=flashcards['isRandom']) }}">
+
 <script type="application/json" id="data-json">
     {{ flashcards['cards'] | tojson }}
 </script>

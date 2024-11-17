@@ -1,5 +1,4 @@
-
-/**
+/**we
  * Handles the functionalities of the flashcards. Adding, deleting, editing, moving, etc.
  */
 
@@ -33,11 +32,11 @@ function createFlashcardFromData(flashcardData, count) {
         </div>
         <div class="flashcard-content">
             <div class="input-container">
-                <textarea class="term-input" name="term-${count}" placeholder="Enter term" required>${flashcardData.answer}</textarea>
+                <textarea class="term-input" name="term-${count}" placeholder="Enter term" maxlength="255">${flashcardData.answer}</textarea>
                 <label class="input-label">TERM</label>
             </div>
             <div class="input-container">
-                <textarea class="definition-input" name="definition-${count}" placeholder="Enter definition" required>${flashcardData.question}</textarea>
+                <textarea class="definition-input" name="definition-${count}" placeholder="Enter definition" maxlength="255">${flashcardData.question}</textarea>
                 <label class="input-label">DEFINITION</label>
             </div>
             <input type="file" name="flashcard-image-${count}" id="flashcard-image-${count}" style="display: none;" accept="image/*" onchange="previewImage(event, ${count})">
@@ -45,7 +44,9 @@ function createFlashcardFromData(flashcardData, count) {
             <label for="flashcard-image-${count}" class="image-button" style="${imageUrl ? 'background-image: url(' + imageUrl + '); background-size: cover;' : ''}">
                 <span class="button-label" ${imageUrl ? 'style="display: none;"' : ''}>IMAGE</span>
             </label>
-            <button type="button" class="remove-image-button" onclick="removeImage(${count})">Remove Image</button>
+            <button type="button" class="remove-image-button" title="Delete Card" onclick="removeImage(${count})">
+                <i class="bi bi-trash"></i>
+            </button>
         </div>
     `;
 
@@ -71,19 +72,20 @@ function createFlashcard() {
         </div>
         <div class="flashcard-content">
             <div class="input-container">
-                <textarea class="term-input" name="term-${flashcardCount}" placeholder="Enter term" required></textarea>
+                <textarea class="term-input" name="term-${flashcardCount}" placeholder="Enter term" maxlength="255"></textarea>
                 <label class="input-label">TERM</label>
             </div>
             <div class="input-container">
-                <textarea class="definition-input" name="definition-${flashcardCount}" placeholder="Enter definition" required></textarea>
+                <textarea class="definition-input" name="definition-${flashcardCount}" placeholder="Enter definition" maxlength="255"></textarea>
                 <label class="input-label">DEFINITION</label>
             </div>
             <input type="file" name="flashcard-image-${flashcardCount}" id="flashcard-image-${flashcardCount}" style="display: none;" accept="image/*" onchange="previewImage(event, ${flashcardCount})">
             <input type="hidden" id="flashcard-image-base64-${flashcardCount}" value="">
             <label for="flashcard-image-${flashcardCount}" class="image-button">
                 <span class="button-label">IMAGE</span>
-            </label>
-            <button type="button" class="remove-image-button" onclick="removeImage(${flashcardCount})">Remove Image</button>
+            </label><button type="button" class="remove-image-button" title="Delete Card" onclick="removeImage(${flashcardCount})">
+                <i class="bi bi-trash"></i>
+            </button>
         </div>
     `;
 

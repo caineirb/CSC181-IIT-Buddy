@@ -89,3 +89,13 @@ def decode_google_jwt(token):
         # Catch any other errors and print the exception
         print(f"Error during token verification: {e}")
         return None
+
+
+def customErrorMessages(error):
+    if (error.args[0] == 1062): # Check the error code first
+        value = error.args[1].split("'")[1]
+
+        full_name = value.split("-")
+        return f"{full_name[3]} named '{full_name[0]} {full_name[1]}' already exist."
+    else:
+        return f"Error {error.args[0]} occurred. Please contact the developers."

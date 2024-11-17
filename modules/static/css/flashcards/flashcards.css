@@ -1,4 +1,50 @@
-:root {
+/* importing google fonts: inter and miniver */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Miniver&display=swap');
+
+/* importing google fonts: inter, miniver, and poppins */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Miniver&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+:root{
+    /* colors */
+    --white-color: #fff;
+    --black-color: #000;
+    --primary-color: #0D1A26;
+    --secondary-color: #0E7373;
+    --accent-color: #0C203E;
+    --navbar-bg-color: #FAFAFA;
+
+    /* font size */
+    --font-size-s: 0.9rem;
+    --font-size-n: 1rem;
+    --font-size-m: 1.12rem;
+    --font-size-l: 1.5rem;
+    --font-size-xl: 2rem;
+    --font-size-xxl: 2.3rem;
+
+    /* font weight */
+    --font-weight-norml: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* border radius */
+    --border-radius-s: 0.8px;
+    --border-radius-m: 30px;
+    --border-radius-circle: 50%;
+
+    /* site mas width */
+    --site-max-width: 1300px;
+
+    --background-color: #f8f9fa;
+    --background-color-hover: #e2e6ea;
+    --border-color: #ccc;
     --number-size: 16px;
     --white: #ffffff;
 }
@@ -6,16 +52,21 @@
 .flashcards-container {
     width: 90%;
     margin: 0 auto;
-    display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    display: flex;
+    margin-top: 80px;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+/* size itself sa flashcard */
 .flashcard {
-    width: 90%; /* Full width of the container */
-    background-color: #d3d3d3;
-    border: 2px solid black;
+    width: 90%;
+    background-color: var(--background-color);
+    border: 3px dashed var(--primary-color);
     border-radius: 5px;
     padding: 10px;
     position: relative;
@@ -23,16 +74,17 @@
 }
 
 .add-button-container {
-    width: 90%; /* Matches the container width */
+    width: 90%;
     display: flex;
     justify-content: center;
     margin: 0 auto;
 }
 
+/* add new flashcard button */
 .add-card-btn {
-    width: 88%; /* Full width of the container */
-    background-color: #d3d3d3;
-    border: 2px solid black;
+    width: 88%;
+    background-color: var(--background-color);
+    border: 3px dashed var(--primary-color);
     border-radius: 5px;
     padding: 10px;
     box-sizing: border-box;
@@ -40,21 +92,22 @@
 }
 
 .add-card-btn:hover {
-    background-color: #0E7373;
+    color: var(--secondary-color);
+    background-color: rgb(0, 0, 0, 0.2);
 }
-
 
 .flashcard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--primary-color);
 }
 
 .flashcard-number {
     font-size: var(--number-size);
     font-weight: bold;
+    color: var(--secondary-color);
 }
 
 .flashcard-actions {
@@ -69,7 +122,7 @@
     border: none;
     font-size: 16px;
     cursor: pointer;
-    color: black;
+    color: var(--primary-color);
 }
 
 .flashcard-content {
@@ -91,7 +144,7 @@
     width: 100%;
     padding: 10px;
     font-size: 16px;
-    background-color: #d3d3d3;
+    background-color: var(--background-color);
     border: none;
     border-bottom: 2px solid black;
     color: black;
@@ -102,31 +155,52 @@
 .input-label {
     font-size: 12px;
     font-weight: bold;
-    color: black;
+    color: var(--secondary-color);
     margin-top: 5px;
 }
 
 .image-button {
     cursor: pointer;
-    border: 1px solid #ccc;
-    width: 100px;
-    height: 80px;
+    border: 1px solid var(--border-color);
+    width: 170px;
+    height: 100px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 2px dashed black;
+    border: 3px dashed var(--secondary-color);
     border-radius: 5px;
     overflow: hidden;
-    background-color: #d3d3d3;
+    background-color: var(--background-color);
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     text-align: center;
     margin: 0 30px;
+    margin-right: 10px;
 }
 
 .image-button span {
-    font-size: 20px;
+    font-size: var(--font-size-m);
+}
+
+.remove-image-button {
+    padding: 10px 20px;
+    background-color: maroon;
+    color: var(--white-color);
+    font-size: 1rem;
+    font-weight: bold;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-right: 10px;
+}
+
+.remove-image-button:hover {
+    background-color: var(--white-color); 
+    color: maroon;
+    transform: scale(1.05);
 }
 
 .button-label {
@@ -137,6 +211,179 @@
 
 .sortable-ghost {
     opacity: 0.5;
-    background-color: #e0e0e0;
+    background-color: var(--background-color);
 }
 
+.go-back-button {
+    transform: translateX(20px) translateY(10px);
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--background-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.go-back-button:hover {
+    background-color: var(--background-color-hover);
+}
+
+.reviewer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 200px;
+    padding-left: 20px;
+    margin-top: -30px;
+}
+
+.form-label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.reviewer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 200px;
+    margin-left: 230px;
+    padding-left: 20px;
+}
+
+.form-label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+#reviewer-title {
+    text-align: left;
+    margin-bottom: 15px;
+    width: 50%;
+    max-width: 600px;
+    padding: 10px;
+    font-size: 1.2rem;
+    border: 1px solid var(--white-color);
+    border-radius: 5px;
+    outline: none;
+}
+
+#reviewer-description {
+    width: 50%;
+    height: 90px;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid var(--white-color);
+    resize: none;
+    overflow: auto;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.form-select {
+    width: 50%;
+    color: black;
+    margin-bottom: 15px;
+    padding: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+.dropdowns {
+    position: absolute;
+    top: 150px;
+    right: 230px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.dropdown select {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    width: 150px;
+    text-align: center;
+}
+
+.action-buttons-container {
+    display: flex;
+    align-items: center;
+    width: 75%;
+    justify-content: space-between;
+    gap: 15px;
+    position: absolute;
+    top: calc(130px + 100px + 100px);
+    right: 240px;
+}
+
+.play-options{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 20%;
+}
+
+.delete-flashcards-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    color: var(--white-color);
+    background-color: maroon;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.delete-flashcards-btn:hover {
+    background-color: var(--white-color);
+    color: maroon;
+    transform: scale(1.05);
+}
+
+.shuffle-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    background-color: var(--background-color);
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#shuffle-switch {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.shuffle-toggle label {
+    margin: 0;
+    cursor: pointer;
+}
+
+.save-flashcards-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #218838;
+    color: var(--white-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.save-flashcards-btn:hover {
+    color: #218838;
+    background-color: var(--white-color);
+    transform: scale(1.05);
+}

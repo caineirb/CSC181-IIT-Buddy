@@ -1,10 +1,19 @@
 function handleGoBack() {
-    const nextUrl = "/";  // The URL to redirect to after saving
-    if (confirm("Do you want to save your cards before going back?")) {
-        sendFlashcardsToBackend(nextUrl);  // Call to save and redirect
-    } else {
-        window.location.href = nextUrl;  // Redirect without saving
-    }
+    Swal.fire({
+        title: "Do you want to save the changes before going back?",
+        icon: "question",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        denyButtonText: `Don't save`
+    }).then((result) => {
+        const nextUrl = "/";  // The URL to redirect to after saving
+        if (result.isConfirmed) {
+            sendFlashcardsToBackend(nextUrl);
+        } else if (result.isDenied) {
+            window.location.href = nextUrl;
+        }
+    });
 }
 
 function sendFlashcardsToBackend(next_url = null) {
@@ -50,11 +59,15 @@ function sendFlashcardsToBackend(next_url = null) {
     });
 
     if (hasIncompleteFlashcards) {
-        alert("Please complete all flashcards with a term and definition before saving.");
+        Swal.fire({
+            title: "Incomplete Cards Detected.",
+            text: "Complete every Term and Definition pair first before playing.",
+            icon: "warning"
+          });
     } else if (validFlashcardCount > 0) {
         formData.append("flashcard_count", validFlashcardCount);
         fetch(sFlashcardUrl, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'X-CSRF-Token': csrfToken
             },

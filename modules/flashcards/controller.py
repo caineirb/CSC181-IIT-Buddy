@@ -1,5 +1,5 @@
 from modules import mysql
-
+import base64
 
 def createFlashcard(data :dict):
     try:
@@ -8,17 +8,16 @@ def createFlashcard(data :dict):
             INSERT INTO `reviewers` (`title`, `type`, `privacy`, `owner_id`)
             VALUE (%s, %s, %s, %s);
         """
-        
+        print("Before Commit")
         cur.execute(insert_statement, (data['title'], data['type'], data['privacy'], data['owner_id']))
         mysql.connection.commit()
-
+        print("After Commit")
         fetch_id = """
             SELECT `id` FROM `reviewers`
             WHERE `title` = %s AND `type` = %s AND `privacy` = %s AND `owner_id` = %s;
         """
 
         cur.execute(fetch_id, (data['title'], data['type'], data['privacy'], data['owner_id']))
-        
         return cur.fetchone()[0]
     except mysql.connection.Error as e:
         mysql.connection.rollback()  # Rollback in case of error
@@ -82,8 +81,6 @@ def editFlashcard(data :dict):
     finally:
         cur.close()  # Ensure the cursor is closed
 
-import base64
-
 def fetchFlashcard(id: str):
     try:
         flashcard_data = {}
@@ -129,23 +126,6 @@ def fetchFlashcard(id: str):
     finally:
         cur.close()  # Ensure the cursor is closed
 
-# Modify this for the Reviewers List
-def fetchFlashcards(owner_id :str):
-    try:
-        cur = mysql.connection.cursor()
-        fetch_id = """
-            SELECT `id`, `title`, `description`, `type`, `privacy`, `owner_id` FROM `reviewers`
-            WHERE `owner_id` = %s and `type` = 'Flashcard';
-        """
-
-        cur.execute(fetch_id, (owner_id,))
-        return cur.fetchall()
-    except mysql.connection.Error as e:
-        mysql.connection.rollback()  # Rollback in case of error
-        raise e
-    finally:
-        cur.close()  # Ensure the cursor is closed
-
 def fetchPreview(owner_id :str):
     try:
         cur = mysql.connection.cursor()
@@ -169,7 +149,8 @@ def fetchFlashcardInfo(id :str):
     try:
         cur = mysql.connection.cursor()
         fetch_id = """
-            SELECT `id`, `title`, `description`, `type`, `privacy`, `owner_id` FROM `reviewers`
+            SELECT `id`, `title`, `description`, `type`, `privacy`, `owner_id` 
+            FROM `reviewers`
             WHERE `id` = %s and `type` = 'Flashcard';
         """
         cur.execute(fetch_id, (id,))
@@ -215,12 +196,3 @@ def checkDuplicateTitle(title :str, id :str = None):
         raise e
     finally:
         cur.close()  # Ensure the cursor is closed
-
-def customErrorMessages(error):
-    if (error.args[0] == 1062): # Check the error code first
-        value = error.args[1].split("'")[1]
-
-        full_name = value.split("-")
-        return f"{full_name[3]} named '{full_name[0]} {full_name[1]}' already exist."
-    else:
-        return f"Error {error.args[0]} occurred. Please contact the developers."
