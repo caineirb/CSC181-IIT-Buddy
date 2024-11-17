@@ -71,6 +71,62 @@
 </div>
 
 <!-- Modal for adding new notes -->
+{% block image %} {{ userIMG }} {% endblock %}
+
+{% block content %}
+<style>
+  .withpad {
+    margin: 10px;
+    padding: 10px;
+  }
+
+.dropdown-item:hover {
+    background-color: #6c757d; /* Bootstrap's grey color */
+    color: white; /* Change text color to white on hover */
+}
+  .dropdown-item:hover {
+    background-color: #6c757d;
+    /* Bootstrap's grey color */
+    color: white;
+    /* Change text color to white on hover */
+  }
+</style>
+
+<!-- Hidden input to store the user's name -->
+<input type="hidden" id="userName" value="{{ userName }}">
+
+<!-- Search bar and edit button -->
+<div class="d-flex justify-content-center py-3 position-relative">
+    <div class="input-group rounded d-flex justify-content-center mt-2">
+        <div class="form-outline" data-mdb-input-init>
+        <input id="input-search" type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style="border-radius: 20px; width: 300px;" />
+        </div>
+        <div>
+          <button type="button" class="btn btn-outline-light" style="border: none;"><i class="fas fa-search"></i></button>
+        </div>
+      </div>
+      <div class="position-absolute top-0 end-0 mt-3 me-3"> <button type="button" class="btn btn-light btn-lg" style="border-radius: 30px;"> <i class="fa-regular fa-pen-to-square"></i> </button> </div>
+</div>
+
+<!-- Notes section -->
+<div class="ms-5"> <h2 style="font-family: inter;">Notes:</h2> </div>
+<div class="d-flex ms-5 mt-1"> <!-- Boxes -->
+  <div class="row">
+      <!-- Button that triggers the modal -->
+      <button type="button" class="d-flex justify-content-center position-relative col withpad" 
+      style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none;" 
+      data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <i class="fa-solid fa-plus fa-2xl position-absolute top-50 start-50 translate-middle" style="color: black;"></i>
+      </button>
+  </div>
+</div>
+
+<!-- Button to redirect to notes list -->
+<div class="ms-5 mt-3">
+  <a href="{{ url_for('notes_list') }}" class="btn btn-primary" style="background-color: var(--primary-color); border-color: var(--primary-color);">
+    View All Notes
+  </a>
+</div><!-- Modal for adding new notes for adding notes -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -88,8 +144,11 @@
             <input type="text" class="form-control"
               style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Name"
               aria-label="Name" name="note-name" id="note-name">
+        <form id="noteForm">
+          <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Name" aria-label="Name" id="noteTitle">
           </div>
-
           <div class="input-group mb-3">
             <input type="text" class="form-control" style="border: 2px solid black;  border-radius: 0;"
               placeholder="Link" aria-label="Link" name="note-link" id="note-link">
@@ -100,6 +159,9 @@
 
           <select name="privacy_value" id="privacy_value" class="form-select me-2"
             style="max-width: 150px; color: black;">
+            <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Google Docs Link" aria-label="Google Docs Link" id="noteLink">
+          </div>
+          <select name="privacy_value" id="privacy_value" class="form-select me-2" style="max-width: 150px; color: black;">
             <option value="private">Private</option>
             <option value="public">Public</option>
             <option value="shared">Shared</option>
@@ -119,6 +181,10 @@
 </div>
 
 <!-- Dropdown for selecting reviewer type -->
+<!-- REVIEWERS-->
+<div class="ms-5 mt-3"> <h2 style="font-family: inter;">Reviewers:</h2> </div>
+
+<!-- Just change the values here to match the database and make a route for it pod so that arun ma search and magamit ang value-->
 <div class="ms-5">
   <form action="#" method="POST" id="ReviewersOptions">
     <div class="dropdown">
@@ -177,6 +243,36 @@
 </div>
 
 <!-- Modal for creating new flashcards -->
+<div class="d-flex ms-5 mt-1"> <!-- Boxes -->
+  <div class="row">
+      
+      <!-- Button that triggers the modal -->
+        <button type="button" class="d-flex justify-content-center position-relative col withpad" 
+        style="height: 245px; width: 500px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none;" 
+        data-bs-toggle="modal" data-bs-target="#exampleModal2">
+        <i class="fa-solid fa-plus fa-2xl position-absolute top-50 start-50 translate-middle" style="color: black;"></i>
+        </button>
+
+      <!-- Second Box: This one links to a different page -->
+      <a href="/" class="d-flex justify-content-start position-relative col withpad" style="height: 245px; width: 500px; background-color: #D0D0D0; border-radius: 15px; text-decoration: none; border: 2px dashed black;">
+        <div class="d-flex flex-column justify-content-between" style="height: 100%; width: 100%; padding: 10px;">
+          
+          <div>
+            <div style="font-size: 32px; font-family: DM Mono; color: black;"><b>Name</b></div>
+            <div style="font-size: 20px; font-family: DM Mono; color: black;">Type</div>
+          </div>
+      
+          <div class="d-flex justify-content-between align-items-end">
+            <span style="font-size: 20px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5);">{{ userName }}</span>
+            <span style="font-size: 16px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); align-self: flex-end;">Share Type</span>
+          </div>
+      
+        </div>
+      </a>
+  </div>
+</div>
+
+<!-- Modal for adding reviewers -->
 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -239,4 +335,9 @@
 <!-- Include the add_notes_and_edit.js script -->
 <script src="{{ url_for('static', filename='javascript/add_notes_and_edit/add_notes_and_edit.js') }}"></script>
 
+<!-- Include jQuery from a CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Include Bootstrap's JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/addnotes.js') }}"></script>
 {% endblock %}

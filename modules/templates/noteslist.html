@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %} IIT Buddy {% endblock %}
+
+{% block name %} {{ userName }} {% endblock %}
+
+{% block image %} {{ userIMG }} {% endblock %}
+
+{% block content %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/noteslist.css') }}" rel="stylesheet">
+
+<!-- here start, basaha lng mga comment -->
+<div class="subheader">
+    <div class="ForBgFixed">
+    
+    <!-- title ni diri -->
+    <div class="reviewerslist">
+        <div class="reviewers">Notes</div>
+        <div class="list">list</div>
+    </div>
+
+    <!-- back button, pabalik sa main -->
+    <a href="{{ url_for('index') }}" class="btn btn-light btn-m ms-5 back-button">
+        <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> <b style="font-weight: normal;">Back</b>
+    </a>
+    
+    <!-- gi group nakong tanan search: filters and sort -->
+    <div class="searchbar d-flex">
+        <form class="search-bar" style="width: 544px; height: 45px; flex-shrink: 0; border-radius: 10px; border: 1px solid #000; background: #FFF; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);">
+            <input type="text" id="search-input" name="search_query" placeholder="Search here...">
+            <button type="submit" class="search-btn">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+
+        <!-- diri tong by filter nga privacy option -->
+        <div class="ms-5 filter">
+            <form id="privacyForm">
+                <div class="d-flex">
+                    <select name="privacy-option" id="privacy-option" class="form-select" style="width: 200px; height: 45px; flex-shrink: 0; border-radius: 10px; background: #FFF; color: black;">
+                        <option value="All">All</option>
+                        <option value="Private">Private</option>
+                        <option value="Public">Public</option>
+                        <option value="Shared">Shared</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <!-- while diri sab tong sort by like ang most recent etc. -->
+        <div class="ms-5 sort">
+            <form id="sortForm">
+                <div class="d-flex">
+                    <select name="sort-by" id="sort-by" class="form-select me-2" style="width: 200px; height: 45px; flex-shrink: 0; border-radius: 10px; background: #FFF; color: black;">
+                        <option value="Most Recent">Most Recent &darr;</option>
+                        <option value="Oldest">Oldest &uarr;</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row" id="notesContainer">
+        <!-- Notes will be dynamically added here -->
+    </div>
+</div>
+
+<!-- mao ang sa pagination -->
+<nav aria-label="Page navigation example" class="pagination-nav d-flex justify-content-center w-100 mt-4">
+    <ul class="pagination">
+        <!-- Pagination items will be dynamically added here -->
+    </ul>
+</nav>
+
+<script src="{{ url_for('static', filename='js/noteslist.js') }}"></script>
+
+{% endblock %}
