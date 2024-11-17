@@ -96,6 +96,11 @@ def customErrorMessages(error):
         value = error.args[1].split("'")[1]
 
         full_name = value.split("-")
-        return f"{full_name[3]} named '{full_name[0]} {full_name[1]}' already exist."
+
+        type = full_name[len(full_name) - 1]
+        name_rev = ""
+        for name in range(0, len(full_name) - 2):
+            name_rev += full_name[name]
+        return f"{type} named '{name_rev}' already exist."
     else:
         return f"Error {error.args[0]} occurred. Please contact the developers."
