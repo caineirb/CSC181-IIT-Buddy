@@ -55,7 +55,7 @@ def createStudent(student: tuple):
         raise e
     finally:
         cur.close()
-
+        
 def createNote(note: tuple):
     try:
         cur = mysql.connection.cursor()
@@ -73,6 +73,7 @@ def createNote(note: tuple):
         raise e
     finally:
         cur.close()
+
 
 from google.oauth2 import id_token
 from google.auth.transport import requests

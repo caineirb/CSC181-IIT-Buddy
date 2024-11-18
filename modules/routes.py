@@ -85,7 +85,7 @@ def add_note():
             return make_response(jsonify({'message': 'All fields are required'}), 400)
 
         note = (note_title, note_privacy, owner_id, note_link)
-        createNote(note)
+        createNote(note)  # This function interacts with the database to add the note
 
         return make_response(jsonify({'message': 'Note added successfully'}), 201)
     except ValueError as e:
@@ -96,7 +96,7 @@ def add_note():
         print(f"Error: {str(e)}")
         return make_response(jsonify({'message': 'Failed to add note', 'error': str(e)}), 500)
 
-@app.route('/notes_list')
+@app.route('/notes_list', methods=["GET"])
 @require_login
 def notes_list():
     studentData = fetchStudent(session['user-id'])
@@ -165,5 +165,4 @@ def get_notes():
     except Exception as e:
         print(f"Error fetching notes: {str(e)}")  # Add detailed logging
         return jsonify({'error': f'Failed to fetch notes: {str(e)}'}), 500
-
 
