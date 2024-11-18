@@ -9,6 +9,9 @@ let searchFieldInput = document.getElementById("search-field");
 let privacyOption = document.getElementById("privacy-option");
 let sortBy = document.getElementById("sort-by");
 
+// Get CSRF Token from the meta tag
+let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
 // Remove the dropdownBtnText related code
 
 if (list) {
@@ -76,6 +79,54 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchNotes(1, input.value.trim(), privacyOption.value, sortBy.value);
         history.pushState(null, '', `?page=1&search_query=${input.value.trim()}&privacy=${privacyOption.value}&sort=${sortBy.value}`);
     });
+
+    // Handle Add Note form submission
+    const addNoteForm = document.getElementById('addNoteForm');
+    addNoteForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const noteTitle = document.getElementById('noteTitle').value.trim();
+        const notePrivacy = document.getElementById('notePrivacy').value;
+        const noteLink = document.getElementById('noteLink').value.trim();
+
+        const noteData = {
+            title: noteTitle,
+            privacy: notePrivacy,
+            link: noteLink
+        };
+
+        fetch('/add_note', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify(noteData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(errorData => {
+                    throw new Error(errorData.message || 'Failed to add note');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.message === 'Note added successfully') {
+                // Close the modal
+                const addNoteModal = new bootstrap.Modal(document.getElementById('addNoteModal'));
+                addNoteModal.hide();
+
+                // Clear the form
+                addNoteForm.reset();
+
+                // Fetch the updated notes list
+                fetchNotes(1);
+            } else {
+                console.error('Error adding note:', data.message);
+            }
+        })
+        .catch(error => console.error('Error adding note:', error));
+    });
 });
 
 // Fetch notes from the server
@@ -83,12 +134,12 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
     fetch(`/get_notes?page=${page}&search_query=${searchQuery}&privacy=${privacy}&sort=${sort}`)
         .then(response => response.json())
         .then(data => {
-            console.log('Fetched notes:', data);
+            console.log('Fetched notes:', data); // Log fetched data
             if (data.notes) {
                 const notesContainer = document.getElementById('notesContainer');
                 notesContainer.innerHTML = ''; // Clear existing notes
                 data.notes.forEach(note => {
-                    console.log('Adding note:', note);
+                    console.log('Adding note:', note); // Log each note being added
                     addNoteBox(note.title, note.link, note.privacy, note.userName);
                 });
                 updatePagination(data.total_notes, page, searchQuery, privacy, sort);

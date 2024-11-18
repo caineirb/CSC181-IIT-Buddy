@@ -21,6 +21,8 @@
   }
 </style>
 
+
+
 <!-- Hidden input to store the user's name -->
 <input type="hidden" id="userName" value="{{ userName }}">
 
@@ -226,12 +228,6 @@
   });
 </script>
 
-<!-- Include the add_notes_and_edit.js script -->
-<script src="{{ url_for('static', filename='javascript/add_notes_and_edit/add_notes_and_edit.js') }}"></script>
 
-<!-- Include jQuery from a CDN -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Include Bootstrap's JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ url_for('static', filename='javascript/addnotes.js') }}"></script>
 {% endblock %}

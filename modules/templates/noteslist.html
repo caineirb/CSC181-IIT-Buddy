@@ -12,6 +12,42 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/noteslist.css') }}" rel="stylesheet">
 
+<!-- CSRF Token Meta Tag -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<!-- Add Note Modal -->
+<div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="z-index: 1051;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNoteModalLabel">Add Note</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addNoteForm">
+                    <div class="mb-3">
+                        <label for="noteTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="noteTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="notePrivacy" class="form-label">Privacy</label>
+                        <select class="form-select" id="notePrivacy" required>
+                            <option value="Private">Private</option>
+                            <option value="Public">Public</option>
+                            <option value="Shared">Shared</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="noteLink" class="form-label">Link</label>
+                        <input type="url" class="form-control" id="noteLink" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Note</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- here start, basaha lng mga comment -->
 <div class="subheader">
     <div class="ForBgFixed">
@@ -27,6 +63,11 @@
         <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> <b style="font-weight: normal;">Back</b>
     </a>
     
+    <!-- Add Note button -->
+    <button class="btn btn-success btn-m ms-5 add-note-button" data-bs-toggle="modal" data-bs-target="#addNoteModal">
+        <i class="bi bi-plus" style="margin-right: 5px;"></i> <b style="font-weight: normal;">Add Note</b>
+    </button>
+    
     <!-- gi group nakong tanan search: filters and sort -->
      
     <div class="searchbar d-flex">
@@ -40,6 +81,10 @@
         <!-- diri tong by filter nga privacy option -->
         <div class="ms-5 filter">
             <form id="privacyForm">
+                 <!-- CSRF Token -->
+                    <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="owner_id" id="owner_id" value="{{ session['user-id'] }}">
+                    <input type="hidden" name="owner_name" id="owner_name" value="{{ userName }}">
                 <div class="d-flex">
                     <select name="privacy-option" id="privacy-option" class="form-select" style="width: 200px; height: 45px; flex-shrink: 0; border-radius: 10px; background: #FFF; color: black;">
                         <option value="All">All</option>
@@ -78,6 +123,10 @@
     </ul>
 </nav>
 
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 <script src="{{ url_for('static', filename='javascript/noteslist.js') }}"></script>
 
 {% endblock %}
