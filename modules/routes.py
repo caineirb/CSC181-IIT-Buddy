@@ -112,7 +112,7 @@ def get_notes():
             raise ValueError("User ID not found in session")
 
         page = request.args.get('page', 1, type=int)
-        notes_per_page = 20
+        notes_per_page = 10  # Set notes per page to 10
         offset = (page - 1) * notes_per_page
         search_query = request.args.get('search_query', '', type=str)
         privacy = request.args.get('privacy', 'All', type=str)
@@ -161,7 +161,8 @@ def get_notes():
         total_notes = cur.fetchone()[0]
 
         notes_list = [{'title': note[0], 'link': note[1], 'privacy': note[2], 'userName': note[3], 'created_on': note[4]} for note in notes]
-        return jsonify({'notes': notes_list, 'total_notes': total_notes})
+        total_pages = (total_notes + notes_per_page - 1) // notes_per_page  # Calculate total pages
+        return jsonify({'notes': notes_list, 'total_notes': total_notes, 'total_pages': total_pages})
     except Exception as e:
         print(f"Error fetching notes: {str(e)}")  # Add detailed logging
         return jsonify({'error': f'Failed to fetch notes: {str(e)}'}), 500

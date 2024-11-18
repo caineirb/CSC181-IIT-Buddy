@@ -100,25 +100,46 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
 // Add a note box to the UI
 function addNoteBox(title, link, privacy, userName) {
     const notesContainer = document.getElementById('notesContainer');
-    const noteBox = document.createElement('a');
-    noteBox.href = link;
+    const noteBox = document.createElement('div'); // Changed to div to contain both link and buttons
     noteBox.className = 'd-flex justify-content-center align-items-center position-relative col withpad note-box';
     noteBox.innerHTML = `
-        <div class="text-center" style="margin-top: 20px;">
-            <div style="height: 135px; width: 210px; background-color: #D9D9D9; display: flex; align-items: center; justify-content: center;">
-                <p style="color: white; font-family: DM Mono; font-size: 24px; margin: 0;">Preview</p>
+        <a href="${link}" class="note-link" target="_blank">
+            <div class="text-center" style="margin-top: 20px;">
+                <div style="height: 135px; width: 210px; background-color: #D9D9D9; display: flex; align-items: center; justify-content: center;">
+                    
+                </div>
+                <span style="display: block; font-size: 24px; font-family: DM Mono; color: black; margin-top: 10px;">${title}</span>
+                <p style="font-size: 16px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin: 0;">${userName}</p>
+                <p style="text-align: right; font-size: 14px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 10px;">${privacy}</p>
             </div>
-            <span style="display: block; font-size: 24px; font-family: DM Mono; color: black; margin-top: 10px;">${title}</span>
-            <p style="font-size: 16px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin: 0;">${userName}</p>
-            <p style="text-align: right; font-size: 14px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 10px;">${privacy}</p>
+        </a>
+        <div class="note-buttons" style="position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column;">
+            <button class="edit-note-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: green; color: white;">
+                <i class="fas fa-pen"></i>
+            </button>
+            <button class="delete-note-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: red; color: white;">
+                <i class="fas fa-trash"></i>
+            </button>
         </div>
     `;
     notesContainer.appendChild(noteBox);
+
+    // Add event listeners for edit and delete buttons
+    noteBox.querySelector('.delete-note-btn').addEventListener('click', function() {
+        notesContainer.removeChild(noteBox);
+    });
+
+    noteBox.querySelector('.edit-note-btn').addEventListener('click', function() {
+        const newTitle = prompt('Enter new title:', title);
+        if (newTitle) {
+            noteBox.querySelector('.note-link span').innerText = newTitle;
+        }
+    });
 }
 
 // Update pagination controls
 function updatePagination(totalNotes, currentPage, searchQuery = '', privacy = 'All', sort = 'Most Recent') {
-    const notesPerPage = 20;
+    const notesPerPage = 10;  // Set notes per page to 10
     const totalPages = Math.ceil(totalNotes / notesPerPage);
     const paginationNav = document.querySelector('.pagination-nav .pagination');
     paginationNav.innerHTML = ''; // Clear existing pagination
