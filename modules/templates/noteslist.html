@@ -15,38 +15,75 @@
 <!-- CSRF Token Meta Tag -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<!-- Add Note Modal -->
-<div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" style="z-index: 1051;">
+<!-- Edit Note Modal -->
+<div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addNoteModalLabel">Add Note</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addNoteForm">
-                    <div class="mb-3">
-                        <label for="noteTitle" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="noteTitle" required>
+                <form id="editNoteForm">
+                    <!-- CSRF Token -->
+                    <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="owner_id" id="owner_id" value="{{ session['user-id'] }}">
+                    <input type="hidden" name="owner_name" id="owner_name" value="{{ userName }}">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Title" aria-label="Title" name="editNoteTitle" id="editNoteTitle">
                     </div>
-                    <div class="mb-3">
-                        <label for="notePrivacy" class="form-label">Privacy</label>
-                        <select class="form-select" id="notePrivacy" required>
-                            <option value="Private">Private</option>
-                            <option value="Public">Public</option>
-                            <option value="Shared">Shared</option>
-                        </select>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Link" aria-label="Link" name="editNoteLink" id="editNoteLink">
                     </div>
-                    <div class="mb-3">
-                        <label for="noteLink" class="form-label">Link</label>
-                        <input type="url" class="form-control" id="noteLink" required>
+                    <select name="editNotePrivacy" id="editNotePrivacy" class="form-select me-2" style="max-width: 150px; color: black;">
+                        <option value="private">Private</option>
+                        <option value="public">Public</option>
+                        <option value="shared">Shared</option>
+                    </select>
+                    <div class="modal-footer justify-content-center w-100 mt-3">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="saveEditNote">Save changes</button>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Note</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
+<!-- Add Note Modal -->
+<div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addNoteForm">
+                    <!-- CSRF Token -->
+                    <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="owner_id" id="owner_id" value="{{ session['user-id'] }}">
+                    <input type="hidden" name="owner_name" id="owner_name" value="{{ userName }}">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Title" aria-label="Title" name="noteTitle" id="noteTitle" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="url" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Link" aria-label="Link" name="noteLink" id="noteLink" required>
+                    </div>
+                    <select name="notePrivacy" id="notePrivacy" class="form-select me-2" style="max-width: 150px; color: black;" required>
+                        <option value="private">Private</option>
+                        <option value="public">Public</option>
+                        <option value="shared">Shared</option>
+                    </select>
+                    <div class="modal-footer justify-content-center w-100 mt-3">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="saveAddNote">Add Note</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- here start, basaha lng mga comment -->
 <div class="subheader">
@@ -58,6 +95,7 @@
         <div class="list">list</div>
     </div>
 
+   
     <!-- back button, pabalik sa main -->
     <a href="{{ url_for('index') }}" class="btn btn-light btn-m ms-5 back-button">
         <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> <b style="font-weight: normal;">Back</b>
@@ -115,6 +153,7 @@
         <!-- Notes will be dynamically added here -->
     </div>
 </div>
+
 
 <!-- mao ang sa pagination -->
 <nav aria-label="Page navigation example" class="pagination-nav d-flex justify-content-center w-100 mt-4">

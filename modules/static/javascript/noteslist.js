@@ -181,10 +181,26 @@ function addNoteBox(title, link, privacy, userName) {
     });
 
     noteBox.querySelector('.edit-note-btn').addEventListener('click', function() {
-        const newTitle = prompt('Enter new title:', title);
-        if (newTitle) {
-            noteBox.querySelector('.note-link span').innerText = newTitle;
-        }
+        const editModal = new bootstrap.Modal(document.getElementById('editNoteModal'));
+        document.getElementById('editNoteTitle').value = title;
+        document.getElementById('editNoteLink').value = link;
+        document.getElementById('editNotePrivacy').value = privacy;
+        document.getElementById('saveEditNote').onclick = function() {
+            const newTitle = document.getElementById('editNoteTitle').value.trim();
+            const newLink = document.getElementById('editNoteLink').value.trim();
+            const newPrivacy = document.getElementById('editNotePrivacy').value;
+            if (newTitle) {
+                noteBox.querySelector('.note-link span').innerText = newTitle;
+            }
+            if (newLink) {
+                noteBox.querySelector('.note-link').href = newLink;
+            }
+            if (newPrivacy) {
+                noteBox.querySelector('.note-link p:last-child').innerText = newPrivacy;
+            }
+            editModal.hide();
+        };
+        editModal.show();
     });
 }
 
