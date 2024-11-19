@@ -24,19 +24,13 @@
     /* Change text color to white on hover */
   }
 </style>
+
+<!-- stick here si icon adtong pang open nquick notes etc -->
 <div class="d-flex justify-content-center py-3 position-relative">
-  <div class="input-group rounded d-flex justify-content-center mt-2">
-    <div class="form-outline" data-mdb-input-init>
-      <input id="input-search " type="search" class="form-control" placeholder="Search" aria-label="Search"
-        aria-describedby="search-addon" style="border-radius: 20px; width: 300px;" />
-    </div>
-    <div>
-      <button type="button" class="btn btn-outline-light" style="border: none;"><i class="fas fa-search"></i></button>
-    </div>
-  </div>
   <div class="position-absolute top-0 end-0 mt-3 me-3"> <button type="button" class="btn btn-light btn-lg"
       style="border-radius: 30px;"> <i class="fa-regular fa-pen-to-square"></i> </button> </div>
 </div>
+
 <div class="ms-5">
   <h2 style="font-family: inter;">Notes:</h2>
 </div>
@@ -45,7 +39,7 @@
 
     <!-- Button that triggers the modal -->
     <button type="button" class="d-flex justify-content-center position-relative col withpad"
-      style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none;"
+      style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 3px dashed black; text-decoration: none;"
       data-bs-toggle="modal" data-bs-target="#exampleModal">
       <i class="fa-solid fa-plus fa-2xl position-absolute top-50 start-50 translate-middle" style="color: black;"></i>
     </button>
@@ -113,29 +107,8 @@
   <h2 style="font-family: inter;">Reviewers:</h2>
 </div>
 
-<!-- Just change the values here to match the database and make a route for it pod so that arun ma search and magamit ang value-->
-<div class="ms-5">
-  <form action="#" method="POST" id="ReviewersOptions">
-    <div class="dropdown">
-      <button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-        aria-expanded="false">
-        <b>Select Option</b>
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li><button type="submit" name="review_type" value="All" class="dropdown-item">All</button></li>
-        <li><button type="submit" name="review_type" value="Flashcard" class="dropdown-item">Flashcard</button></li>
-        <li><button type="submit" name="review_type" value="Identification"
-            class="dropdown-item">Identification</button></li>
-        <li><button type="submit" name="review_type" value="MultipleChoice" class="dropdown-item">Multiple
-            Choice</button></li>
-        <li><button type="submit" name="review_type" value="Mixed" class="dropdown-item">Mixed</button></li>
-      </ul>
-    </div>
-  </form>
-</div>
-
 <!-- kani ra akoa gichange like ang format and ang css kay main.css -->
-<section class="content sample one" style="display: flex;">
+<section class="content sample one">
   <!-- Add Button as Card -->
   <button type="button" class="card add-button" data-bs-toggle="modal" data-bs-target="#exampleModal2" style="background-color: #fffff0;">
       <div class="card-content">
@@ -150,7 +123,7 @@
           <div>
               <div class="card-name"><b>{{ flashcard[1] }}</b></div>
               <div class="card-type">{{ flashcard[3] }}</div>
-              <div class="card-time">{{ flashcard[5] }}</div>
+              <div class="card-time">{{ flashcard[5] }}</div> <!-- here caine need i fix -->
           </div>
           <div class="card-footer" style="border-color: {{ flashcards_data['fgcolor'][flashcard[3]] }};">
               <span class="card-owner">{{ userName }}</span>
@@ -160,12 +133,6 @@
   </a>
   {% endfor %}
 </section>
-
-<!-- temporary nga button sa view all/show all button sa reviewers list -->
-<!-- pa change lng ni -->
-<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-  <a href="{{ url_for('reviewers_list.index') }}" class="btn btn-light me-md-2 reviewerslist" type="button">View All</a>
-</div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
