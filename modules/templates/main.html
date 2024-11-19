@@ -8,6 +8,9 @@
 
 
 {% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
 <style>
   .withpad {
     margin: 10px;
@@ -131,39 +134,32 @@
   </form>
 </div>
 
-
-<div class="d-flex ms-5 mt-1"> <!-- Boxes -->
-  <div class="row d-flex flex-wrap justify-content-start">
-
-    <!-- Button that triggers the modal -->
-    <button type="button" class="d-flex justify-content-center position-relative col-4 withpad"
-      style="width: 450px; height: 245px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none;"
-      data-bs-toggle="modal" data-bs-target="#exampleModal2">
-      <i class="fa-solid fa-plus fa-2xl position-absolute top-50 start-50 translate-middle" style="color: black;"></i>
-    </button>
-
-    <!-- Second Box: This one links to a different page -->
-    {% for flashcard in flashcards_data['data'] %}
-    <a href="{{ url_for('flashcards.edit', id=flashcard[0]) }}" class="d-flex justify-content-start position-relative col-4 withpad"
-    style="width: 450px; height: 245px; background-color: {{ flashcards_data['bgcolor'][flashcard[3]] }}; border-radius: 15px; text-decoration: none; border: 2px dashed black;">
-    <div class="d-flex flex-column justify-content-between" style="height: 100%; padding: 10px; color: {{ flashcards_data['fgcolor'][flashcard[3]] }};">
-
-      <div>
-        <div style="font-size: 32px; font-family: DM Mono;"><b>{{ flashcard[1] }}</b></div>
-        <div style="font-size: 20px; font-family: DM Mono;">{{ flashcard[3] }}</div>
+<!-- kani ra akoa gichange like ang format and ang css kay main.css -->
+<section class="content sample one" style="display: flex; margin-top: 250px;">
+  <!-- Add Button as Card -->
+  <button type="button" class="card add-button" data-bs-toggle="modal" data-bs-target="#exampleModal2" style="background-color: #fffff0;">
+      <div class="card-content">
+          <div class="add-icon">
+              <i class="bi bi-plus"></i>
+          </div>
       </div>
-
-      <div class="d-flex justify-content-between align-items-end">
-        <span style="font-size: 20px; font-family: DM Mono; opacity: 0.5; align-self: flex-start;">{{ userName }}</span>
-        <span style="font-size: 16px; font-family: DM Mono; opacity: 0.5; align-self: flex-end;">{{ flashcard[4] }}</span>
+  </button>
+  {% for flashcard in flashcards_data['data'] %}
+  <a href="{{ url_for('flashcards.edit', id=flashcard[0]) }}" class="card" style="background-color: {{ flashcards_data['bgcolor'][flashcard[3]] }};">
+      <div class="card-content" style="color: {{ flashcards_data['fgcolor'][flashcard[3]] }};">
+          <div>
+              <div class="card-name"><b>{{ flashcard[1] }}</b></div>
+              <div class="card-type">{{ flashcard[3] }}</div>
+              <div class="card-time">{{ flashcard[5] }}</div>
+          </div>
+          <div class="card-footer" style="border-color: {{ flashcards_data['fgcolor'][flashcard[3]] }};">
+              <span class="card-owner">{{ userName }}</span>
+              <span class="card-share-type">{{ flashcard[4] }}</span>
+          </div>
       </div>
-
-    </div>
   </a>
-    {% endfor %}
-
-  </div>
-</div>
+  {% endfor %}
+</section>
 
 <!-- temporary nga button sa view all/show all button sa reviewers list -->
 <!-- pa change lng ni -->
