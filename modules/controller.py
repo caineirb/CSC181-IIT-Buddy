@@ -55,25 +55,6 @@ def createStudent(student: tuple):
         raise e
     finally:
         cur.close()
-        
-def createNote(note: tuple):
-    try:
-        cur = mysql.connection.cursor()
-        create_query = "INSERT INTO `notes` (`title`, `privacy`, `owner_id`, `link`, `created_on`) VALUES (%s, %s, %s, %s, NOW());"
-        cur.execute(create_query, note)
-        mysql.connection.commit()
-    except mysql.connection.IntegrityError as e:
-        mysql.connection.rollback()
-        if e.args[0] == 1062:
-            raise ValueError("A note with this title already exists for this user.")
-        else:
-            raise e
-    except mysql.connection.Error as e:
-        mysql.connection.rollback()
-        raise e
-    finally:
-        cur.close()
-
 
 from google.oauth2 import id_token
 from google.auth.transport import requests

@@ -1,9 +1,9 @@
-from . import app, mysql  # Import mysql here
+from . import app
 from flask import session, redirect, url_for, render_template, request, jsonify, make_response
-from modules.controller import checkStudent, createStudent, require_login, decode_google_jwt, fetchStudent, createNote
+from modules.controller import checkStudent, createStudent, require_login, decode_google_jwt, fetchStudent
 from modules.flashcards.controller import fetchPreview
+from modules.notes.controller import fetchPreviewNotes
 from config import CLIENT_ID
-
 
 
 @app.route('/', methods=["GET"])
@@ -13,6 +13,9 @@ def index():
     
     studentData = fetchStudent(session['user-id'])
     GetName = studentData[0][1] if studentData else None
+
+    notes_data = fetchPreviewNotes(session['user-id'])
+
     # Flashcards
     flashcards_data = {
         'data': fetchPreview(session['user-id']),
@@ -29,7 +32,7 @@ def index():
             'Mixed': "#FFFFFF"
         }
     }
-    return render_template('main.html', userName = GetName, flashcards_data=flashcards_data)    # Pulihi nalang ni sa unsa ang e render pag naka login na
+    return render_template('main.html', userName = GetName, notes_data=notes_data, flashcards_data=flashcards_data)    # Pulihi nalang ni sa unsa ang e render pag naka login na
 
 @app.route('/login', methods=["POST"])
 def login():
@@ -70,100 +73,3 @@ def logout():
     session.pop('user-id', None)
     session.pop('user-photo', None)
     return redirect(url_for('index'))
-
-@app.route('/add_note', methods=["POST"])
-@require_login
-def add_note():
-    try:
-        note_data = request.get_json()
-        note_title = note_data.get('title')
-        note_privacy = note_data.get('privacy')
-        note_link = note_data.get('link')
-        owner_id = session['user-id']
-
-        if not note_title or not note_privacy or not note_link:
-            return make_response(jsonify({'message': 'All fields are required'}), 400)
-
-        note = (note_title, note_privacy, owner_id, note_link)
-        createNote(note)  # This function interacts with the database to add the note
-
-        return make_response(jsonify({'message': 'Note added successfully'}), 201)
-    except ValueError as e:
-        return make_response(jsonify({'message': str(e)}), 400)
-    except Exception as e:
-        if 'duplicate entry' in str(e).lower():
-            return make_response(jsonify({'message': 'Note already exists'}), 400)
-        print(f"Error: {str(e)}")
-        return make_response(jsonify({'message': 'Failed to add note', 'error': str(e)}), 500)
-
-@app.route('/notes_list', methods=["GET"])
-@require_login
-def notes_list():
-    studentData = fetchStudent(session['user-id'])
-    GetName = studentData[0][1] if studentData else None
-    return render_template('noteslist.html', userName=GetName, userIMG=session['user-photo'])
-
-@app.route('/get_notes')
-@require_login
-def get_notes():
-    try:
-        user_id = session.get('user-id')
-        if not user_id:
-            raise ValueError("User ID not found in session")
-
-        page = request.args.get('page', 1, type=int)
-        notes_per_page = 10  # Set notes per page to 10
-        offset = (page - 1) * notes_per_page
-        search_query = request.args.get('search_query', '', type=str)
-        privacy = request.args.get('privacy', 'All', type=str)
-        sort = request.args.get('sort', 'Most Recent', type=str)
-
-        cur = mysql.connection.cursor()
-        query = """
-            SELECT notes.title, notes.link, notes.privacy, students.name, notes.created_on
-            FROM notes
-            JOIN students ON notes.owner_id = students.id
-            WHERE notes.owner_id = %s
-        """
-        params = [user_id]
-
-        if search_query:
-            query += " AND notes.title LIKE %s"
-            params.append(f"%{search_query}%")
-
-        if privacy != 'All':
-            query += " AND notes.privacy = %s"
-            params.append(privacy)
-
-        if sort == 'Most Recent':
-            query += " ORDER BY notes.created_on DESC"
-        elif sort == 'Oldest':
-            query += " ORDER BY notes.created_on ASC"
-
-        query += " LIMIT %s OFFSET %s"
-        params.extend([notes_per_page, offset])
-
-        cur.execute(query, tuple(params))
-        notes = cur.fetchall()
-
-        count_query = "SELECT COUNT(*) FROM notes WHERE owner_id = %s"
-        count_params = [user_id]
-
-        if search_query:
-            count_query += " AND title LIKE %s"
-            count_params.append(f"%{search_query}%")
-
-        if privacy != 'All':
-            count_query += " AND privacy = %s"
-            count_params.append(privacy)
-
-        cur.execute(count_query, tuple(count_params))
-        total_notes = cur.fetchone()[0]
-
-        notes_list = [{'title': note[0], 'link': note[1], 'privacy': note[2], 'userName': note[3], 'created_on': note[4]} for note in notes]
-        total_pages = (total_notes + notes_per_page - 1) // notes_per_page  # Calculate total pages
-        return jsonify({'notes': notes_list, 'total_notes': total_notes, 'total_pages': total_pages})
-    except Exception as e:
-        print(f"Error fetching notes: {str(e)}")  # Add detailed logging
-        return jsonify({'error': f'Failed to fetch notes: {str(e)}'}), 500
-

@@ -15,7 +15,7 @@ e.g "from <modules.feature_module> import <blueprint_name>"
 from modules.flashcards import flashcards_bp
 from modules.reviewersFeed import reviewers_feed_bp
 from modules.reviewersList import reviewers_list_bp
-
+from modules.notes import notes_bp
 
 
 app = Flask(__name__, instance_relative_config=True)
@@ -37,7 +37,7 @@ def start_app():
     app.register_blueprint(flashcards_bp, url_prefix="/flashcards")
     app.register_blueprint(reviewers_feed_bp, url_prefix="/reviewers-feed")
     app.register_blueprint(reviewers_list_bp, url_prefix="/reviewers-list")
-    
+    app.register_blueprint(notes_bp, url_prefix="/notes")
 
    
 

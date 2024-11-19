@@ -13,7 +13,6 @@ let sortBy = document.getElementById("sort-by");
 let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 // Remove the dropdownBtnText related code
-
 if (list) {
     // Toggle dropdown list visibility
     list.onclick = function(){
@@ -88,13 +87,18 @@ document.addEventListener('DOMContentLoaded', function () {
         const notePrivacy = document.getElementById('notePrivacy').value;
         const noteLink = document.getElementById('noteLink').value.trim();
 
+        if (!noteTitle || !noteLink || !notePrivacy) {
+            alert('All fields are required.');
+            return;
+        }
+
         const noteData = {
             title: noteTitle,
             privacy: notePrivacy,
             link: noteLink
         };
 
-        fetch('/add_note', {
+        fetch('/notes/add_note', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -112,14 +116,8 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(data => {
             if (data.message === 'Note added successfully') {
-                // Close the modal
-                const addNoteModal = new bootstrap.Modal(document.getElementById('addNoteModal'));
-                addNoteModal.hide();
-
-                // Clear the form
-                addNoteForm.reset();
-
                 // Fetch the updated notes list
+                location.reload();
                 fetchNotes(1);
             } else {
                 console.error('Error adding note:', data.message);
@@ -131,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Fetch notes from the server
 function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent') {
-    fetch(`/get_notes?page=${page}&search_query=${searchQuery}&privacy=${privacy}&sort=${sort}`)
+    fetch(`/notes/get_notes?page=${page}&search_query=${searchQuery}&privacy=${privacy}&sort=${sort}`)
         .then(response => response.json())
         .then(data => {
             console.log('Fetched notes:', data); // Log fetched data
@@ -140,7 +138,7 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
                 notesContainer.innerHTML = ''; // Clear existing notes
                 data.notes.forEach(note => {
                     console.log('Adding note:', note); // Log each note being added
-                    addNoteBox(note.title, note.link, note.privacy, note.userName);
+                    addNoteBox(note.id, note.title, note.link, note.privacy, note.userName);
                 });
                 updatePagination(data.total_notes, page, searchQuery, privacy, sort);
             }
@@ -149,16 +147,13 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
 }
 
 // Add a note box to the UI
-function addNoteBox(title, link, privacy, userName) {
+function addNoteBox(id, title, link, privacy, userName) {
     const notesContainer = document.getElementById('notesContainer');
     const noteBox = document.createElement('div'); // Changed to div to contain both link and buttons
     noteBox.className = 'd-flex justify-content-center align-items-center position-relative col withpad note-box';
     noteBox.innerHTML = `
         <a href="${link}" class="note-link" target="_blank">
             <div class="text-center" style="margin-top: 20px;">
-                <div style="height: 135px; width: 210px; background-color: #D9D9D9; display: flex; align-items: center; justify-content: center;">
-                    
-                </div>
                 <span style="display: block; font-size: 24px; font-family: DM Mono; color: black; margin-top: 10px;">${title}</span>
                 <p style="font-size: 16px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin: 0;">${userName}</p>
                 <p style="text-align: right; font-size: 14px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 10px;">${privacy}</p>
@@ -168,16 +163,40 @@ function addNoteBox(title, link, privacy, userName) {
             <button class="edit-note-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: green; color: white;">
                 <i class="fas fa-pen"></i>
             </button>
-            <button class="delete-note-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: red; color: white;">
+            <button class="delete-note-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: red; color: white;" data-id=${id}>
                 <i class="fas fa-trash"></i>
             </button>
         </div>
     `;
     notesContainer.appendChild(noteBox);
-
+    
     // Add event listeners for edit and delete buttons
-    noteBox.querySelector('.delete-note-btn').addEventListener('click', function() {
-        notesContainer.removeChild(noteBox);
+    noteBox.querySelector('.delete-note-btn').addEventListener('click', function () {
+        const noteId = this.getAttribute('data-id');
+        // Confirmation before deletion
+        if (confirm("Are you sure you want to delete this note?")) {
+            // Call API to delete the note
+            fetch(`/notes/delete_note/${noteId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Remove note from the UI
+                    notesContainer.removeChild(noteBox);
+                    alert('Note deleted successfully.');
+                } else {
+                    alert('Failed to delete the note. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            });
+        }
     });
 
     noteBox.querySelector('.edit-note-btn').addEventListener('click', function() {
@@ -185,6 +204,7 @@ function addNoteBox(title, link, privacy, userName) {
         document.getElementById('editNoteTitle').value = title;
         document.getElementById('editNoteLink').value = link;
         document.getElementById('editNotePrivacy').value = privacy;
+
         document.getElementById('saveEditNote').onclick = function() {
             const newTitle = document.getElementById('editNoteTitle').value.trim();
             const newLink = document.getElementById('editNoteLink').value.trim();
@@ -199,6 +219,43 @@ function addNoteBox(title, link, privacy, userName) {
                 noteBox.querySelector('.note-link p:last-child').innerText = newPrivacy;
             }
             editModal.hide();
+
+            if (!newTitle || !newLink || !newPrivacy) {
+                alert('All fields are required.');
+                return;
+            }
+        // Confirmation before deletion
+        if (confirm("Are you sure you want to update this note?")) {
+            const noteId = noteBox.querySelector('.delete-note-btn').getAttribute('data-id');
+            const note_data = {
+                'id': noteId,
+                'title': newTitle,
+                'privacy': newPrivacy,
+                'link': newLink
+            }
+
+            // Call API to delete the note
+            fetch(`/notes/update_note`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify(note_data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Remove note from the UI
+                    alert('Note updated successfully.');
+                } else {
+                    alert('Failed to delete the note. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            });
+        }
         };
         editModal.show();
     });
