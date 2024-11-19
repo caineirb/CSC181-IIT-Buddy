@@ -64,18 +64,9 @@
   </div>
   
   <!-- Dynamically added notes -->
-  <div class="row d-flex flex-wrap gap-3" id="notesContainer">
+  <div class="row d-flex flex-wrap flex-row-reverse gap-3" id="notesContainer">
     <!-- Example of a dynamically added note box -->
-    <div class="d-flex flex-column justify-content-between align-items-start withpad"
-      style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px solid black; padding: 10px;">
-      <h5 class="mb-1">{{ noteTitle }}</h5>
-      <p class="mb-1">Owner: {{ userName }}</p>
-      <p class="mb-1">Privacy: {{ privacy }}</p>
-      <div class="d-flex gap-2">
-        <button class="btn btn-sm btn-success"><i class="bi bi-pencil-fill"></i></button>
-        <button class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i></button>
-      </div>
-    </div>
+    
   </div>
 </div>
 
@@ -95,7 +86,7 @@
       </div>
       <div class="modal-body">
         <!-- Form for adding new notes -->
-        <form id="noteForm" action="/add_note" method="POST">
+        <form id="noteForm" action="/notes/add_note" method="POST">
           <!-- CSRF Token -->
           <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
           <input type="hidden" name="owner_id" id="owner_id" value="{{ session['user-id'] }}">
@@ -192,12 +183,12 @@
     <!-- Reviewer boxes generated from data -->
     {% for flashcard in flashcards_data['data'] %}
     <a href="{{ url_for('flashcards.edit', id=flashcard[0]) }}" class="d-flex justify-content-start position-relative col-4 withpad"
-      style="width: 450px; height: 245px; background-color: {{ flashcards_data['bgcolor'][flashcard[3]] }}; border-radius: 15px; text-decoration: none; border: 2px dashed black;">
-      <div class="d-flex flex-column justify-content-between" style="height: 100%; padding: 10px; color: {{ flashcards_data['fgcolor'][flashcard[3]] }};">
+      style="width: 450px; height: 245px; background-color: {{ flashcards_data['bgcolor'][flashcard[2]] }}; border-radius: 15px; text-decoration: none; border: 2px dashed black;">
+      <div class="d-flex flex-column justify-content-between" style="height: 100%; padding: 10px; color: {{ flashcards_data['fgcolor'][flashcard[2]] }};">
 
         <div>
           <div style="font-size: 32px; font-family: DM Mono;"><b>{{ flashcard[1] }}</b></div>
-          <div style="font-size: 20px; font-family: DM Mono;">{{ flashcard[3] }}</div>
+          <div style="font-size: 20px; font-family: DM Mono;">{{ flashcard[2] }}</div>
         </div>
 
         <div class="d-flex justify-content-between align-items-end">

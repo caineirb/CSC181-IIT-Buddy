@@ -1,5 +1,5 @@
 from modules import mysql
-
+from modules.controller import calculate_time_passed
 def createNote(note: tuple):
     try:
         cur = mysql.connection.cursor()
@@ -60,7 +60,17 @@ def fetchPreviewNotes(owner_id :str):
         """
 
         cur.execute(fetch_id, (owner_id,))
-        return cur.fetchall()
+        raw_results = cur.fetchall()
+        
+        # Process `created_on` to calculate "time passed"
+        processed_results = []
+        for row in raw_results:
+            id, title, link, privacy, owner_name, created_on = row
+            time_passed = calculate_time_passed(created_on)
+            processed_results.append((id, title, link, privacy, owner_name, time_passed))
+
+
+        return processed_results
     except mysql.connection.Error as e:
         mysql.connection.rollback()  # Rollback in case of error
         raise e

@@ -264,6 +264,12 @@
     align-items: flex-end;
 }
 
+.card-time{
+    position: absolute;
+    bottom: 60px;
+    right: 20px;
+}
+
 .card-owner {
     font-size: 12px;
 }

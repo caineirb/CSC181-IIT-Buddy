@@ -85,3 +85,22 @@ def customErrorMessages(error):
         return f"{type} named '{name_rev}' already exist."
     else:
         return f"Error {error.args[0]} occurred. Please contact the developers."
+
+from datetime import datetime
+
+# For the datetime data displayed in the reviewer cards
+def calculate_time_passed(datetime_value):
+    """Calculate the time passed from a datetime value to now."""
+    current_time = datetime.now()
+    time_difference = current_time - datetime_value
+
+    if time_difference.days > 0:
+        return f"{time_difference.days} days ago" if time_difference.days > 1 else f"{time_difference.days} day ago"
+    elif time_difference.total_seconds() >= 3600:
+        hours = int(time_difference.total_seconds() // 3600)
+        return f"{hours} hours ago" if hours > 1 else f"{hours} hour ago"
+    elif time_difference.total_seconds() >= 60:
+        minutes = int(time_difference.total_seconds() // 60)
+        return f"{minutes} minutes ago" if minutes > 1 else f"{minutes} minute ago"
+    else:
+        return "Just now"

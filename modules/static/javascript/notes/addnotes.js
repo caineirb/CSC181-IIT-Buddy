@@ -110,7 +110,7 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
                 <span style="display: block; font-size: 24px; font-family: DM Mono; color: black; margin-top: 10px;" title="${title}">${truncatedTitle}</span>
                 <p style="font-size: 16px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin: 0;">${userName}</p>
                 <p style="text-align: right; font-size: 14px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 10px;">${privacy}</p>
-                <p style="text-align: right; font-size: 12px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 5px;">Created on: ${new Date(createdAt).toLocaleDateString()}</p>
+                <p style="text-align: right; font-size: 12px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 5px;">${createdAt}</p>
             </div>
         </a>
         <div class="note-buttons" style="position: absolute; top: 5px; right: 10px; display: flex;">

@@ -1,7 +1,7 @@
 from . import notes_bp
 from modules import mysql
 from flask import session, render_template, request, jsonify, make_response
-from modules.controller import require_login, fetchStudent
+from modules.controller import require_login, fetchStudent, calculate_time_passed
 from modules.notes.controller import createNote, deleteNote, updateNote, fetchPreviewNotes
 
 @notes_bp.route('/add_note', methods=["POST"])
@@ -50,7 +50,6 @@ def update_note():
         note_link = note_data.get('link')
         
         updateNote((note_title, note_privacy, note_link, note_id))
-        print("Note: ", note_id, " updated.")
         return make_response(jsonify({'message': 'Note updated successfully'}), 200)
     except Exception as e:
         print(f"Error fetching notes: {str(e)}")  # Add detailed logging
@@ -89,8 +88,8 @@ def get_notes():
         offset = (page - 1) * notes_per_page
         search_query = request.args.get('search_query', '', type=str)
         privacy = request.args.get('privacy', 'All', type=str)
-        sort = request.args.get('sort', 'Most Recent', type=str)
-
+        sort = request.args.get('sort_by', 'DESC', type=str)
+        
         cur = mysql.connection.cursor()
         query = """
             SELECT notes.id, notes.title, notes.link, notes.privacy, students.name, notes.created_on
@@ -108,14 +107,9 @@ def get_notes():
             query += " AND notes.privacy = %s"
             params.append(privacy)
 
-        if sort == 'Most Recent':
-            query += " ORDER BY notes.created_on DESC"
-        elif sort == 'Oldest':
-            query += " ORDER BY notes.created_on ASC"
-
-        query += " LIMIT %s OFFSET %s"
+        query += f" ORDER BY `created_on` {sort} LIMIT %s OFFSET %s;"
         params.extend([notes_per_page, offset])
-
+        
         cur.execute(query, tuple(params))
         notes = cur.fetchall()
 
@@ -133,7 +127,7 @@ def get_notes():
         cur.execute(count_query, tuple(count_params))
         total_notes = cur.fetchone()[0]
 
-        notes_list = [{'id': note[0], 'title': note[1], 'link': note[2], 'privacy': note[3], 'userName': note[4], 'created_on': note[5]} for note in notes]
+        notes_list = [{'id': note[0], 'title': note[1], 'link': note[2], 'privacy': note[3], 'userName': note[4], 'created_on': calculate_time_passed(note[5])} for note in notes]
         total_pages = (total_notes + notes_per_page - 1) // notes_per_page  # Calculate total pages
         return jsonify({'notes': notes_list, 'total_notes': total_notes, 'total_pages': total_pages})
     except Exception as e:

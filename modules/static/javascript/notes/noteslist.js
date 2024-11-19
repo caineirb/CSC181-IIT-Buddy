@@ -7,7 +7,7 @@ let input = document.getElementById("search-input");
 let listItems = document.querySelectorAll(".dropdown-list-item");
 let searchFieldInput = document.getElementById("search-field");
 let privacyOption = document.getElementById("privacy-option");
-let sortBy = document.getElementById("sort-by");
+let sortBy = document.getElementById("sort_by");
 
 // Get CSRF Token from the meta tag
 let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const page = urlParams.get('page') || 1;
     const searchQuery = urlParams.get('search_query') || '';
     const privacy = urlParams.get('privacy') || 'All';
-    const sort = urlParams.get('sort') || 'Most Recent';
+    const sort = urlParams.get('sort_by') || 'DESC';
     fetchNotes(page, searchQuery, privacy, sort);
 
     const searchForm = document.querySelector('.search-bar');
@@ -66,17 +66,17 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         const searchInput = document.getElementById('search-input').value.trim();
         fetchNotes(1, searchInput, privacyOption.value, sortBy.value);
-        history.pushState(null, '', `?page=1&search_query=${searchInput}&privacy=${privacyOption.value}&sort=${sortBy.value}`);
+        history.pushState(null, '', `?page=1&search_query=${searchInput}&privacy=${privacyOption.value}&sort_by=${sortBy.value}`);
     });
 
     privacyOption.addEventListener('change', function () {
         fetchNotes(1, input.value.trim(), privacyOption.value, sortBy.value);
-        history.pushState(null, '', `?page=1&search_query=${input.value.trim()}&privacy=${privacyOption.value}&sort=${sortBy.value}`);
+        history.pushState(null, '', `?page=1&search_query=${input.value.trim()}&privacy=${privacyOption.value}&sort_by=${sortBy.value}`);
     });
 
     sortBy.addEventListener('change', function () {
         fetchNotes(1, input.value.trim(), privacyOption.value, sortBy.value);
-        history.pushState(null, '', `?page=1&search_query=${input.value.trim()}&privacy=${privacyOption.value}&sort=${sortBy.value}`);
+        history.pushState(null, '', `?page=1&search_query=${input.value.trim()}&privacy=${privacyOption.value}&sort_by=${sortBy.value}`);
     });
 
     // Handle Add Note form submission
@@ -105,8 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const noteData = {
             title: noteTitle,
             privacy: notePrivacy,
-            link: noteLink,
-            created_on: new Date().toISOString() // Ensure created_on is set
+            link: noteLink
         };
 
         fetch('/notes/add_note', {
@@ -140,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Fetch notes from the server
 function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent') {
-    fetch(`/notes/get_notes?page=${page}&search_query=${searchQuery}&privacy=${privacy}&sort=${sort}`)
+    fetch(`/notes/get_notes?page=${page}&search_query=${searchQuery}&privacy=${privacy}&sort_by=${sort}`)
         .then(response => response.json())
         .then(data => {
             console.log('Fetched notes:', data); // Log fetched data
@@ -173,7 +172,7 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
 
                 notesToShow.forEach((note, index) => {
                     console.log('Adding note:', note); // Log each note being added
-                    addNoteBox(note.id, note.title, note.link, note.privacy, note.userName, notesWrapper, note.createdAt);
+                    addNoteBox(note.id, note.title, note.link, note.privacy, note.userName, notesWrapper, note.created_on);
 
                     // Ensure only 5 items per row
                     if ((index + 1) % 5 === 0) {
@@ -205,7 +204,7 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
                 <span style="display: block; font-size: 24px; font-family: DM Mono; color: black; margin-top: 10px;" title="${title}">${truncatedTitle}</span>
                 <p style="font-size: 16px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin: 0;">${userName}</p>
                 <p style="text-align: right; font-size: 14px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 10px;">${privacy}</p>
-                <p style="text-align: right; font-size: 12px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 5px;">Created on: ${new Date(createdAt).toLocaleDateString()}</p>
+                <p style="text-align: right; font-size: 12px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 5px;">${createdAt}</p>
             </div>
         </a>
         <div class="note-buttons" style="position: absolute; top: 5px; right: 10px; display: flex;">
