@@ -116,3 +116,23 @@ body {
     transform: translate(-50%, -50%);
     font-size: 40px;
 }
+
+.direct-reviewerslist {
+    font-family: Inter;
+    position: absolute;
+    bottom: -20px;
+    right: 80px;
+    font-size: 3rem;
+}
+
+.direct-noteslist {
+    font-family: Inter;
+    position: absolute;
+    justify-content: flex-end;
+    left: 1850px;
+    bottom: -30px;
+    font-size: 3rem;
+}
+
+
+  
