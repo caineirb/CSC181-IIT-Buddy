@@ -8,6 +8,7 @@
 
 {% block content %}
 
+<!-- Include Bootstrap CSS and Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/noteslist.css') }}" rel="stylesheet">
@@ -28,17 +29,21 @@
                     <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="owner_id" id="owner_id" value="{{ session['user-id'] }}">
                     <input type="hidden" name="owner_name" id="owner_name" value="{{ userName }}">
+                    <!-- Input for Note Title -->
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Title" aria-label="Title" name="editNoteTitle" id="editNoteTitle">
                     </div>
+                    <!-- Input for Note Link -->
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Link" aria-label="Link" name="editNoteLink" id="editNoteLink">
                     </div>
+                    <!-- Select for Note Privacy -->
                     <select name="editNotePrivacy" id="editNotePrivacy" class="form-select me-2" style="max-width: 150px; color: black;">
                         <option value="Private">Private</option>
                         <option value="Public">Public</option>
                         <option value="Shared">Shared</option>
                     </select>
+                    <!-- Modal Footer with Close and Save buttons -->
                     <div class="modal-footer justify-content-center w-100 mt-3">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="saveEditNote">Save changes</button>
@@ -48,7 +53,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Add Note Modal -->
 <div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
@@ -63,17 +67,21 @@
                     <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="owner_id" id="owner_id" value="{{ session['user-id'] }}">
                     <input type="hidden" name="owner_name" id="owner_name" value="{{ userName }}">
+                    <!-- Input for Note Title -->
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Title" aria-label="Title" name="noteTitle" id="noteTitle" required>
                     </div>
+                    <!-- Input for Note Link -->
                     <div class="input-group mb-3">
                         <input type="url" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Link" aria-label="Link" name="noteLink" id="noteLink" required>
                     </div>
+                    <!-- Select for Note Privacy -->
                     <select name="notePrivacy" id="notePrivacy" class="form-select me-2" style="max-width: 150px; color: black;" required>
                         <option value="Private">Private</option>
                         <option value="Public">Public</option>
                         <option value="Shared">Shared</option>
                     </select>
+                    <!-- Modal Footer with Close and Add buttons -->
                     <div class="modal-footer justify-content-center w-100 mt-3">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" id="saveAddNote">Add Note</button>
@@ -84,31 +92,25 @@
     </div>
 </div>
 
-
-<!-- here start, basaha lng mga comment -->
+<!-- Subheader Section -->
 <div class="subheader">
     <div class="ForBgFixed">
     
-    <!-- title ni diri -->
+    <!-- Title Section -->
     <div class="reviewerslist">
         <div class="reviewers">Notes</div>
         <div class="list">list</div>
     </div>
 
-   
-    <!-- back button, pabalik sa main -->
+    <!-- Back Button -->
     <a href="{{ url_for('index') }}" class="btn btn-light btn-m ms-5 back-button">
         <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> <b style="font-weight: normal;">Back</b>
     </a>
     
-    <!-- Add Note button -->
-    <button class="btn btn-success btn-m ms-5 add-note-button" data-bs-toggle="modal" data-bs-target="#addNoteModal">
-        <i class="bi bi-plus" style="margin-right: 5px;"></i> <b style="font-weight: normal;">Add Note</b>
-    </button>
-    
-    <!-- gi group nakong tanan search: filters and sort -->
-     
+
+    <!-- Search, Filter, and Sort Section -->
     <div class="searchbar d-flex">
+        <!-- Search Bar -->
         <form class="search-bar" style="width: 544px; height: 45px; flex-shrink: 0; border-radius: 10px; border: 1px solid #000; background: #FFF; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);">
             <input type="text" id="search-input" name="search_query" placeholder="Search here...">
             <button type="submit" class="search-btn">
@@ -116,13 +118,13 @@
             </button>
         </form>
 
-        <!-- diri tong by filter nga privacy option -->
+        <!-- Filter by Privacy Option -->
         <div class="ms-5 filter">
             <form id="privacyForm">
-                 <!-- CSRF Token -->
-                    <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="owner_id" id="owner_id" value="{{ session['user-id'] }}">
-                    <input type="hidden" name="owner_name" id="owner_name" value="{{ userName }}">
+                <!-- CSRF Token -->
+                <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="owner_id" id="owner_id" value="{{ session['user-id'] }}">
+                <input type="hidden" name="owner_name" id="owner_name" value="{{ userName }}">
                 <div class="d-flex">
                     <select name="privacy-option" id="privacy-option" class="form-select" style="width: 200px; height: 45px; flex-shrink: 0; border-radius: 10px; background: #FFF; color: black;">
                         <option value="All">All</option>
@@ -134,7 +136,7 @@
             </form>
         </div>
 
-        <!-- while diri sab tong sort by like ang most recent etc. -->
+        <!-- Sort by Option -->
         <div class="ms-5 sort">
             <form id="sortForm">
                 <div class="d-flex">
@@ -148,22 +150,28 @@
     </div>
 </div>
 
-<div class="container mt-5">
-    <div class="row" id="notesContainer">
-        <!-- Notes will be dynamically added here -->
+<!-- Notes Section -->
+<div class="d-flex align-items-start flex-wrap">
+    
+
+    <!-- Notes Container -->
+    
+        <div class="row d-flex flex-wrap gap-3 mt-4" id="notesContainer"></div>
+            <!-- Notes will be dynamically added here -->
+        </div>
     </div>
 </div>
 
+<!-- Pagination Section -->
+<div class="container text-center">
+    <div class="pagination-nav d-flex justify-content-center">
+        <ul class="pagination">
+            <!-- Pagination items will be dynamically added here -->
+        </ul>
+    </div>
+</div>
 
-<!-- mao ang sa pagination -->
-<nav aria-label="Page navigation example" class="pagination-nav d-flex justify-content-center w-100 mt-4">
-    <ul class="pagination">
-        <!-- Pagination items will be dynamically added here -->
-    </ul>
-</nav>
-
-
-
+<!-- Include Bootstrap JS and Custom JS -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 <script src="{{ url_for('static', filename='javascript/notes/noteslist.js') }}"></script>

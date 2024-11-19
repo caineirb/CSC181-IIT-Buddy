@@ -223,14 +223,22 @@
 
 .pagination-nav {
     display: flex;
-    justify-content: flex-end;
-    padding-right: 20px;
+    justify-content: center; /* Center the pagination */
+    align-items: center; /* Center vertically */
+    margin-top: 20px; /* Adjust as needed */
     position: fixed; 
     bottom: 0;
-    left: 0;  
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center horizontally */
     width: 100%;  
     z-index: 1000;
     padding: 10px 20px;
+}
+
+.pagination-nav .pagination {
+    display: flex;
+    justify-content: center; /* Center the pagination items */
+    width: 100%;
 }
 
 .pagination-nav .page-link {
@@ -265,3 +273,15 @@
     border-radius: 15px;
     text-decoration: none;
 }
+
+<style>
+  .row.d-flex.flex-wrap.gap-3 { /* Parent of the dynamically added notes */
+    gap: 16px; /* Space between notes */
+  }
+
+  .withpad { 
+    margin: 0; /* Remove any pre-set margin */
+  }
+</style>
+
+

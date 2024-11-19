@@ -55,14 +55,26 @@
 <div class="d-flex ms-5 mt-1" id="notes-container"> <!-- Boxes -->
   <input type="hidden" name="notes_csrf_token" id="notes_csrf_token" value="{{ csrf_token() }}">
   <div class="col">
-    <!-- Button that triggers the modal -->
-    <button type="button" class="d-flex justify-content-center position-relative col withpad"
-      style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none;"
+   <!-- Button that triggers the modal -->
+    <button type="button" class="d-flex justify-content-center align-items-center withpad"
+      style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none; margin-right: 1rem;"
       data-bs-toggle="modal" data-bs-target="#exampleModal">
-      <i class="fa-solid fa-plus fa-2xl position-absolute top-50 start-50 translate-middle" style="color: black;"></i>
+      <i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>
     </button>
-    <div class="row" id="notesContainer">
-    <!--Notes will be added dynamically -->
+  </div>
+  
+  <!-- Dynamically added notes -->
+  <div class="row d-flex flex-wrap gap-3" id="notesContainer">
+    <!-- Example of a dynamically added note box -->
+    <div class="d-flex flex-column justify-content-between align-items-start withpad"
+      style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px solid black; padding: 10px;">
+      <h5 class="mb-1">{{ noteTitle }}</h5>
+      <p class="mb-1">Owner: {{ userName }}</p>
+      <p class="mb-1">Privacy: {{ privacy }}</p>
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-success"><i class="bi bi-pencil-fill"></i></button>
+        <button class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i></button>
+      </div>
     </div>
   </div>
 </div>
