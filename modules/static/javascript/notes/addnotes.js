@@ -127,7 +127,7 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
             </div>
         </div>
     `;
-    notesWrapper.appendChild(noteBox);
+    notesWrapper.insertBefore(noteBox, notesWrapper.firstChild); // Insert noteBox at the beginning of notesWrapper
 
     // Toggle options menu visibility
     noteBox.querySelector('.options-btn').addEventListener('click', function () {
