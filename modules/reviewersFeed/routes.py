@@ -15,7 +15,7 @@ ITEMS_PER_PAGE = 2  # Change lang if ganahan ka
 @require_login
 def index():
     try:
-        type = request.args.get('list', 'All', type=str)
+        type = request.args.get('list', 'All Reviewers', type=str)
         searched_item = request.args.get('search_input', None, type=str)
         order = request.args.get('sort_by', 'DESC', type=str)
         page = request.args.get('page', 1, type=int)
