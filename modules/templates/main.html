@@ -153,11 +153,11 @@
         <div>
             <div class="card-name"><b>{{ flashcard[1] }}</b></div>
             <div class="card-type">{{ flashcard[2] }}</div>
-            <div class="card-time">{{ flashcard[5] }}</div> <!-- here caine need i fix -->
+            <div class="card-time">{{ flashcard[4] }}</div> <!-- here caine need i fix -->
         </div>
         <div class="card-footer" style="border-color: {{ flashcards_data['fgcolor'][flashcard[2]] }};">
             <span class="card-owner">{{ userName }}</span>
-            <span class="card-share-type">{{ flashcard[4] }}</span>
+            <span class="card-share-type">{{ flashcard[3] }}</span>
         </div>
     </div>
   </a>
@@ -234,7 +234,8 @@
   <div class="row">
 
     <!-- Example box for notes -->
-    <a href="/" class="d-flex justify-content-center align-items-center position-relative col withpad"
+     
+    <a href="#" class="d-flex justify-content-center align-items-center position-relative col withpad"
       style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; text-decoration: none;">
       <div class="text-center" style="margin-top: 20px;">
         <div
