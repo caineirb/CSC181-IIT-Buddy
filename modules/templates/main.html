@@ -6,8 +6,11 @@
 
 {% block image %} {{ session['user-photo'] }} {% endblock %}
 
-
 {% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/noteslist.css') }}" rel="stylesheet">
+
 <style>
   .withpad {
     margin: 10px;
@@ -21,53 +24,60 @@
     /* Change text color to white on hover */
   }
 </style>
+
+
+
+<!-- Hidden input to store the user's name -->
+<input type="hidden" id="userName" value="{{ userName }}">
+
+<!-- Search bar and edit button -->
 <div class="d-flex justify-content-center py-3 position-relative">
   <div class="input-group rounded d-flex justify-content-center mt-2">
     <div class="form-outline" data-mdb-input-init>
-      <input id="input-search " type="search" class="form-control" placeholder="Search" aria-label="Search"
+      <input id="input-search" type="search" class="form-control" placeholder="Search" aria-label="Search"
         aria-describedby="search-addon" style="border-radius: 20px; width: 300px;" />
     </div>
     <div>
       <button type="button" class="btn btn-outline-light" style="border: none;"><i class="fas fa-search"></i></button>
     </div>
   </div>
-  <div class="position-absolute top-0 end-0 mt-3 me-3"> <button type="button" class="btn btn-light btn-lg"
-      style="border-radius: 30px;"> <i class="fa-regular fa-pen-to-square"></i> </button> </div>
-</div>
-<div class="ms-5">
-  <h2 style="font-family: inter;">Notes:</h2>
-</div>
-<div class="d-flex ms-5 mt-1"> <!-- Boxes -->
-  <div class="row">
-
-    <!-- Button that triggers the modal -->
-    <button type="button" class="d-flex justify-content-center position-relative col withpad"
-      style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none;"
-      data-bs-toggle="modal" data-bs-target="#exampleModal">
-      <i class="fa-solid fa-plus fa-2xl position-absolute top-50 start-50 translate-middle" style="color: black;"></i>
+  <div class="position-absolute top-0 end-0 mt-3 me-3">
+    <button type="button" class="btn btn-light btn-lg" style="border-radius: 30px;">
+      <i class="fa-regular fa-pen-to-square"></i>
     </button>
-
-    <!-- Second Box: This one links to a different page -->
-    <a href="/" class="d-flex justify-content-center align-items-center position-relative col withpad"
-      style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; text-decoration: none;">
-      <div class="text-center" style="margin-top: 20px;">
-        <div
-          style="height: 135px; width: 210px; background-color: #D9D9D9; display: flex; align-items: center; justify-content: center;">
-          <p style="color: white; font-family: DM Mono; font-size: 24px; margin: 0;">Preview</p>
-        </div>
-        <span style="display: block; font-size: 24px; font-family: DM Mono; color: black; margin-top: 10px;">Name</span>
-        <p style="font-size: 16px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin: 0;">Owner</p>
-        <p
-          style="text-align: right; font-size: 14px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 10px;">
-          Share Type</p>
-      </div>
-    </a>
   </div>
 </div>
 
+<!-- Notes section -->
+<div class="ms-5">
+  <h2 style="font-family: inter;">Notes:</h2>
+</div>
+<div class="d-flex ms-5 mt-1" id="notes-container"> <!-- Boxes -->
+  <input type="hidden" name="notes_csrf_token" id="notes_csrf_token" value="{{ csrf_token() }}">
+  <div class="col-2" >
+   <!-- Button that triggers the modal -->
+    <button type="button" class="d-flex justify-content-center align-items-center withpad"
+      style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none; margin-right: 1rem;"
+      data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>
+    </button>
+  </div>
+  
+  <!-- Dynamically added notes -->
+  <div class="row d-flex flex-wrap flex-row-reverse gap-3" id="notesContainer">
+    <!-- Example of a dynamically added note box -->
+    
+  </div>
+</div>
 
+<!-- Button to redirect to notes list -->
+<div class="ms-5 mt-3">
+  <a href="{{ url_for('notes.notes_list') }}" class="btn btn-primary" style="background-color: var(--primary-color); border-color: var(--primary-color);">
+    View All Notes
+  </a>
+</div>
 
-<!-- Modal -->
+<!-- Modal for adding new notes -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -75,25 +85,22 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- ILISI SAD NG ACTION ANI ARUN MA HATAG SA ROUTE NA ASA NI PADULONGAY NA VALUES -->
-        <form action="#" method="POST">
-          <!-- ILISI LANG ANG UNSA NAKA SULOD DIRI SA NAME UG ID SA TEXT INPUTS ARUN MA MATCH SA DATABASE-->
+        <!-- Form for adding new notes -->
+        <form id="noteForm" action="/notes/add_note" method="POST">
+          <!-- CSRF Token -->
+          <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="owner_id" id="owner_id" value="{{ session['user-id'] }}">
+          <input type="hidden" name="owner_name" id="owner_name" value="{{ userName }}">
           <div class="input-group mb-3">
-            <input type="text" class="form-control"
-              style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Name"
-              aria-label="Name" name="#" id="#">
+            <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Name" aria-label="Name" name="noteTitle" id="noteTitle">
           </div>
-
           <div class="input-group mb-3">
-            <input type="text" class="form-control" style="border: 2px solid black;  border-radius: 0;"
-              placeholder="Link" aria-label="Link" name="#" id="#">
+            <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Link" aria-label="Link" name="noteLink" id="noteLink">
           </div>
-
-          <select name="privacy_value" id="privacy_value" class="form-select me-2"
-            style="max-width: 150px; color: black;">
-            <option value="private">Private</option>
-            <option value="public">Public</option>
-            <option value="shared">Shared</option>
+          <select name="privacy_value" id="privacy_value" class="form-select me-2" style="max-width: 150px; color: black;">
+            <option value="Private">Private</option>
+            <option value="Public">Public</option>
+            <option value="Shared">Shared</option>
           </select>
           <div class="modal-footer justify-content-center w-100 mt-3">
             <button type="submit" class="btn btn-dark">Add</button>
@@ -104,11 +111,44 @@
   </div>
 </div>
 
-<!-- REVIEWERS-->
-
-<div class="ms-5 mt-3">
-  <h2 style="font-family: inter;">Reviewers:</h2>
+<!-- Edit Note Modal -->
+<div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="editNoteForm">
+                  <!-- CSRF Token -->
+                  <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+                  <input type="hidden" name="owner_id" id="owner_id" value="{{ session['user-id'] }}">
+                  <input type="hidden" name="owner_name" id="owner_name" value="{{ userName }}">
+                  <div class="input-group mb-3">
+                      <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Title" aria-label="Title" name="editNoteTitle" id="editNoteTitle">
+                  </div>
+                  <div class="input-group mb-3">
+                      <input type="text" class="form-control" style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Link" aria-label="Link" name="editNoteLink" id="editNoteLink">
+                  </div>
+                  <select name="editNotePrivacy" id="editNotePrivacy" class="form-select me-2" style="max-width: 150px; color: black;">
+                      <option value="Private">Private</option>
+                      <option value="Public">Public</option>
+                      <option value="Shared">Shared</option>
+                  </select>
+                  <div class="modal-footer justify-content-center w-100 mt-3">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" id="saveEditNote">Save changes</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
 </div>
+
+
+<!-- Dropdown for selecting reviewer type -->
+<!-- REVIEWERS-->
+<div class="ms-5 mt-3"> <h2 style="font-family: inter;">Reviewers:</h2> </div>
 
 <!-- Just change the values here to match the database and make a route for it pod so that arun ma search and magamit ang value-->
 <div class="ms-5">
@@ -121,18 +161,16 @@
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <li><button type="submit" name="review_type" value="All" class="dropdown-item">All</button></li>
         <li><button type="submit" name="review_type" value="Flashcard" class="dropdown-item">Flashcard</button></li>
-        <li><button type="submit" name="review_type" value="Identification"
-            class="dropdown-item">Identification</button></li>
-        <li><button type="submit" name="review_type" value="MultipleChoice" class="dropdown-item">Multiple
-            Choice</button></li>
+        <li><button type="submit" name="review_type" value="Identification" class="dropdown-item">Identification</button></li>
+        <li><button type="submit" name="review_type" value="MultipleChoice" class="dropdown-item">Multiple Choice</button></li>
         <li><button type="submit" name="review_type" value="Mixed" class="dropdown-item">Mixed</button></li>
       </ul>
     </div>
   </form>
 </div>
 
-
-<div class="d-flex ms-5 mt-1"> <!-- Boxes -->
+<!-- Boxes for reviewers -->
+<div class="d-flex ms-5 mt-1">
   <div class="row d-flex flex-wrap justify-content-start">
 
     <!-- Button that triggers the modal -->
@@ -142,36 +180,35 @@
       <i class="fa-solid fa-plus fa-2xl position-absolute top-50 start-50 translate-middle" style="color: black;"></i>
     </button>
 
-    <!-- Second Box: This one links to a different page -->
+    <!-- Reviewer boxes generated from data -->
     {% for flashcard in flashcards_data['data'] %}
     <a href="{{ url_for('flashcards.edit', id=flashcard[0]) }}" class="d-flex justify-content-start position-relative col-4 withpad"
-    style="width: 450px; height: 245px; background-color: {{ flashcards_data['bgcolor'][flashcard[3]] }}; border-radius: 15px; text-decoration: none; border: 2px dashed black;">
-    <div class="d-flex flex-column justify-content-between" style="height: 100%; padding: 10px; color: {{ flashcards_data['fgcolor'][flashcard[3]] }};">
+      style="width: 450px; height: 245px; background-color: {{ flashcards_data['bgcolor'][flashcard[2]] }}; border-radius: 15px; text-decoration: none; border: 2px dashed black;">
+      <div class="d-flex flex-column justify-content-between" style="height: 100%; padding: 10px; color: {{ flashcards_data['fgcolor'][flashcard[2]] }};">
 
-      <div>
-        <div style="font-size: 32px; font-family: DM Mono;"><b>{{ flashcard[1] }}</b></div>
-        <div style="font-size: 20px; font-family: DM Mono;">{{ flashcard[3] }}</div>
+        <div>
+          <div style="font-size: 32px; font-family: DM Mono;"><b>{{ flashcard[1] }}</b></div>
+          <div style="font-size: 20px; font-family: DM Mono;">{{ flashcard[2] }}</div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-end">
+          <span style="font-size: 20px; font-family: DM Mono; opacity: 0.5; align-self: flex-start;">{{ userName }}</span>
+          <span style="font-size: 16px; font-family: DM Mono; opacity: 0.5; align-self: flex-end;">{{ flashcard[4] }}</span>
+        </div>
+
       </div>
-
-      <div class="d-flex justify-content-between align-items-end">
-        <span style="font-size: 20px; font-family: DM Mono; opacity: 0.5; align-self: flex-start;">{{ userName }}</span>
-        <span style="font-size: 16px; font-family: DM Mono; opacity: 0.5; align-self: flex-end;">{{ flashcard[4] }}</span>
-      </div>
-
-    </div>
-  </a>
+    </a>
     {% endfor %}
 
   </div>
 </div>
 
-<!-- temporary nga button sa view all/show all button sa reviewers list -->
-<!-- pa change lng ni -->
+<!-- Button to view all reviewers -->
 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
   <a href="{{ url_for('reviewers_list.index') }}" class="btn btn-light me-md-2 reviewerslist" type="button">View All</a>
 </div>
 
-<!-- Modal -->
+<!-- Modal for adding reviewers -->
 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -192,7 +229,8 @@
           {% endfor %}
         {% endif %}
       {% endwith %}
-        <!-- Form for Creating Flashcard -->
+        
+        <!-- Form for creating flashcards -->
         <form action="{{ url_for('flashcards.create') }}" method="post">
           <!-- CSRF Token -->
           <input type="hidden" name="_csrf_token" id="_csrf_token" value="{{ csrf_token() }}" />
@@ -201,17 +239,6 @@
           <div class="input-group mb-3">
             <input type="text" class="title-input form-control"
               style="border: none; border-bottom: 2px solid #000000; border-radius: 0;" placeholder="Title"
-              aria-label="Title" name="reviewer-title" id="reviewer-title" maxlength="100" required>
-          </div>
-
-          <div class="d-flex">
-            {% set types = ["Flashcard", "Identification", "Multiple Choice", "Mixed"] %}
-            <select name="reviewer-type" id="reviewer-type" class="form-select me-2"
-              style="max-width: 150px; color: black;">
-              {% for type in types %}
-              <option value="{{ type }}" {% if not type=="Flashcard" %}disabled{% endif %}>{{ type }}</option>
-              {% endfor %}
-            </select>
 
             {% set privacy = ["Private", "Public", "Shared"] %}
             <select name="reviewer-privacy" id="reviewer-privacy" class="form-select me-2"
@@ -241,4 +268,6 @@
   });
 </script>
 
-{%endblock%}
+
+<script src="{{ url_for('static', filename='javascript/notes/addnotes.js') }}"></script>
+{% endblock %}
