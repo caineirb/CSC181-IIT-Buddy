@@ -65,3 +65,15 @@ function clearSearch(form){
     document.getElementById('search_input').value = ''; 
     form.submit();
 }
+
+function openInNewTab(button) {
+    const link = button.getAttribute('data-link'); // Get the value of the data-link attribute
+    if (link) {
+        window.open(link, '_blank'); // Open the link in a new tab
+    } else {
+        Swal.fire({
+            text: "Link not found",
+            icon: "warning"
+        });
+    }
+}

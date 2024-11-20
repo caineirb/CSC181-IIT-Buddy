@@ -322,7 +322,7 @@
 
 .card-date {
     text-align: right;
-    margin: 10px 0; /* Adds spacing around the date */
+    margin: 10px 20px; /* Adds spacing around the date */
     font-family: 'DM Mono', monospace;
     color: rgba(0, 0, 0, 0.7);
     flex-shrink: 0; /* Prevents the date from shrinking */
