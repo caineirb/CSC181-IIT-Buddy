@@ -104,29 +104,36 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
     // Truncate title if it exceeds 10 characters
     const truncatedTitle = title.length > 10 ? title.substring(0, 10) + '...' : title;
 
+ 
+
+
+
     noteBox.innerHTML = `
-        <a href="${link}" class="note-link" target="_blank" style="text-decoration: none;">
-            <div class="text-center" style="margin-top: 25px;">
-                <span style="display: block; font-size: 24px; font-family: DM Mono; color: black; margin-top: 10px;" title="${title}">${truncatedTitle}</span>
-                <p style="font-size: 16px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin: 0;">${userName}</p>
-                <p style="text-align: right; font-size: 14px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 10px;">${privacy}</p>
-                <p style="text-align: right; font-size: 12px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 5px;">${createdAt}</p>
-            </div>
-        </a>
-        <div class="note-buttons" style="position: absolute; top: 5px; right: 10px; display: flex;">
-            <button class="options-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: gray; color: white;">
-                <i class="fas fa-ellipsis-h"></i>
-            </button>
-            <div class="options-menu" style="display: none; position: absolute; top: 30px; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);">
-                <button class="edit-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: green; color: white; border: none; border-bottom: 1px solid #ccc;">
-                    Edit
-                </button>
-                <button class="delete-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: red; color: white; border: none;">
-                    Delete
-                </button>
-            </div>
+    <a href="${link}" class="note-link" target="_blank" style="text-decoration: none;">
+        <div class="text-center" style="margin-top: 25px;">
+            <span style="display: block; font-size: 24px; font-family: Inter; color: black; margin-top: 10px;" title="${title}">${truncatedTitle}</span>
         </div>
-    `;
+        <div style="font-family: Inter; color: rgba(0, 0, 0, 0.5); margin-top: 20px; position: relative;"> <!-- Set position to relative -->
+            <p style="font-size: 14px; margin-top: 10px; text-align: left; bottom: -40px; position: relative;">${privacy}</p>
+            <p style="font-size: 12px; margin-top: 5px; text-align: left; bottom: -20px; position: relative;">Created : ${createdAt}</p>
+            <p style="font-size: 16px; margin: 0; text-align: left;">${userName}</p>
+        </div>
+
+    </a>
+    <div class="note-buttons" style="position: absolute; top: 5px; right: 10px; display: flex;">
+        <button class="options-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: gray; color: white;">
+            <i class="fas fa-ellipsis-h"></i>
+        </button>
+        <div class="options-menu" style="display: none; position: absolute; top: 30px; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);">
+            <button class="edit-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: green; color: white; border: none; border-bottom: 1px solid #ccc;">
+                Edit
+            </button>
+            <button class="delete-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: red; color: white; border: none;">
+                Delete
+            </button>
+        </div>
+    </div>
+`;
     notesWrapper.insertBefore(noteBox, notesWrapper.firstChild); // Insert noteBox at the beginning of notesWrapper
 
     // Toggle options menu visibility

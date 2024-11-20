@@ -111,7 +111,10 @@
     <!-- Search, Filter, and Sort Section -->
     <div class="searchbar d-flex">
         <!-- Search Bar -->
-        <form class="search-bar" style="width: 544px; height: 45px; flex-shrink: 0; border-radius: 10px; border: 1px solid #000; background: #FFF; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);">
+        <form id="searchForm" class="search-bar" style="width: 544px; height: 45px; flex-shrink: 0; border-radius: 10px; border: 1px solid #000; background: #FFF; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);">
+            <button type="button" class="clear-btn" onclick="document.getElementById('search-input').value='';" style="background: none; border: none; font-size: 1.5rem;">
+                <i class="bi bi-x"></i>
+            </button>
             <input type="text" id="search-input" name="search_query" placeholder="Search here...">
             <button type="submit" class="search-btn">
                 <i class="bi bi-search"></i>
@@ -126,7 +129,7 @@
                 <input type="hidden" name="owner_id" id="owner_id" value="{{ session['user-id'] }}">
                 <input type="hidden" name="owner_name" id="owner_name" value="{{ userName }}">
                 <div class="d-flex">
-                    <select name="privacy-option" id="privacy-option" class="form-select" style="width: 200px; height: 45px; flex-shrink: 0; border-radius: 10px; background: #FFF; color: black;">
+                    <select name="privacy-option" id="privacy-option" class="form-select" style="width: 200px; height: 45px; flex-shrink: 0; border-radius: 10px; background-color: #FFF; color: black;">
                         <option value="All">All</option>
                         <option value="Private">Private</option>
                         <option value="Public">Public</option>
@@ -140,7 +143,7 @@
         <div class="ms-5 sort">
             <form id="sortForm">
                 <div class="d-flex">
-                    <select name="sort_by" id="sort_by" class="form-select me-2" style="width: 200px; height: 45px; flex-shrink: 0; border-radius: 10px; background: #FFF; color: black;">
+                    <select name="sort_by" id="sort_by" class="form-select me-2" style="width: 200px; height: 45px; flex-shrink: 0; border-radius: 10px; background-color: #FFF; color: black;">
                         <option value="DESC">Most Recent &darr;</option>
                         <option value="ASC">Oldest &uarr;</option>
                     </select>

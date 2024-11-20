@@ -76,7 +76,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     sortBy.addEventListener('change', function () {
         fetchNotes(1, input.value.trim(), privacyOption.value, sortBy.value);
-        history.pushState(null, '', `?page=1&search_query=${input.value.trim()}&privacy=${privacyOption.value}&sort_by=${sortBy.value}`);
+        history.pushState(null, '', `?page=1&search_query=${input.value.trim()}&privacy=${privacyOption.value}&sort=${sortBy.value}`);
+    });
+
+    // Clear search input and reset notes when clear button is pressed
+    const clearBtn = document.querySelector('.clear-btn');
+    clearBtn.addEventListener('click', function () {
+        input.value = '';
+        document.getElementById('searchForm').reset();
+        fetchNotes(1, '', privacyOption.value, sortBy.value);
+        history.pushState(null, '', `?page=1&search_query=&privacy=${privacyOption.value}&sort=${sortBy.value}`);
     });
 
     // Handle Add Note form submission
@@ -152,20 +161,17 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
                 notesWrapper.className = 'row d-flex justify-content-center flex-wrap gap-3';
                 notesContainer.appendChild(notesWrapper);
 
-                // Add the button that triggers the Add Note Modal
-                const addNoteButton = document.createElement('button');
-                addNoteButton.type = 'button';
-                addNoteButton.className = 'd-flex justify-content-center align-items-center withpad';
-                addNoteButton.style.height = '245px';
-                addNoteButton.style.width = '250px';
-                addNoteButton.style.backgroundColor = '#FFFFF0';
-                addNoteButton.style.borderRadius = '15px';
-                addNoteButton.style.border = '2px dashed black';
-                addNoteButton.style.textDecoration = 'none';
-                addNoteButton.setAttribute('data-bs-toggle', 'modal');
-                addNoteButton.setAttribute('data-bs-target', '#addNoteModal');
-                addNoteButton.innerHTML = '<i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>';
-                notesWrapper.appendChild(addNoteButton);
+                // Button that triggers the modal
+                const addButton = document.createElement('button');
+                addButton.type = 'button';
+                addButton.className = 'd-flex justify-content-center align-items-center withpad';
+                addButton.style = 'height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none; margin-right: 1rem;';
+                addButton.setAttribute('data-bs-toggle', 'modal');
+                addButton.setAttribute('data-bs-target', '#addNoteModal'); // Updated modal target
+                addButton.innerHTML = '<i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>';
+                notesWrapper.appendChild(addButton);
+
+                
 
                 // Ensure only 10 items per page
                 const notesToShow = data.notes;
@@ -178,15 +184,18 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
                     if ((index + 1) % 5 === 0) {
                         const newRow = document.createElement('div');
                         newRow.className = 'row d-flex justify-content-center flex-wrap gap-3';
+                        notesWrapper = newRow;
                         notesContainer.appendChild(newRow);
                         notesWrapper = newRow;
                     }
                 });
+
                 updatePagination(data.total_notes, page, searchQuery, privacy, sort);
             }
         })
         .catch(error => console.error('Error fetching notes:', error));
 }
+
 
 // Add a note box to the UI
 function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt) {
@@ -199,28 +208,31 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
     const truncatedTitle = title.length > 10 ? title.substring(0, 10) + '...' : title;
 
     noteBox.innerHTML = `
-        <a href="${link}" class="note-link" target="_blank" style="text-decoration: none;">
-            <div class="text-center" style="margin-top: 25px;">
-                <span style="display: block; font-size: 24px; font-family: DM Mono; color: black; margin-top: 10px;" title="${title}">${truncatedTitle}</span>
-                <p style="font-size: 16px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin: 0;">${userName}</p>
-                <p style="text-align: right; font-size: 14px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 10px;">${privacy}</p>
-                <p style="text-align: right; font-size: 12px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 5px;">${createdAt}</p>
-            </div>
-        </a>
-        <div class="note-buttons" style="position: absolute; top: 5px; right: 10px; display: flex;">
-            <button class="options-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: gray; color: white;">
-                <i class="fas fa-ellipsis-h"></i>
-            </button>
-            <div class="options-menu" style="display: none; position: absolute; top: 30px; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);">
-                <button class="edit-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: green; color: white; border: none; border-bottom: 1px solid #ccc;">
-                    Edit
-                </button>
-                <button class="delete-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: red; color: white; border: none;">
-                    Delete
-                </button>
-            </div>
+    <a href="${link}" class="note-link" target="_blank" style="text-decoration: none;">
+        <div class="text-center" style="margin-top: 25px;">
+            <span style="display: block; font-size: 24px; font-family: Inter; color: black; margin-top: 10px;" title="${title}">${truncatedTitle}</span>
         </div>
-    `;
+        <div style="font-family: Inter; color: rgba(0, 0, 0, 0.5); margin-top: 20px; position: relative;"> <!-- Set position to relative -->
+            <p style="font-size: 14px; margin-top: 10px; text-align: left; bottom: -40px; position: relative;">${privacy}</p>
+            <p style="font-size: 12px; margin-top: 5px; text-align: left; bottom: -20px; position: relative;">Created on: ${createdAt}</p>
+            <p style="font-size: 16px; margin: 0; text-align: left;">${userName}</p>
+        </div>
+
+    </a>
+    <div class="note-buttons" style="position: absolute; top: 5px; right: 10px; display: flex;">
+        <button class="options-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: gray; color: white;">
+            <i class="fas fa-ellipsis-h"></i>
+        </button>
+        <div class="options-menu" style="display: none; position: absolute; top: 30px; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);">
+            <button class="edit-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: green; color: white; border: none; border-bottom: 1px solid #ccc;">
+                Edit
+            </button>
+            <button class="delete-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: red; color: white; border: none;">
+                Delete
+            </button>
+        </div>
+    </div>
+`;
     notesWrapper.appendChild(noteBox);
 
     // Toggle options menu visibility
