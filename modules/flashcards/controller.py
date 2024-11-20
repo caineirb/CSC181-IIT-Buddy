@@ -1,5 +1,6 @@
 from modules import mysql
 import base64
+from modules.controller import calculate_time_passed
 
 def createFlashcard(data :dict):
     try:
@@ -130,7 +131,7 @@ def fetchPreview(owner_id :str):
     try:
         cur = mysql.connection.cursor()
         fetch_id = """
-            SELECT `id`, `title`, `description`, `type`, `privacy`, `owner_id` 
+            SELECT `id`, `title`, `type`, `privacy`, `created_on`
             FROM `reviewers`
             WHERE `owner_id` = %s AND `type` = 'Flashcard'
             ORDER BY `created_on` DESC
@@ -138,7 +139,16 @@ def fetchPreview(owner_id :str):
         """
 
         cur.execute(fetch_id, (owner_id,))
-        return cur.fetchall()
+        raw_results = cur.fetchall()
+
+        # Process `created_on` to calculate "time passed"
+        processed_results = []
+        for row in raw_results:
+            id, title, type, privacy, created_on = row
+            time_passed = calculate_time_passed(created_on)
+            processed_results.append((id, title, type, privacy, time_passed))
+
+        return processed_results
     except mysql.connection.Error as e:
         mysql.connection.rollback()  # Rollback in case of error
         raise e

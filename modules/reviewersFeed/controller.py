@@ -1,6 +1,5 @@
 from modules import mysql
-from datetime import datetime
-from modules.controller import fetchStudent
+from modules.controller import fetchStudent, calculate_time_passed
 '''
 Controllers for the Reviewers List
 '''
@@ -93,21 +92,3 @@ def fetchReviewers(type: str, param: str, order: str, page: int, items_per_page:
         raise e
     finally:
         cur.close()  # Ensure the cursor is closed
-
-
-# For the datetime data displayed in the reviewer cards
-def calculate_time_passed(datetime_value):
-    """Calculate the time passed from a datetime value to now."""
-    current_time = datetime.now()
-    time_difference = current_time - datetime_value
-
-    if time_difference.days > 0:
-        return f"{time_difference.days} days ago" if time_difference.days > 1 else f"{time_difference.days} day ago"
-    elif time_difference.total_seconds() >= 3600:
-        hours = int(time_difference.total_seconds() // 3600)
-        return f"{hours} hours ago" if hours > 1 else f"{hours} hour ago"
-    elif time_difference.total_seconds() >= 60:
-        minutes = int(time_difference.total_seconds() // 60)
-        return f"{minutes} minutes ago" if minutes > 1 else f"{minutes} minute ago"
-    else:
-        return "Just now"

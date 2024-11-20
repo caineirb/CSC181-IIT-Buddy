@@ -14,6 +14,8 @@ ITEMS_PER_PAGE = 2  # Change lang if ganahan ka
 @reviewers_feed_bp.route('/', methods=["GET"])
 @require_login
 def index():
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
     try:
         type = request.args.get('list', 'All Reviewers', type=str)
         searched_item = request.args.get('search_input', None, type=str)
@@ -46,15 +48,13 @@ def index():
             }
         }
 
-        studentData = fetchStudent(session['user-id'])
-        user_name = studentData[0][1] if studentData else None
         return render_template('reviewersFeed/reviewersFeed.html', user_name=user_name, reviewers_data=reviewers_data)
 
     except mysql.connection.Error as e:
         flash(customErrorMessages(e), "danger")
         print(e)
         # Provide default values for the template in case of an error
-        flashcards_data = {
+        reviewers_data = {
             'data': [],
             'details': {
                 'totalCount': 0,
@@ -69,7 +69,7 @@ def index():
             'bgcolor': {},
             'fgcolor': {}
         }
-        return render_template('reviewersFeed/reviewersFeed.html', user_name=fetchStudent(session['user-id'])[0][1] , flashcards_data=flashcards_data)
+        return render_template('reviewersFeed/reviewersFeed.html', user_name=user_name , reviewers_data=reviewers_data)
     
 
 
