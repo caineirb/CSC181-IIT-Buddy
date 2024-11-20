@@ -64,10 +64,6 @@
                     <a class="text-reset me-3" href="{{ url_for('reviewers_feed.index') }}">
                         <i class="fa-solid fa-scroll fa-2xl"></i>
                     </a>
-                    <!--FYP-->
-                    <a class="text-reset me-3" href="#">
-                        <i class="fa-solid fa-clipboard fa-2xl"></i>
-                    </a>
                     
                     <div class="dropdown">
                         <button class="btn btn-dark dropdown-toggle d-flex align-items-center justify-content-between" type="button" id="navbarDropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: auto; height: 50px; padding: 0 10px;">
@@ -89,7 +85,7 @@
         </nav>
     
     </header>
-    {% block content %}  {% endblock %}
+    <div style="height: 150vh;">{% block content %}  {% endblock %}</div>
     <div style="background-color: #000000; width: 100%; bottom: 0; left: 0; text-align: center; position: fixed">
         <footer class="py-1">
         </footer>

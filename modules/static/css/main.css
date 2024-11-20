@@ -1,0 +1,135 @@
+/* importing google fonts: inter, miniver, and poppins */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Miniver&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root{
+    /* colors */
+    --white-color: #fff;
+    --black-color: #000;
+    --primary-color: #0D1A26;
+    --secondary-color: #0E7373;
+    --accent-color: #0C203E;
+    --navbar-bg-color: #FAFAFA;
+
+    /* font size */
+    --font-size-s: 0.9rem;
+    --font-size-n: 1rem;
+    --font-size-m: 1.12rem;
+    --font-size-l: 1.5rem;
+    --font-size-xl: 2rem;
+    --font-size-xxl: 2.3rem;
+
+    /* font weight */
+    --font-weight-norml: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* border radius */
+    --border-radius-s: 0.8px;
+    --border-radius-m: 30px;
+    --border-radius-circle: 50%;
+
+    /* site mas width */
+    --site-max-width: 1300px;
+}
+
+body {
+    overflow-x: hidden; /* aron di mo scroll horizontically */
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.content.sample {
+    width: 100%;
+    display: flex;
+    position: relative;
+    margin-top: 20px;
+    transform: translateX(40px);
+}
+
+.card {
+    width: 500px;
+    height: 245px;
+    margin: 15px; 
+    border-radius: 15px;
+    text-decoration: none;
+    border: 3px dashed var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.card-name {
+    font-size: 18px;
+}
+
+.card-type {
+    font-size: 14px;
+}
+
+.card-time{
+    position: absolute;
+    bottom: 60px;
+    right: 20px;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.card-owner {
+    font-size: 12px;
+    position: relative;
+    right: 15px;
+}
+
+.card-share-type {
+    font-size: 12px;
+    align-self: flex-end;
+}
+
+.add-button {
+    background-color: #FFFFF0;
+    border-radius: 15px;
+    border: 3px dashed var(--primary-color);
+    text-decoration: none;
+}
+
+.add-button .bi {
+    color: var(--primary-color);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+}
+
+.direct-reviewerslist {
+    font-family: Inter;
+    position: absolute;
+    bottom: -20px;
+    right: 70px;
+    font-size: 3rem;
+}
+
+.direct-noteslist {
+    font-family: Inter;
+    position: absolute;
+    justify-content: flex-end;
+    left: 1850px;
+    bottom: -30px;
+    font-size: 3rem;
+}

@@ -26,6 +26,10 @@
     --border-radius-circle: 50%;
 }
 
+body{
+    overflow-y: hidden;
+}
+
 .header {
     background-color: var(--primary-color);
     color: var(--white-color);

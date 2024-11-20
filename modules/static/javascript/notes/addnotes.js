@@ -104,10 +104,6 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
     // Truncate title if it exceeds 10 characters
     const truncatedTitle = title.length > 10 ? title.substring(0, 10) + '...' : title;
 
- 
-
-
-
     noteBox.innerHTML = `
     <a href="${link}" class="note-link" target="_blank" style="text-decoration: none;">
         <div class="text-center" style="margin-top: 25px;">
