@@ -24,6 +24,7 @@ def create():
     except mysql.connection.Error as e:
         # Flash error message and redirect back to the page with the modal
         flash(customErrorMessages(e), "error")
+        print(e)
         return redirect(from_url)  # Redirect to the same route to open the modal
 
 @flashcards_bp.route('/edit/<string:id>', methods=["GET"])

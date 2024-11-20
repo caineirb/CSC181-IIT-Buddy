@@ -27,7 +27,9 @@
     --border-radius-m: 30px;
     --border-radius-circle: 50%;
 }
-
+body{
+    overflow-y: hidden;
+}
 .header {
     background-color: var(--primary-color);
     color: var(--white-color);
@@ -216,6 +218,7 @@
 }
 
 .content {
+    transform: translateY(-40px);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -223,7 +226,6 @@
 }
 
 .content.sample {
-    margin-top: 20px;
     width: 100%;
     display: flex;
     flex-wrap: wrap;

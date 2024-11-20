@@ -165,7 +165,7 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
                 const addButton = document.createElement('button');
                 addButton.type = 'button';
                 addButton.className = 'd-flex justify-content-center align-items-center withpad';
-                addButton.style = 'height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none; margin-right: 1rem;';
+                addButton.style = 'height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none; margin-left: 20px; margin-right: 1rem;';
                 addButton.setAttribute('data-bs-toggle', 'modal');
                 addButton.setAttribute('data-bs-target', '#addNoteModal'); // Updated modal target
                 addButton.innerHTML = '<i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>';
@@ -184,9 +184,7 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
                     if ((index + 1) % 5 === 0) {
                         const newRow = document.createElement('div');
                         newRow.className = 'row d-flex justify-content-center flex-wrap gap-3';
-                        notesWrapper = newRow;
                         notesContainer.appendChild(newRow);
-                        notesWrapper = newRow;
                     }
                 });
 
