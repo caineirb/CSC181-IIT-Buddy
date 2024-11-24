@@ -5,11 +5,10 @@
 {% block name %} {{ user_name }} {% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/flashcards/flashcards.css') }}">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/flashcards/flashcards.css') }}">
+
+<!-- For the swapping of the Cards' Orders -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 <!-- Go Back Button -->
 <button type="button" class="go-back-button" onclick="handleGoBack()">
@@ -18,8 +17,8 @@
 </button>
 
 <div class="reviewer-info">
-    <input type="hidden" name="save_url" id="save_url" value="{{ url_for('flashcards.saveInfo') }}">
-    <input type="hidden" name="deleteURL" id="deleteURL" value="{{ url_for('flashcards.delete') }}">
+    <input type="hidden" name="save_flashcard_url" id="save_flashcard_url" value="{{ url_for('reviewers.flashcards.save_flashcard') }}">
+    <input type="hidden" name="check_duplicate_url" id="check_duplicate_url" value="{{ url_for('reviewers.check_duplicate') }}">
     <input type="hidden" name="_token_csrf" id="_token_csrf" value="{{ csrf_token() }}">
     <input type="hidden" name="reviewer-id" id="reviewer-id" value="{{ data['id'] }}" />
     
@@ -67,9 +66,6 @@
     </div>
 </div>
 
-<input type="hidden" name="save_flashcard_url" id="save_flashcard_url" value="{{ url_for('flashcards.save_flashcard') }}">
-<input type="hidden" name="check_duplicate_url" id="check_duplicate_url" value="{{ url_for('flashcards.check_duplicate') }}">
-
 <!-- Flashcards Container -->
 <div class="flashcards-container">
     <!-- Flashcard template will be appended here -->
@@ -84,9 +80,9 @@
 </script>
 
 <!-- JavaScript Files -->
-<script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/saveFlashcards.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/functionalities.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/deleteFlashcard.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='javascript/flashcards/saveDetails.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/saveDetails.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/deleteFlashcard.js') }}"></script>
 
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/flashcards/saveFlashcards.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/flashcards/functionalities.js') }}"></script>
 {% endblock %}

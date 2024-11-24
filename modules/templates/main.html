@@ -7,8 +7,6 @@
 {% block image %} {{ session['user-photo'] }} {% endblock %}
 
 {% block content %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/noteslist.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
 
@@ -146,17 +144,17 @@
   </button>
 
 
-  {% for flashcard in flashcards_data['data'] %}
-  <a href="{{ url_for('flashcards.edit', id=flashcard[0]) }}" class="card" style="background-color: {{ flashcards_data['bgcolor'][flashcard[2]] }};">
-    <div class="card-content" style="color: {{ flashcards_data['fgcolor'][flashcard[2]] }};">
+  {% for reviewer in reviewers_data['data'] %}
+  <a href="{{ url_for('reviewers.edit', id=reviewer[0], type=reviewer[2]) }}" class="card" style="background-color: {{ reviewers_data['bgcolor'][reviewer[2]] }};">
+    <div class="card-content" style="color: {{ reviewers_data['fgcolor'][reviewer[2]] }};">
         <div style="padding-bottom: 130px;">
-            <div class="card-name"><b>{{ flashcard[1] }}</b></div>
-            <div class="card-type">{{ flashcard[2] }}</div>
-            <div class="card-time">{{ flashcard[4] }}</div> <!-- here caine need i fix -->
+            <div class="card-name"><b>{{ reviewer[1] }}</b></div>
+            <div class="card-type">{{ reviewer[2] }}</div>
+            <div class="card-time">{{ reviewer[4] }}</div> <!-- here caine need i fix -->
         </div>
-        <div class="card-footer" style="border-color: {{ flashcards_data['fgcolor'][flashcard[2]] }};">
+        <div class="card-footer" style="border-color: {{ reviewers_data['fgcolor'][reviewer[2]] }};">
             <span class="card-owner">{{ userName }}</span>
-            <span class="card-share-type">{{ flashcard[3] }}</span>
+            <span class="card-share-type">{{ reviewer[3] }}</span>
         </div>
     </div>
   </a>
@@ -165,7 +163,7 @@
   
 <!-- button sa view more sa reviewers list -->
 <div class="ms-5 mt-3">
-  <a href="{{ url_for('reviewers_list.index') }}" class="btn btn-primary" style="background-color: var(--primary-color); border-color: var(--primary-color);">
+  <a href="{{ url_for('reviewers.reviewers_list.index') }}" class="btn btn-primary" style="background-color: var(--primary-color); border-color: var(--primary-color);">
     Show All Reviewers
   </a>
 </div>
@@ -193,7 +191,7 @@
       {% endwith %}
         
         <!-- Form for creating flashcards -->
-        <form action="{{ url_for('flashcards.create') }}" method="post">
+        <form action="{{ url_for('reviewers.create') }}" method="post">
           <!-- CSRF Token -->
           <input type="hidden" name="_csrf_token" id="_csrf_token" value="{{ csrf_token() }}" />
           <input type="hidden" name="from_url" id="from_url" value="{{ url_for('index') }}" />
@@ -229,46 +227,6 @@
       </div>
     </div>
   </div>
-</div>
-
-<!-- FAVOURITES/SAVED -->
-<div class="ms-5 mt-3">
-  <h2 style="font-family: inter;">Saved:</h2>
-</div>
-<div class="d-flex ms-5 mt-1" style="gap: 10px;"> <!-- Boxes -->
-  <div class="row">
-
-    <!-- Example box for notes -->
-     
-    <a href="#" class="d-flex justify-content-center align-items-center position-relative col withpad"
-      style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; text-decoration: none;">
-      <div class="text-center" style="margin-top: 20px;">
-        <div
-          style="height: 135px; width: 210px; background-color: #D9D9D9; display: flex; align-items: center; justify-content: center;">
-          <p style="color: white; font-family: DM Mono; font-size: 24px; margin: 0;">Preview</p>
-        </div>
-        <span style="display: block; font-size: 24px; font-family: DM Mono; color: black; margin-top: 10px;">Name</span>
-        <p style="font-size: 16px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin: 0;">Owner</p>
-        <p style="text-align: right; font-size: 14px; font-family: DM Mono; color: rgba(0, 0, 0, 0.5); margin-top: 10px;">Public</p>
-      </div>
-    </a>
-  </div>
-
-
-<a href="#" class="card" style="background-color: #0C203E;">
-  <div class="card-content" style="color: white;">
-      <div>
-          <div class="card-name"><b>Name</b></div>
-          <div class="card-type">Type</div>
-          <div class="card-time">Time</div> <!-- here caine need i fix -->
-      </div>
-      <div class="card-footer" style="border-color: white;">
-          <span class="card-owner">Owner</span>
-          <span class="card-share-type">Public</span>
-      </div>
-  </div>
-</a>
-
 </div>
 
 <script>

@@ -1,4 +1,4 @@
-/**we
+/**
  * Handles the functionalities of the flashcards. Adding, deleting, editing, moving, etc.
  */
 
