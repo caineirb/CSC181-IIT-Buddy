@@ -1,8 +1,7 @@
 from modules import mysql
-import base64
 from modules.controller import calculate_time_passed
 
-def createFlashcard(data :dict):
+def createReviewer(data :dict):
     try:
         cur = mysql.connection.cursor()
         insert_statement =  """
@@ -26,46 +25,7 @@ def createFlashcard(data :dict):
     finally:
         cur.close()  # Ensure the cursor is closed
 
-def addCard(data :dict):
-    try:
-        cur = mysql.connection.cursor()
-        insert_q_statement =  """
-            INSERT INTO `items` (`reviewer_id`, `number`, `question`, `question_image`)
-            VALUE (%s, %s, %s, %s);
-        """
-        
-        cur.execute(insert_q_statement, (data['reviewer_id'], data['number'], data['definition'], data['image']))
-        mysql.connection.commit()
-
-        insert_a_statement =  """
-            INSERT INTO `answers` (`reviewer_id`, `question_number`, `answer_text`, `is_correct`)
-            VALUE (%s, %s, %s, %s);
-        """
-        
-        cur.execute(insert_a_statement, (data['reviewer_id'], data['number'], data['term'], True))
-        mysql.connection.commit()
-    except mysql.connection.Error as e:
-        mysql.connection.rollback()  # Rollback in case of error
-        raise e
-    finally:
-        cur.close()  # Ensure the cursor is closed
-
-def removeCards(id :str):
-    try:
-        cur = mysql.connection.cursor()
-        delete_q_statement =  """
-            DELETE FROM `items` WHERE `reviewer_id` = %s;
-        """
-        
-        cur.execute(delete_q_statement, (id, ))
-        mysql.connection.commit()
-    except mysql.connection.Error as e:
-        mysql.connection.rollback()  # Rollback in case of error
-        raise e
-    finally:
-        cur.close()  # Ensure the cursor is closed
-
-def editFlashcard(data :dict):
+def editReviewerInfo(data :dict):
     try:
         cur = mysql.connection.cursor()
         update_statement =  """
@@ -82,58 +42,29 @@ def editFlashcard(data :dict):
     finally:
         cur.close()  # Ensure the cursor is closed
 
-def fetchFlashcard(id: str):
+def deleteReviewer(id :str, type :str):
     try:
-        flashcard_data = {}
         cur = mysql.connection.cursor()
-        
-        # Fetch basic flashcard information
-        fetch_information = """
-            SELECT `title`, `description`, `type`, `privacy`, `owner_id` FROM `reviewers`
-            WHERE `id` = %s AND `type` = 'Flashcard';
+        delete_statement =  """
+            DELETE FROM `reviewers` WHERE `id` = %s AND `type` = %s;
         """
-        cur.execute(fetch_information, (id,))
-        flashcard_data['information'] = cur.fetchone()
         
-        # Fetch flashcard items and answers
-        fetch_cards = """
-            SELECT `i`.`number`, `i`.`question`, `i`.`question_image`, `a`.`answer_text`
-            FROM `items` AS `i` 
-            LEFT JOIN `answers` AS `a` 
-            ON `i`.`reviewer_id` = `a`.`reviewer_id` AND `i`.`number` = `a`.`question_number`
-            WHERE `i`.`reviewer_id` = %s ORDER BY `i`.`number` ASC;
-        """
-        cur.execute(fetch_cards, (id,))
-        cards = cur.fetchall()
-        
-        # Structure the flashcard data
-        flashcard_data['cards'] = []
-        
-        for card in cards:
-            card_data = {
-                'number': card[0],
-                'question': card[1],
-                'image': base64.b64encode(card[2]).decode('utf-8') if card[2] else None,
-                'answer': card[3]
-            }
-            flashcard_data['cards'].append(card_data)
-        
-        return flashcard_data
-    
+        cur.execute(delete_statement, (id, type))
+        mysql.connection.commit()
     except mysql.connection.Error as e:
         mysql.connection.rollback()  # Rollback in case of error
         raise e
-    
     finally:
         cur.close()  # Ensure the cursor is closed
 
+# Get 5 reviewers for the main display
 def fetchPreview(owner_id :str):
     try:
         cur = mysql.connection.cursor()
         fetch_id = """
             SELECT `id`, `title`, `type`, `privacy`, `created_on`
             FROM `reviewers`
-            WHERE `owner_id` = %s AND `type` = 'Flashcard'
+            WHERE `owner_id` = %s
             ORDER BY `created_on` DESC
             LIMIT 5;
         """
@@ -155,15 +86,15 @@ def fetchPreview(owner_id :str):
     finally:
         cur.close()  # Ensure the cursor is closed
 		
-def fetchFlashcardInfo(id :str):
+def fetchReviewerInfo(id :str, type :str):
     try:
         cur = mysql.connection.cursor()
         fetch_id = """
             SELECT `id`, `title`, `description`, `type`, `privacy`, `owner_id` 
             FROM `reviewers`
-            WHERE `id` = %s and `type` = 'Flashcard';
+            WHERE `id` = %s and `type` = %s;
         """
-        cur.execute(fetch_id, (id,))
+        cur.execute(fetch_id, (id, type))
         return cur.fetchone()
     except mysql.connection.Error as e:
         mysql.connection.rollback()  # Rollback in case of error
@@ -171,30 +102,14 @@ def fetchFlashcardInfo(id :str):
     finally:
         cur.close()  # Ensure the cursor is closed
 
-def deleteFlashcard(id :str):
-    try:
-        cur = mysql.connection.cursor()
-        delete_statement =  """
-            DELETE FROM `reviewers` WHERE `id` = %s;
-        """
-        
-        cur.execute(delete_statement, (id,))
-        mysql.connection.commit()
-    except mysql.connection.Error as e:
-        mysql.connection.rollback()  # Rollback in case of error
-        raise e
-    finally:
-        cur.close()  # Ensure the cursor is closed
-
-
-def checkDuplicateTitle(title :str, id :str = None):
+def checkDuplicateTitle(title :str, type :str, id :str = None):
     try:
         cur = mysql.connection.cursor()
         fetch_count = """
             SELECT COUNT(`title`) FROM `reviewers`
-            WHERE `title` = %s AND `type` = 'Flashcard'
+            WHERE `title` = %s AND `type` = %s
         """
-        fetch_param = [title]
+        fetch_param = [title, type]
         if id:
             fetch_count += " AND NOT (`id` = %s);"
             fetch_param.append(id)
