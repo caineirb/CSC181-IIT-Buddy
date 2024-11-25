@@ -194,3 +194,10 @@
     display: flex;
     gap: 10px;
 }
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}

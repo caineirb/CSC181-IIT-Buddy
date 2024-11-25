@@ -1,16 +1,14 @@
 from flask import flash, render_template, request, session
 from modules.controller import require_login, fetchStudent, customErrorMessages
-from modules.reviewersList.controller import countReviewers, fetchReviewers
 from . import reviewers_list_bp
+from modules.reviewers.reviewersList.controller import fetchReviewers, countReviewers
 from modules import mysql
 
 
 '''
 Reviewers List routes
 '''
-
 ITEMS_PER_PAGE = 5  # Change lang if ganahan ka
-
 @reviewers_list_bp.route('/', methods=["GET"])
 @require_login
 def index():
@@ -21,7 +19,7 @@ def index():
         order = request.args.get('sort_by', 'DESC', type=str)
         page = request.args.get('page', 1, type=int)
 
-        flashcards_data = {
+        reviewers = {
             'data': fetchReviewers(session['user-id'], type, searched_item, privacy, order, page, ITEMS_PER_PAGE),
             'details': {
                 'totalCount': countReviewers(session['user-id'], type, searched_item, privacy, order),
@@ -50,13 +48,13 @@ def index():
 
         studentData = fetchStudent(session['user-id'])
         user_name = studentData[0][1] if studentData else None
-        return render_template('reviewersList/reviewerslist.html', user_name=user_name, flashcards_data=flashcards_data)
+        return render_template('reviewers/reviewersList/reviewerslist.html', user_name=user_name, reviewers=reviewers)
 
     except mysql.connection.Error as e:
         flash(customErrorMessages(e), "danger")
         print(e)
         # Provide default values for the template in case of an error
-        flashcards_data = {
+        reviewers = {
             'data': [],
             'details': {
                 'totalCount': 0,
@@ -72,4 +70,4 @@ def index():
             'bgcolor': {},
             'fgcolor': {}
         }
-        return render_template('flashcards/reviewerslist.html', user_name=fetchStudent(session['user-id'])[0][1] , flashcards_data=flashcards_data)
+        return render_template('reviewers/reviewersList/reviewerslist.html', user_name=fetchStudent(session['user-id'])[0][1] , reviewers=reviewers)

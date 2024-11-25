@@ -16,7 +16,6 @@ function updateFlashcardDisplay() {
     document.getElementById('current-count').textContent = currentFlashcard;
 
     // Update button states and text
-    const nextButton = document.getElementById('next-btn');
     const prevButton = document.getElementById('prev-btn');
     prevButton.disabled = currentFlashcard === 1;
 }

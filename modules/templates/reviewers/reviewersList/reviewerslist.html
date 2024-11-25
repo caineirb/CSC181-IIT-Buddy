@@ -9,7 +9,7 @@
 {% block content %}
 
 <!-- linking custom css for reviewers list-->
-<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewersList/reviewerslist.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/reviewersList/reviewerslist.css') }}">
 
 <div class="subheader">
     <div class="ForBgFixed">
@@ -23,7 +23,7 @@
         <button type="button" class="btn btn-light btn-m ms-5 back-button" onclick='window.location.href = "{{ url_for('index') }}"'>
             <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> <b style="font-weight: normal;">Back</b>
         </button>
-        <form action="{{ url_for('reviewers_list.index') }}" method="GET" id="searchForm">
+        <form action="{{ url_for('reviewers.reviewers_list.index') }}" method="GET" id="searchForm">
             <div class="searchbar">
                 <!-- Types of reviewers -->
                 <div class="search-bar">
@@ -33,7 +33,7 @@
                             <option value="{{ type }}" 
                                     class="dropdown-list-item" 
                                     data-field="{{ type }}" 
-                                    {% if flashcards_data['searchParams'] and flashcards_data['searchParams']['type'] == type %}selected{% endif %}>
+                                    {% if reviewers['searchParams'] and reviewers['searchParams']['type'] == type %}selected{% endif %}>
                                 {{ type }}
                             </option>
                         {% endfor %}
@@ -47,8 +47,8 @@
                                id="search_input" 
                                name="search_input" 
                                placeholder="Search here..."
-                               {% if flashcards_data['searchParams'] and flashcards_data['searchParams']['searched_item'] %}
-                               value="{{ flashcards_data['searchParams']['searched_item'] }}"
+                               {% if reviewers['searchParams'] and reviewers['searchParams']['searched_item'] %}
+                               value="{{ reviewers['searchParams']['searched_item'] }}"
                                {% endif %}>
                         <button type="submit" class="btn btn-light btn-m ms-5 search-btn" style="margin-left: 1rem;">
                             <i class="bi bi-search"></i> <b style="font-weight: normal;"></b>
@@ -63,7 +63,7 @@
                         <select name="privacy_option" id="privacy_option" class="form-select" style="max-width: 200px; color: black;" onchange="document.getElementById('searchForm').submit()">
                             {% for privacy in privacies %}
                                 <option value="{{ privacy }}" 
-                                        {% if flashcards_data['searchParams'] and flashcards_data['searchParams']['privacy'] == privacy %}selected{% endif %}>
+                                        {% if reviewers['searchParams'] and reviewers['searchParams']['privacy'] == privacy %}selected{% endif %}>
                                     {{ privacy }}
                                 </option>
                             {% endfor %}
@@ -77,34 +77,34 @@
                         <select name="sort_by" id="sort_by" class="form-select me-2" style="max-width: 200px; color: black;" onchange="document.getElementById('searchForm').submit()">
                             <option value="DESC" 
                                     class="arrow-option" 
-                                    {% if flashcards_data['searchParams'] and flashcards_data['searchParams']['order'] == "DESC" %}selected{% endif %}>
+                                    {% if reviewers['searchParams'] and reviewers['searchParams']['order'] == "DESC" %}selected{% endif %}>
                                 Most Recent &darr;
                             </option>
                             <option value="ASC" 
                                     class="arrow-option" 
-                                    {% if flashcards_data['searchParams'] and flashcards_data['searchParams']['order'] == "ASC" %}selected{% endif %}>
+                                    {% if reviewers['searchParams'] and reviewers['searchParams']['order'] == "ASC" %}selected{% endif %}>
                                 Oldest &uarr;
                             </option>
                         </select>
                     </div>
                 </div>
                 
-                {% set total_items = flashcards_data['details']['totalCount'] %}
-                {% set items_per_page = flashcards_data['details']['countPerPage'] %}
+                {% set total_items = reviewers['details']['totalCount'] %}
+                {% set items_per_page = reviewers['details']['countPerPage'] %}
                 {% set total_pages = (total_items // items_per_page) + (1 if total_items % items_per_page > 0 else 0) %}
 
                 <!-- Pagination -->
                 <nav aria-label="Page navigation example" class="pagination-nav d-flex justify-content-center w-100">
                     <ul class="pagination pagination-lg">
                         <!-- Previous Page -->
-                        <li class="page-item {% if flashcards_data['searchParams']['page'] <= 1 %}disabled{% endif %}">
+                        <li class="page-item {% if reviewers['searchParams']['page'] <= 1 %}disabled{% endif %}">
                             <a class="page-link" 
-                            href="{{ url_for('reviewers_list.index', 
-                                    list=flashcards_data['searchParams']['type'], 
-                                    search_input=flashcards_data['searchParams']['searched_item'], 
-                                    privacy_option=flashcards_data['searchParams']['privacy'], 
-                                    sort_by=flashcards_data['searchParams']['order'], 
-                                    page=flashcards_data['searchParams']['page'] - 1) }}" 
+                            href="{{ url_for('reviewers.reviewers_list.index', 
+                                    list=reviewers['searchParams']['type'], 
+                                    search_input=reviewers['searchParams']['searched_item'], 
+                                    privacy_option=reviewers['searchParams']['privacy'], 
+                                    sort_by=reviewers['searchParams']['order'], 
+                                    page=reviewers['searchParams']['page'] - 1) }}" 
                             aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
@@ -112,14 +112,14 @@
 
                         <!-- Page Number Links -->
                         {% for i in range(1, total_pages + 1) %}
-                            {% if i <= 5 or i > total_pages - 3 or (i >= flashcards_data['searchParams']['page'] - 2 and i <= flashcards_data['searchParams']['page'] + 2) %}
-                                <li class="page-item {% if flashcards_data['searchParams']['page'] == i %}active{% endif %}">
+                            {% if i <= 5 or i > total_pages - 3 or (i >= reviewers['searchParams']['page'] - 2 and i <= reviewers['searchParams']['page'] + 2) %}
+                                <li class="page-item {% if reviewers['searchParams']['page'] == i %}active{% endif %}">
                                     <a class="page-link" 
-                                    href="{{ url_for('reviewers_list.index', 
-                                            list=flashcards_data['searchParams']['type'], 
-                                            search_input=flashcards_data['searchParams']['searched_item'], 
-                                            privacy_option=flashcards_data['searchParams']['privacy'], 
-                                            sort_by=flashcards_data['searchParams']['order'], 
+                                    href="{{ url_for('reviewers.reviewers_list.index', 
+                                            list=reviewers['searchParams']['type'], 
+                                            search_input=reviewers['searchParams']['searched_item'], 
+                                            privacy_option=reviewers['searchParams']['privacy'], 
+                                            sort_by=reviewers['searchParams']['order'], 
                                             page=i) }}">
                                         {{ i }}
                                     </a>
@@ -132,14 +132,14 @@
                         {% endfor %}
 
                         <!-- Next Page -->
-                        <li class="page-item {% if flashcards_data['searchParams']['page'] >= total_pages %}disabled{% endif %}">
+                        <li class="page-item {% if reviewers['searchParams']['page'] >= total_pages %}disabled{% endif %}">
                             <a class="page-link" 
-                            href="{{ url_for('reviewers_list.index', 
-                                    list=flashcards_data['searchParams']['type'], 
-                                    search_input=flashcards_data['searchParams']['searched_item'], 
-                                    privacy_option=flashcards_data['searchParams']['privacy'], 
-                                    sort_by=flashcards_data['searchParams']['order'], 
-                                    page=flashcards_data['searchParams']['page'] + 1) }}" 
+                            href="{{ url_for('reviewers.reviewers_list.index', 
+                                    list=reviewers['searchParams']['type'], 
+                                    search_input=reviewers['searchParams']['searched_item'], 
+                                    privacy_option=reviewers['searchParams']['privacy'], 
+                                    sort_by=reviewers['searchParams']['order'], 
+                                    page=reviewers['searchParams']['page'] + 1) }}" 
                             aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
@@ -179,7 +179,7 @@
         {% endif %}
     {% endwith %}
         <!-- Form for Creating Flashcard -->
-        <form action="{{ url_for('flashcards.create') }}" method="post">
+        <form action="{{ url_for('reviewers.create') }}" method="post">
         <!-- CSRF Token -->
         <input type="hidden" name="_csrf_token" id="_csrf_token" value="{{ csrf_token() }}" />
         <input type="hidden" name="from_url" id="from_url" value="{{ request.full_path  }}" />
@@ -226,22 +226,22 @@
             </div>
         </div>
     </button>
-    {% for flashcard in flashcards_data['data'] %}
-    <a href="{{ url_for('flashcards.edit', id=flashcard[0]) }}" class="card" style="background-color: {{ flashcards_data['bgcolor'][flashcard[3]] }};">
-        <div class="card-content" style="color: {{ flashcards_data['fgcolor'][flashcard[3]] }};">
+    {% for reviewer in reviewers['data'] %}
+    <a href="{{ url_for('reviewers.edit', id=reviewer[0], type=reviewer[3]) }}" class="card" style="background-color: {{ reviewers['bgcolor'][reviewer[3]] }};">
+        <div class="card-content" style="color: {{ reviewers['fgcolor'][reviewer[3]] }};">
             <div>
-                <div class="card-name"><b>{{ flashcard[1] }}</b></div>
-                <div class="card-type">{{ flashcard[3] }}</div>
-                <div class="card-time">{{ flashcard[5] }}</div>     <!-- E pwesto ni palihog sa lower right bitaw, then medyo transparent sya -->
+                <div class="card-name"><b>{{ reviewer[1] }}</b></div>
+                <div class="card-type">{{ reviewer[3] }}</div>
+                <div class="card-time">{{ reviewer[5] }}</div>     <!-- E pwesto ni palihog sa lower right bitaw, then medyo transparent sya -->
             </div>
-            <div class="card-footer" style="border-color: {{ flashcards_data['fgcolor'][flashcard[3]] }};">
+            <div class="card-footer" style="border-color: {{ reviewers['fgcolor'][reviewer[3]] }};">
                 <span class="card-owner">{{ user_name }}</span>
-                <span class="card-share-type">{{ flashcard[4] }}</span>
+                <span class="card-share-type">{{ reviewer[4] }}</span>
             </div>
         </div>
     </a>
     {% endfor %}
 </section>
     
-<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewersList/reviewerslist.js') }}"></script>          
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/reviewersList/reviewerslist.js') }}"></script>          
 {% endblock %}

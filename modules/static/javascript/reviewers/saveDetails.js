@@ -6,7 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('reviewer-description').addEventListener('blur', handleChange);
 });
 
-// Function to handle input changes
+/**
+ * Handles the changes in the details of the reviewer.
+ * 
+ */
 function handleChange(event) {
     const reviewerId = document.getElementById('reviewer-id').value;
     const titleInput = document.getElementById('reviewer-title');
@@ -15,24 +18,26 @@ function handleChange(event) {
     const privacy = document.getElementById('reviewer-privacy').value;
     const description = document.getElementById('reviewer-description').value.trim();
 
-    // Get or create a warning message element
-    let warningMessage = document.getElementById('title-warning');
-    if (!warningMessage) {
-        warningMessage = document.createElement('div');
-        warningMessage.id = 'title-warning';
-        warningMessage.style.color = 'red';
-        warningMessage.style.fontSize = '0.9em';
-        warningMessage.style.marginTop = '5px';
-        titleInput.insertAdjacentElement('afterend', warningMessage);
-    }
-
     // Check if title is empty and display a required-like warning
+    let warningMessage = document.getElementById('title-warning');
     if (title === "") {
         titleInput.style.borderColor = 'red';
+        if (!warningMessage) {
+            warningMessage = document.createElement('div');
+            warningMessage.id = 'title-warning';
+            warningMessage.style.color = 'red';
+            warningMessage.style.fontSize = '0.9em';
+            warningMessage.style.marginTop = '5px';
+            titleInput.insertAdjacentElement('afterend', warningMessage);
+        }
+
         warningMessage.textContent = "Title is required. Please fill in the title.";
     } else {
         titleInput.style.borderColor = '';
-        warningMessage.textContent = "";
+        if (warningMessage){
+            warningMessage.textContent = "";
+            warningMessage.display = 'none';
+        }
 
         // Prepare data for backend update
         const data = {
@@ -48,7 +53,6 @@ function handleChange(event) {
 
 async function sendDataToBackend(data) {
     const csrfToken = document.getElementById("_token_csrf").value;
-    const saveUrl = document.getElementById("save_url").value;
 
     // Wait for the duplicate check before proceeding
     const isDuplicate = await checkDuplicate(data);
@@ -56,7 +60,7 @@ async function sendDataToBackend(data) {
     if (!isDuplicate) {
         removeDuplicateWarning();
         // Only proceed if there is no duplicate
-        fetch(saveUrl, {
+        fetch('/reviewers/save-info', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -95,7 +99,8 @@ async function checkDuplicate(data) {
             },
             body: JSON.stringify({
                 'id': data.reviewerId,
-                'title': data.title
+                'title': data.title,
+                'type': data.type
             })
         });
 
@@ -129,7 +134,6 @@ function displayDuplicateWarning() {
         warning.style.display = "block"; // Make sure it's visible if it was hidden before
     }
 }
-
 
 function removeDuplicateWarning() {
     const warning = document.getElementById("duplicate-warning");
