@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}{{ flashcards['information'][0] }}: {{ flashcards['information'][2] }}{% endblock %}
+
+{% block name %} {{ user_name }} {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/flashcards/review.css') }}">
+
+<button type="button" class="go-back-button" onclick='window.location.href="{{ url_for("reviewers_feed.take_reviewer", id=flashcards["id"], type='Flashcard') }}"'>
+    <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> 
+    <b style="font-weight: normal;">Go Back</b>
+</button>
+
+<div class="review-flashcards-header">
+    <div>
+        <h1>{{ flashcards['information'][0] }}</h1>
+    </div>    
+</div>
+
+<!-- for flashcards na ni diri literal -->
+<div class="flashcards-container">
+    {% for flashcard in flashcards['cards'] %}
+    <div class="flashcard" id="flashcard-{{ loop.index }}">
+        <div class="flashcard-inner">
+            <!-- front ni sa card = ang question diri -->
+            <div class="flashcard-front">
+                <p>{{ flashcard['question'] }}</p>
+                {% if flashcard['image'] %}
+                    <img src="data:image/jpeg;base64,{{ flashcard['image'] }}" alt="Flashcard Image" class="flashcard-image" style="max-width: 100%; height: auto;">
+                {% endif %}
+            </div>
+
+            <!-- back ni sa card = ang answer diri -->
+            <div class="flashcard-back">
+                <p>{{ flashcard['answer'] }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="navigation-buttons">
+    <button type="button" id="prev-btn" class="prev-btn" onclick="showPreviousFlashcard()">
+        <i class="bi bi-caret-left-fill"></i>
+    </button>
+
+    <div class="counter">
+        Flashcard <span id="current-count"> 1 </span> of {{ flashcards['cards'] | length }}
+    </div>
+
+    <button type="button" id="next-btn" class="next-btn" onclick="showNextFlashcard()">
+        <i class="bi bi-caret-right-fill"></i>
+    </button>
+</div>
+
+<input type="hidden" name="congrats-url" id="congrats-url" value="{{ url_for('reviewers.flashcards.take_congrats', type="Flashcard", id=flashcards['id'], isRandom=flashcards['isRandom']) }}">
+
+<script type="application/json" id="data-json">
+    {{ flashcards['cards'] | tojson }}
+</script>
+
+<script type="application/json" id="data-length">
+    {{ flashcards['cards'] | length }}
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/flashcards/reviewFunctionalities.js') }}"></script>
+{% endblock %}

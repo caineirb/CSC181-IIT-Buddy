@@ -1,4 +1,4 @@
-from flask import flash, render_template, request, session
+from flask import flash, render_template, request, session, redirect, url_for
 from modules.controller import require_login, fetchStudent, customErrorMessages
 from modules.reviewersFeed.controller import countReviewers, fetchReviewers
 from . import reviewers_feed_bp
@@ -73,7 +73,17 @@ def index():
     
 
 
-@reviewers_feed_bp.route('/take/<string:id>', methods=["GET"])
+@reviewers_feed_bp.route('/take/<string:id>/<string:type>', methods=["GET"])
 @require_login
-def take_reviewer(id :str):
-    return f"<h1>Take reviewer function is not available right now, try again next sprint. Reviewer ID: {id}</h1>"
+def take_reviewer(id :str, type :str):
+    match type:
+        case "Flashcard":
+            return redirect(url_for('reviewers.flashcards.take', id=id))
+        # case "Identification":
+        #     return redirect(url_for('', id=id))
+        # case "Multiple Choice":
+        #     return redirect(url_for('', id=id))
+        # case "Mixed":
+        #     return redirect(url_for('', id=id))
+        case _:
+            return 'Invalid choice. <a href="\\">Go Back</a>'

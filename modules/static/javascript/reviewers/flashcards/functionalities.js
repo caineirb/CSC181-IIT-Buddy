@@ -130,6 +130,7 @@ function previewImage(event, id) {
 
     if (file) {
         const reader = new FileReader();
+        reader.readAsDataURL(file);
         reader.onload = function(e) {
             label.style.backgroundImage = `url('${e.target.result}')`;
             label.style.backgroundSize = "cover";
@@ -139,7 +140,6 @@ function previewImage(event, id) {
             label.style.width = "100px";
             buttonLabel.style.display = 'none';
         };
-        reader.readAsDataURL(file);
     } else {
         const initialImageBase64 = document.getElementById(`flashcard-image-base64-${id}`).value;
         if (initialImageBase64) {

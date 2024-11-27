@@ -137,7 +137,7 @@
     {% for reviewer in reviewers_data['data'] %}
     {% if not reviewers_data['searchParams']['type'] == "Notes" %}
         <div class="card">
-            <form class="card-content" action="{{ url_for('reviewers_feed.take_reviewer', id=reviewer[0]) }}" method="get">
+            <form class="card-content" action="{{ url_for('reviewers_feed.take_reviewer', id=reviewer[0], type=reviewer[2]) }}" method="get">
                 <div class="card-header">
                     <div>
                         <div class="card-name"><b>{{ reviewer[1] }}</b></div>

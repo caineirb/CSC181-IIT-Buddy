@@ -37,8 +37,7 @@ def edit(id :str, type :str):
         # case "Mixed":
         #     return redirect(url_for('', id=id))
         case _:
-            return f"Invalid choice. "
-    
+            return 'Invalid choice. <a href="\\">Go Back</a>'
 
 @reviewers_bp.route('/save-info', methods=["PUT"])
 @require_login

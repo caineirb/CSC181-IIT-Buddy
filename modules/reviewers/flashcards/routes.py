@@ -11,7 +11,7 @@ import base64
 def edit(id :str):
     data = fetchFlashcard(id)
     if not session['user-id'] == data['information'][4]:
-        return "Can't edit, not the owner."
+        return "Can't review, not the owner. <a href='\\'>Go Back</a>"
 
     data['id'] = id
 
@@ -23,6 +23,9 @@ def edit(id :str):
 @require_login
 def review(id: str, isRandom: str):
     flashcards = fetchFlashcard(id)
+    if not session['user-id'] == flashcards['information'][4]:
+        return "Can't review, not the owner. <a href='\\'>Go Back</a>"
+    
     flashcards['id'] = id
     flashcards['isRandom'] = isRandom
 
@@ -94,3 +97,53 @@ def save_flashcard():
     except Exception as e:
         print(f"Error saving flashcards: {e}")
         return jsonify({'message': 'Error saving flashcards'}), 500
+    
+
+'''
+Take Reviewers
+'''
+@flashcards_bp.route('/take/<string:id>', methods=["GET"])
+@require_login
+def take(id :str):
+    data = fetchFlashcard(id)
+    if data['information'][3] == "Private":
+        return 'Flashcard is Private, access not allowed. <a href="\\">Go Back</a>'
+
+    data['id'] = id
+
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+    return render_template('reviewers/takes/flashcards_take.html', data=data, user_name=user_name)
+
+@flashcards_bp.route('/take/<string:id>/r=<string:isRandom>', methods=["GET"])
+@require_login
+def take_review(id: str, isRandom: str):
+    flashcards = fetchFlashcard(id)
+    if flashcards['information'][3] == "Private":
+        return 'Flashcard is Private, access not allowed. <a href="\\">Go Back</a>'
+    flashcards['id'] = id
+    flashcards['isRandom'] = isRandom
+
+    if not isRandom.lower() == 'false':
+        # Convert isRandom to a boolean based on the string value
+        if isRandom.lower() == 'true':
+            random.shuffle(flashcards['cards'])
+        else:
+            return "Invalid Parameter."
+        
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+    return render_template('reviewers/takes/flashcards_review.html', flashcards=flashcards, user_name=user_name)
+
+@flashcards_bp.route('/take/finished/<string:id>/<string:isRandom>', methods=["GET"])
+@require_login
+def take_congrats(id: str, isRandom: str):
+    info = {
+        'data': fetchReviewerInfo(id, "Flashcard"),
+        'isRandom': isRandom.lower()
+    }
+
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+    return render_template('reviewers/takes/flashcards_congrats.html', info=info, user_name=user_name)
+
