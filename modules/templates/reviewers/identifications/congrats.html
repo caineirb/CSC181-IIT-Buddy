@@ -8,16 +8,75 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/identifications/congrats.css') }}">
 
-<div class="congrats">
-    <div class="confetti">
-        <img src="{{ url_for('static', filename='img/confetti.png') }}" alt="Confetti" />
-    </div>
-    <h1>Yippie! You've reviewed all the cards.</h1>
+<!-- container class -->
+<div class="container">
+    <!-- .congratulations section -->
+    <div class="congratulations">
+        <h1>Yippie! You've reviewed all the <br> cards.</h1>
+        <div class="hyd">How you’re doing</div>
 
-    <div class="button-group">
-        <button type="button"> Restart </button>
-        <button type="button"> Edit </button>
-        <button type="button"> Go Home </button>
+        <div class="checkbox-score-mistakes">
+            <div class="checkbox">
+                <i class="bi bi-check2-square"></i>
+            </div>
+            <div class="score-mistakes">
+                <div class="box-score">
+                    <div class="score-text">Score</div>
+                    <div class="score">0</div>
+                </div>
+                <div class="box-mistakes">
+                    <div class="mistakes-text">Mistakes</div>
+                    <div class="mistakes">5</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="review-again-section" type="button">
+            <i class="bi bi-arrow-left"></i>
+            <span class="review-again">review again</span>
+        </div>
+        
+    </div>
+
+    <!-- .congrats section -->
+    <div class="congrats">
+        <div class="confetti">
+            <img src="{{ url_for('static', filename='img/confetti.png') }}" alt="Confetti" />
+        </div>
+
+        <div class="button-group">
+            <button type="button" class="edit"> Edit </button>
+            <button type="button" class="home"> Home </button>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- results section outside the container -->
+<div class="results">
+    <div class="table-title">
+        <h2>Question | Correct Answer | Your Answer</h2>
+    </div>
+    <div class="table-header">
+        <div class="table-column">Question</div>
+        <div class="table-column">Correct Answer</div>
+        <div class="table-column">Your Answer</div>
+    </div>
+    <div class="table-row">
+        <div class="table-column">What is 2+2?</div>
+        <div class="table-column">4</div>
+        <div class="table-column">4</div>
+    </div>
+    <div class="table-row">
+        <div class="table-column">What is the capital of France?</div>
+        <div class="table-column">Paris</div>
+        <div class="table-column">Berlin</div>
     </div>
 </div>
+
+<canvas id="paper-confetti"></canvas>
+
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/identifications/congrats.js') }}"></script>
+
 {% endblock %}
