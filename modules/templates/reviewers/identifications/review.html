@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}{{ identifications['information'][0] }}: {{ identifications['information'][2] }}{% endblock %}
+
+{% block name %} {{ user_name }} {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/identifications/review.css') }}">
+
+<button type="button" class="go-back-button" onclick='window.location.href="{{ url_for("reviewers.identifications.edit", id=identifications["id"], type="identification") }}"'>
+    <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> 
+    <b style="font-weight: normal;">Go Back</b>
+</button>
+
+<div class="review-identifications-header">
+    <div>
+        <h1>{{ identifications['information'][0] }}</h1>
+    </div>    
+</div>
+
+<!-- for identifications na ni diri literal -->
+<div class="identifications-container">
+    {% for identification in identifications['cards'] %}
+    <div class="identification" id="identification-{{ loop.index }}">
+        <div class="identification-inner">
+            <!-- front ni sa card = ang question diri -->
+            <div class="identification-front">
+                <p>{{ identification['question'] }}</p>
+                {% if identification['image'] %}
+                    <img src="data:image/jpeg;base64,{{ identification['image'] }}" alt="identification Image" class="identification-image" style="max-width: 100%; height: auto;">
+                {% endif %}
+            </div>
+
+            <!-- back ni sa card = ang answer diri -->
+            <div class="identification-back">
+                <p>{{ identification['answer'] }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="navigation-buttons">
+    <button type="button" id="prev-btn" class="prev-btn" onclick="showPreviousidentification()">
+        <i class="bi bi-caret-left-fill"></i>
+    </button>
+
+    <div class="counter">
+        identification <span id="current-count"> 1 </span> of {{ identifications['cards'] | length }}
+    </div>
+
+    <button type="button" id="next-btn" class="next-btn" onclick="showNextidentification()">
+        <i class="bi bi-caret-right-fill"></i>
+    </button>
+</div>
+
+<input type="hidden" name="congrats-url" id="congrats-url" value="{{ url_for('reviewers.identifications.congrats', type="identification", id=identifications['id'], isRandom=identifications['isRandom']) }}">
+
+<script type="application/json" id="data-json">
+    {{ identifications['cards'] | tojson }}
+</script>
+
+<script type="application/json" id="data-length">
+    {{ identifications['cards'] | length }}
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/identifications/reviewFunctionalities.js') }}"></script>
+{% endblock %}
