@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %} Create Identifications {% endblock %}
+
+{% block name %} {{ user_name }} {% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/identifications/create.css') }}">
+
+<!-- For the swapping of the Cards' Orders -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+
+<!-- Go Back Button -->
+<button type="button" class="go-back-button" onclick="handleGoBack()">
+    <i class="bi bi-arrow-left" style="margin-right: 5px;"></i>
+    <b style="font-weight: normal;">Go Back</b>
+</button>
+
+<div class="reviewer-info">
+    <label for="reviewer-title" class="form-label">Reviewer Title</label>
+    <input type="text" name="reviewer-title" id="reviewer-title" placeholder="Title" maxlength="100">
+
+    <!-- Dropdowns -->
+    <div class="ms-5 dropdowns" style="margin-top: -50px;">
+        <div class="d-flex">
+            <select name="reviewer-type" id="reviewer-type" class="form-select" style="max-width: 200px; color: black;">
+            </select>
+        </div>
+        <div class="d-flex">
+            <select name="reviewer-privacy" id="reviewer-privacy" class="form-select" style="max-width: 200px; color: black;">
+            </select>
+        </div>
+    </div>
+
+    <label for="reviewer-description" class="form-label">Reviewer Description</label>
+    <textarea name="reviewer-description" id="reviewer-description" placeholder="Description" maxlength="300"></textarea>
+</div>
+
+<div class="action-buttons-container">
+    <div>
+        <button type="button" id="delete-flashcards-btn" class="delete-flashcards-btn" title="Delete Flashcard Reviewer">
+            <i class="bi bi-trash"></i>
+        </button>
+    </div>
+    <div class="play-options">
+        <div class="shuffle-toggle">
+            <label for="shuffle-switch">Randomize Order:</label>
+            <input type="checkbox" id="shuffle-switch">
+        </div>
+        <button type="button" id="save-flashcards-btn" class="save-flashcards-btn">
+            <i class="bi bi-play-circle"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Identifications Container -->
+<div class="flashcards-container">
+    <!-- Identifications template will be appended here -->
+</div>
+
+<div class="add-button-container">
+    <button type="button" id="add-card-btn" class="add-card-btn">Add Flashcard</button>
+</div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/saveDetails.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/deleteReviewer.js') }}"></script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/flashcards/saveFlashcards.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/flashcards/functionalities.js') }}"></script>
+{% endblock %}
