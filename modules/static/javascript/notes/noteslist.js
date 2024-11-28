@@ -188,6 +188,10 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
                     }
                 });
 
+                notesContainer.style.display = 'flex';
+                notesContainer.style.flexWrap = 'wrap';
+                notesContainer.style.gap = '1rem';
+
                 updatePagination(data.total_notes, page, searchQuery, privacy, sort);
             }
         })
@@ -201,6 +205,8 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
     noteBox.className = 'd-flex justify-content-center align-items-center position-relative col withpad note-box';
     noteBox.style.height = '245px'; // Set fixed height
     noteBox.style.width = '250px'; // Set fixed width
+
+    
 
     // Truncate title if it exceeds 10 characters
     const truncatedTitle = title.length > 10 ? title.substring(0, 10) + '...' : title;
