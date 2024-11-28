@@ -39,6 +39,7 @@
     --number-size: 16px;
     --white: #ffffff;
 }
+
 .go-back-button {
     transform: translateX(20px) translateY(10px);
     font-size: 0.9rem;
@@ -55,7 +56,7 @@
     background-color: var(--background-color-hover);
 }
 
-.review-flashcards-header{
+.review-identifications-header{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -66,7 +67,7 @@
     margin-bottom: 0px;
 }
 
-.flashcards {
+.identifications {
     display: flex;
     text-align: center;
     color: var(--primary-color);
@@ -75,17 +76,17 @@
     word-wrap: break-word;
 }
 
-.flashcards-container{
+.identifications-container{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 200px;
     text-align: center;
-    margin-top: -20px;
+    margin-top: -130px;
 }
 
-.flashcards-container .p{
+.identifications-container .p{
     padding: 20px;
 }
 
@@ -95,6 +96,7 @@
     align-items: center;
     width: 38%;
     margin: 0 auto; 
+    margin-top: 20px;
 }
 
 .counter {
@@ -124,20 +126,20 @@
     margin: 0 5px;
 }
 
-.flashcard p,
-.flashcard-front p,
-.flashcard-back p {
+.identification p,
+.identification-front p,
+.identification-back p {
     padding-left: 10px;
     padding-right: 10px;
 }
 
-.flashcards-container {
+.identifications-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
 }
 
-.flashcard {
+.identification {
     width: 900px;
     height: 630px;
     perspective: 1000px;
@@ -146,13 +148,13 @@
     font-size: var(--font-size-xl);
 }
 
-.flashcard .flashcard-front .flashcard-image {
+.identification .identification-front .identification-image {
     width: 300px;
     max-height: 200px;
     object-fit: cover;
 }
 
-.flashcard-inner {
+.identification-inner {
     width: 100%;
     height: 100%;
     position: relative;
@@ -160,11 +162,11 @@
     transform-style: preserve-3d;
 }
 
-.flashcard.flipped .flashcard-inner {
+.identification.flipped .identification-inner {
     transform: rotateY(180deg);
 }
 
-.flashcard-front, .flashcard-back {
+.identification-front, .identification-back {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -180,7 +182,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.flashcard-back {
+.identification-back {
     transform: rotateY(180deg);
     background-color: var(--secondary-color);
 }
@@ -200,4 +202,36 @@ html, body {
     overflow: hidden;
     margin: 0;
     padding: 0;
+}
+
+.type-answer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white-color);
+    border: 3px dashed var(--primary-color);
+    height: 50px;
+    width: 800px;
+    margin: 0 auto;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.answer-text {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    text-align: left;
+    background-color: transparent;
+}
+
+input.answer-text {
+    height: 100%;
+}
+
+textarea.answer-text {
+    height: 80%;
+    resize: none;
 }

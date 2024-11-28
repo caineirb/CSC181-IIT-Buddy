@@ -36,26 +36,24 @@
     </div>
 </div>
 
+<div class="type-answer">
+    <input type="text" class="answer-text" placeholder="Type your answer..." />
+</div>
+
 <div class="navigation-buttons">
-    <button type="button" id="prev-btn" class="prev-btn" onclick="showPreviousidentification()">
+    <button type="button" id="prev-btn" class="prev-btn">
         <i class="bi bi-caret-left-fill"></i>
     </button>
 
     <div class="counter">
-        identification <span id="current-count"> 1 </span>
+        <span id="current-count"> 1 / 69 </span>
     </div>
 
-    <button type="button" id="next-btn" class="next-btn" onclick="showNextidentification()">
+    <button type="button" id="next-btn" class="next-btn">
         <i class="bi bi-caret-right-fill"></i>
     </button>
 </div>
 
 <input type="hidden" name="congrats-url" id="congrats-url" >
-
-<script type="application/json" id="data-json">
-</script>
-
-<script type="application/json" id="data-length">
-</script>
 
 {% endblock %}
