@@ -125,6 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(noteData)
         })
+        
         .then(response => {
             if (!response.ok) {
                 return response.json().then(errorData => {
@@ -135,11 +136,14 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(data => {
             if (data.message === 'Note added successfully') {
-                // Fetch the updated notes list
-                location.reload();
-                fetchNotes(1);
+                Swal.fire({
+                    text:  data.message,
+                    icon: "success"
+                }).then(() => {
+                    location.reload();
+                });
             } else {
-                console.error('Error adding note:', data.message);
+                throw new Error(data.message || 'Failed to add the note.');
             }
         })
         .catch(error => console.error('Error adding note:', error));
