@@ -171,20 +171,18 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
                 addButton.innerHTML = '<i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>';
                 notesWrapper.appendChild(addButton);
 
-                
-
-                // Ensure only 10 items per page
-                const notesToShow = data.notes;
+                // Ensure only 9 items per page
+                const notesToShow = data.notes.slice(0, 9);
 
                 notesToShow.forEach((note, index) => {
                     console.log('Adding note:', note); // Log each note being added
                     addNoteBox(note.id, note.title, note.link, note.privacy, note.userName, notesWrapper, note.created_on);
 
-                    // Ensure only 5 items per row
-                    if ((index + 1) % 5 === 0) {
-                        const newRow = document.createElement('div');
-                        newRow.className = 'row d-flex justify-content-center flex-wrap gap-3';
-                        notesContainer.appendChild(newRow);
+                    // Move to the second row after 4 items
+                    if (index === 3) {
+                        notesWrapper = document.createElement('div');
+                        notesWrapper.className = 'row d-flex justify-content-center flex-wrap gap-3';
+                        notesContainer.appendChild(notesWrapper);
                     }
                 });
 
