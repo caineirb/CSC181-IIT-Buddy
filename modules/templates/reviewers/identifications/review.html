@@ -7,14 +7,14 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/identifications/review.css') }}">
 
-<button type="button" class="go-back-button">
+<button type="button" class="go-back-button" onclick="handleGoBack()">
     <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> 
     <b style="font-weight: normal;">Go Back</b>
 </button>
 
 <div class="review-identifications-header">
     <div>
-        <h1</h1>
+        <h1>Apart from counting words and characters, our online editor can help you to improve word choice.</h1>
     </div>    
 </div>
 
@@ -22,23 +22,20 @@
 <div class="identifications-container">
     <div class="identification" id="identification">
         <div class="identification-inner">
+            <span class="number-identifications">1</span>
             <!-- front ni sa card = ang question diri -->
             <div class="identification-front">
-                <p></p>
-                    <img src="data:image/jpeg;base64" alt="identification Image" class="identification-image" style="max-width: 100%; height: auto;">
+                <p>Apart from counting words and characters, our online editor can help you to improve word choice and writing style, and, optionally, help you to detect grammar mistakes and plagiarism. To check word count, simply place your cursor into the text box above</p>
+                <img src="{{ url_for('static', filename='img/icon.png') }}" alt="identification Image" class="identification-image">
             </div>
-
-            <!-- back ni sa card = ang answer diri -->
-            <div class="identification-back">
-                <p></p>
+            <!-- Type Answer Section -->
+            <div class="type-answer">
+                <input type="text" class="answer-text" placeholder="Type your answer..." />
             </div>
         </div>
     </div>
 </div>
 
-<div class="type-answer">
-    <input type="text" class="answer-text" placeholder="Type your answer..." />
-</div>
 
 <div class="navigation-buttons">
     <button type="button" id="prev-btn" class="prev-btn">
@@ -49,11 +46,13 @@
         <span id="current-count"> 1 / 69 </span>
     </div>
 
-    <button type="button" id="next-btn" class="next-btn">
+    <button type="button" id="next-btn" class="next-btn" onclick="window.location.href='{{ url_for('congratsid') }}'">
         <i class="bi bi-caret-right-fill"></i>
     </button>
 </div>
 
 <input type="hidden" name="congrats-url" id="congrats-url" >
+
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/identifications/reviewIdentifications.js') }}"></script>
 
 {% endblock %}
