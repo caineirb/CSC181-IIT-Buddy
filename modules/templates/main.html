@@ -51,19 +51,20 @@
     </button>
   </div>
   
+  <!--TODO: Changes-->
   <!-- Dynamically added notes -->
-  <div class="row d-flex flex-wrap gap-0 flex-grow-1" id="notesContainer" style="margin-left: -50px;">
+  <div class="row d-flex flex-wrap flex-row-reverse gap-0 flex-grow-1" id="notesContainer" style="margin-left: -50px;">
     <!-- Example of dynamically added note boxes -->
   </div>
   
-  
-
   <!-- Button to redirect to notes list (this is on the right) -->
+  {% if notes_data|length == 5 %}
   <div class="mt-3" style="display: flex; flex-direction: column; justify-content: center; align-items: center; position: absolute; top: 27.5%; right: 255px; transform: translateY(-50%); width: 50px; height: 180px; background-color: #0C203E; border-color: #0C203E; border-radius: 10px;">
     <a href="{{ url_for('notes.notes_list') }}" class="btn" style="color: white; font-size: 30px; display: flex; justify-content: center; align-items: center; height: 100%; width: 100%; text-decoration: none;">
       &gt;
     </a>
   </div>
+  {% endif %}
 </div>
 
 
