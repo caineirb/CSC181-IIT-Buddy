@@ -8,14 +8,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const confettiParticles = [];
 
     function generateConfetti() {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 10; i++) {
             const size = Math.random() * 10 + 10;
             const xPos = Math.random() * canvas.width;
             const yPos = -size;
-            const speed = Math.random() * 3 + 2;
+            const speed = Math.random() * 4 + 2;
             const rotationSpeed = Math.random() * 2 + 1;
-            const drift = Math.random() * 2 - 1;
-            const color = `hsl(${Math.random() * 360}, 100%, 75%)`;
+            const drift = Math.random() * 4 - 2;
+            const shape = Math.random() > 0.5 ? 'rect' : 'circle';
+            const color = `hsl(${Math.random() * 360}, 100%, ${Math.random() * 50 + 40}%)`;
 
             confettiParticles.push({
                 size,
@@ -25,9 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 rotation: Math.random() * 360,
                 rotationSpeed,
                 drift,
+                shape,
                 color,
-                gravity: Math.random() * 0.1 + 0.1,
-                life: Math.random() * 50 + 50,
+                gravity: Math.random() * 0.3 + 0.2,
+                life: Math.random() * 80 + 80,
             });
         }
     }
@@ -40,33 +42,44 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.translate(particle.xPos + particle.drift, particle.yPos);
             ctx.rotate(particle.rotation * Math.PI / 180);
             ctx.fillStyle = particle.color;
-            ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
+
+            if (particle.shape === 'rect') {
+                ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
+            } else if (particle.shape === 'circle') {
+                ctx.beginPath();
+                ctx.arc(0, 0, particle.size / 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
             ctx.restore();
 
             particle.speed += particle.gravity;
-
             particle.yPos += particle.speed;
             particle.rotation += particle.rotationSpeed;
-
-            particle.drift *= 0.99;
-
+            particle.drift *= 0.98;
             particle.life -= 1;
+
             if (particle.life <= 0 || particle.yPos > canvas.height) {
-                confettiParticles.splice(index, 1); 
+                confettiParticles.splice(index, 1);
             }
         });
 
         requestAnimationFrame(animateConfetti);
     }
 
-    const confettiInterval = setInterval(generateConfetti, 100);
-    animateConfetti();
+    function startConfetti() {
+        const confettiInterval = setInterval(generateConfetti, 100);
+        animateConfetti();
 
-    const confettiDuration = 5000;
-    setTimeout(() => {
-        clearInterval(confettiInterval);
-    }, confettiDuration);
+        const confettiDuration = 5000;
+        setTimeout(() => {
+            clearInterval(confettiInterval);
+        }, confettiDuration);
+    }
+
+    startConfetti();
 });
+
 
 // fetch data questions, correct answer, and user answer
 window.onload = function() {
@@ -97,6 +110,14 @@ window.onload = function() {
         const userAnswerCell = document.createElement('div');
         userAnswerCell.classList.add('table-column');
         userAnswerCell.textContent = userAnswer || "No Answer";
+
+        if (userAnswer === correctAnswer) {
+            userAnswerCell.style.color = 'green';
+        } else if (!userAnswer) {
+            userAnswerCell.style.color = 'gray';
+        } else {
+            userAnswerCell.style.color = 'red';
+        }
 
         row.appendChild(questionCell);
         row.appendChild(correctAnswerCell);
