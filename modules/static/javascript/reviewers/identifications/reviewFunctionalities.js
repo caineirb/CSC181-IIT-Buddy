@@ -27,28 +27,37 @@ function showNextIdentification() {
         currentIdentification++;
         updateIdentificationDisplay();
     } else {
-        // Redirect to the "congrats" page when finished
-        // window.location.href = document.getElementById("congrats-url").value;
+        // Gather user answers
         let userAnswers = [];
         document.querySelectorAll('.answer-text').forEach((answer) => {
             userAnswers.push(answer.value);
-        })
+        });
+
         let correct = 0;
         let mistake = 0;
         let missing = 0;
-        
+
         identifications.forEach((identification, index) => {
-            const userAnswer = userAnswers[index]; 
-            const correctAnswer = identification['answer']; 
-            const question = identification['question']; 
-            
-            if (userAnswer.trim() === correctAnswer) correct++;
-            else if (userAnswer.trim() !== '') missing++;
-            else mistake++;
-            console.log(`Question: ${question}`);
-            console.log(`Correct Answer: ${correctAnswer}`);
-            console.log(`Your Answer: ${userAnswer}`);
+            const userAnswer = userAnswers[index]?.trim().toLowerCase() || "";
+            const correctAnswer = identification['answer'].trim().toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                correct++;
+            } else if (userAnswer === "") {
+                missing++;
+            } else {
+                mistake++;
+            }
         });
+
+        localStorage.setItem('score', correct);
+        localStorage.setItem('mistakes', mistake);
+        localStorage.setItem('missing', missing);
+        localStorage.setItem('identifications', JSON.stringify(identifications));
+        localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
+
+        // Redirect to the congrats page
+        window.location.href = document.getElementById("congrats-url").value;
     }
 }
 
@@ -60,31 +69,34 @@ function showPreviousIdentification() {
     }
 }
 
-function showReviewPage() {
-    const resultsSection = document.querySelector('.results');
-    
-    const existingRows = resultsSection.querySelectorAll('.table-row');
-    existingRows.forEach(row => row.remove());
-
-    identifications['cards'].forEach((identification, index) => {
-        const userAnswer = userAnswers[index] || 'No answer provided';
-        const correctAnswer = identification['correct_answer'];
-
-        const tableRow = document.createElement('div');
-        tableRow.classList.add('table-row');
-
-        tableRow.innerHTML = `
-            <div class="table-column">${identification['question']}</div>
-            <div class="table-column">${correctAnswer}</div>
-            <div class="table-column">${userAnswer}</div>
-        `;
-        
-        resultsSection.appendChild(tableRow);
-    });
-
-    document.querySelector('.identifications-container').style.display = 'none';
-    resultsSection.style.display = 'block';
-}
-
 // Initial display
 updateIdentificationDisplay();
+
+// let userAnswers = [];
+        // document.querySelectorAll('.answer-text').forEach((answer) => {
+        //     userAnswers.push(answer.value);
+        // });
+        // let correct = 0;
+        // let mistake = 0;
+        // let missing = 0;
+
+        // identifications.forEach((identification, index) => {
+        //     const userAnswer = userAnswers[index]?.trim().toLowerCase() || "";
+        //     const correctAnswer = identification['answer'].trim().toLowerCase();
+        //     const question = identification['question'];
+
+        //     if (userAnswer === correctAnswer) {
+        //         correct++;
+        //     } else if (userAnswer === "") {
+        //         missing++;
+        //     } else {
+        //         mistake++;
+        //     }
+
+        //     console.log(`Question: ${question}`);
+        //     console.log(`Correct Answer: ${identification['answer']}`);
+        //     console.log(`Your Answer: ${userAnswers[index]}`);
+        // });
+        // console.log(`Score: ${correct}`);
+        // console.log(`Mistakes: ${mistake}`);
+        // console.log(`Unanswered: ${missing}`);

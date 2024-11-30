@@ -67,3 +67,49 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(confettiInterval);
     }, confettiDuration);
 });
+
+// fetch data questions, correct answer, and user answer
+window.onload = function() {
+    const correct = localStorage.getItem('score');
+    const mistake = localStorage.getItem('mistakes');
+    const missing = localStorage.getItem('missing');
+    const identifications = JSON.parse(localStorage.getItem('identifications'));
+    const userAnswers = JSON.parse(localStorage.getItem('userAnswers'));
+
+    const resultsContainer = document.querySelector('.results');
+
+    identifications.forEach((identification, index) => {
+        const userAnswer = userAnswers[index]?.trim() || "";
+        const correctAnswer = identification['answer'];
+
+        const row = document.createElement('div');
+        row.classList.add('table-row');
+
+        // cells ni adtong para sa question, correct answer, and user answer
+        const questionCell = document.createElement('div');
+        questionCell.classList.add('table-column');
+        questionCell.textContent = identification['question'];
+
+        const correctAnswerCell = document.createElement('div');
+        correctAnswerCell.classList.add('table-column');
+        correctAnswerCell.textContent = correctAnswer;
+
+        const userAnswerCell = document.createElement('div');
+        userAnswerCell.classList.add('table-column');
+        userAnswerCell.textContent = userAnswer || "No Answer";
+
+        row.appendChild(questionCell);
+        row.appendChild(correctAnswerCell);
+        row.appendChild(userAnswerCell);
+
+        resultsContainer.appendChild(row);
+    });
+
+    const scoreDisplay = document.querySelector('#user-score');
+    const mistakesDisplay = document.querySelector('#user-mistakes');
+    const unansweredDisplay = document.querySelector('#user-unanswered');
+
+    scoreDisplay.textContent = correct;
+    mistakesDisplay.textContent = mistake;
+    unansweredDisplay.textContent = missing;
+};

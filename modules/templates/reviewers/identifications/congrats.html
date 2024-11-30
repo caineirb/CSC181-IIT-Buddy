@@ -28,7 +28,11 @@
                     <div class="mistakes-text">Mistakes</div>
                     <div class="mistakes" id="user-mistakes">5</div>
                 </div>
-            </div><!-- unanswered -->
+                <div class="box-unanswered">
+                    <div class="unanswered-text">Unanswered</div>
+                    <div class="unanswered" id="user-unanswered">5</div>
+                </div>
+            </div>
         </div>
 
         <div class="review-again-section" type="button" onclick="window.location.href='{{ url_for('reviewers.identifications.review', id=info['data'][0], isRandom=info['isRandom']) }}'">
@@ -45,8 +49,8 @@
         </div>
 
         <div class="button-group">
-            <button type="button" class="edit" onclick="window.location.href='{{ url_for('reviewers.edit', id=info['data'][0], type="Identification") }}'"> Edit </button>
             <button type="button" class="home" onclick="window.location.href='{{ url_for('index') }}'"> Home </button>
+            <button type="button" class="edit" onclick="window.location.href='{{ url_for('reviewers.edit', id=info['data'][0], type="Identification") }}'"> Edit </button>
         </div>
 
     </div>
@@ -64,6 +68,9 @@
         <div class="table-column">Your Answer</div>
     </div>
 </div>
+
+<script src="congrats.js"></script>
+
 
 <canvas id="paper-confetti"></canvas>
 
