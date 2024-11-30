@@ -28,6 +28,13 @@ function createidentificationFromData(identificationData, count) {
                 <button type="button" class="switch-button" onclick="switchTermAndDefinition(${count})"><i class="material-icons">swap_horiz</i></button>
                 <button type="button" class="drag-button"><i class="material-icons">drag_handle</i></button>
                 <button type="button" class="delete-button"><i class="material-icons">remove_circle_outline</i></button>
+                <div class="ms-5 dropdowns">
+                    <div class="d-flex">
+                        <select name="reviewer-type" id="reviewer-type" class="form-select" style="max-width: 200px; color: black; transform: translate(100px, -145px);" disabled>
+                            <option value="Identification" selected>Identification</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="identification-content">
@@ -68,6 +75,13 @@ function createidentification() {
                 <button type="button" class="switch-button" onclick="switchTermAndDefinition(${identificationCount})"><i class="material-icons">swap_horiz</i></button>
                 <button type="button" class="drag-button"><i class="material-icons">drag_handle</i></button>
                 <button type="button" class="delete-button"><i class="material-icons">remove_circle_outline</i></button>
+                <div class="ms-5 dropdowns">
+                    <div class="d-flex">
+                        <select name="reviewer-type" id="reviewer-type" class="form-select" style="max-width: 200px; color: black; transform: translate(100px, -145px);" disabled>
+                            <option value="Identification" selected>Identification</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="identification-content">

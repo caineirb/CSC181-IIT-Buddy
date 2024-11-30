@@ -28,10 +28,10 @@
                     <div class="mistakes-text">Mistakes</div>
                     <div class="mistakes" id="user-mistakes">5</div>
                 </div>
-            </div>
+            </div><!-- unanswered -->
         </div>
 
-        <div class="review-again-section" type="button">
+        <div class="review-again-section" type="button" onclick="window.location.href='{{ url_for('reviewers.identifications.review', id=info['data'][0], isRandom=info['isRandom']) }}'">
             <i class="bi bi-arrow-left"></i>
             <span class="review-again">review again</span>
         </div>
@@ -45,8 +45,8 @@
         </div>
 
         <div class="button-group">
-            <button type="button" class="edit"> Edit </button>
-            <button type="button" class="home"> Home </button>
+            <button type="button" class="edit" onclick="window.location.href='{{ url_for('reviewers.edit', id=info['data'][0], type="Identification") }}'"> Edit </button>
+            <button type="button" class="home" onclick="window.location.href='{{ url_for('index') }}'"> Home </button>
         </div>
 
     </div>
@@ -62,16 +62,6 @@
         <div class="table-column">Question</div>
         <div class="table-column">Correct Answer</div>
         <div class="table-column">Your Answer</div>
-    </div>
-    <div class="table-row">
-        <div class="table-column" id="identification-question">What is 2+2?</div>
-        <div class="table-column" id="identification-answer">4</div>
-        <div class="table-column" id="user-answer">4</div>
-    </div>
-    <div class="table-row">
-        <div class="table-column" id="identification-question">What is the capital of France?</div>
-        <div class="table-column" id="identification-answer">Paris</div>
-        <div class="table-column" id="user-answer">Berlin</div>
     </div>
 </div>
 

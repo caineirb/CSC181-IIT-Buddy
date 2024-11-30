@@ -37,7 +37,7 @@ def review(id: str, isRandom: str):
     user_name = studentData[0][1] if studentData else None
     return render_template('reviewers/identifications/review.html', identifications=identifications, user_name=user_name)
 
-@identifications_bp.route('/review/finished/<string:id>/<string:isRandom>', methods=["GET"])
+@identifications_bp.route('/review/finished/<string:id>/<string:isRandom>', methods=["POST"])
 @require_login
 def congrats(id: str, isRandom: str):
     info = {
