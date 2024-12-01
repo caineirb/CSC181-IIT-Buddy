@@ -160,35 +160,43 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
                 const notesContainer = document.getElementById('notesContainer');
                 notesContainer.innerHTML = ''; // Clear existing notes
 
-                // Create a wrapper div for the button and notes
-                let notesWrapper = document.createElement('div');
-                notesWrapper.className = 'row d-flex justify-content-center flex-wrap gap-3';
-                notesContainer.appendChild(notesWrapper);
+                                // Create a parent wrapper for all rows
+            let parentWrapper = document.createElement('div');
+            parentWrapper.className = 'd-flex flex-column align-items-center gap-3 w-100';
+            parentWrapper.style.marginLeft = '200px';
+            notesContainer.appendChild(parentWrapper);
 
-                // Button that triggers the modal
-                const addButton = document.createElement('button');
-                addButton.type = 'button';
-                addButton.className = 'd-flex justify-content-center align-items-center withpad';
-                addButton.style = 'height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none; margin-left: 20px; margin-right: 1rem;';
-                addButton.setAttribute('data-bs-toggle', 'modal');
-                addButton.setAttribute('data-bs-target', '#addNoteModal'); // Updated modal target
-                addButton.innerHTML = '<i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>';
-                notesWrapper.appendChild(addButton);
+            // Create the first row for notes
+            let notesWrapper = document.createElement('div');
+            notesWrapper.className = 'd-flex justify-content-center flex-wrap gap-3 w-100';
+            parentWrapper.appendChild(notesWrapper);
 
-                // Ensure only 9 items per page
-                const notesToShow = data.notes.slice(0, 9);
+            // Button that triggers the modal
+            const addButton = document.createElement('button');
+            addButton.type = 'button';
+            addButton.className = 'd-flex justify-content-center align-items-center withpad';
+            addButton.style = 'height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none; margin: 5px';
+            addButton.setAttribute('data-bs-toggle', 'modal');
+            addButton.setAttribute('data-bs-target', '#addNoteModal'); // Modal target
+            addButton.innerHTML = '<i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>';
+            notesWrapper.appendChild(addButton);
 
-                notesToShow.forEach((note, index) => {
-                    console.log('Adding note:', note); // Log each note being added
-                    addNoteBox(note.id, note.title, note.link, note.privacy, note.userName, notesWrapper, note.created_on);
+            // Ensure only 9 items per page
+            const notesToShow = data.notes.slice(0, 9);
 
-                    // Move to the second row after 4 items
-                    if (index === 3) {
-                        notesWrapper = document.createElement('div');
-                        notesWrapper.className = 'row d-flex justify-content-center flex-wrap gap-3';
-                        notesContainer.appendChild(notesWrapper);
-                    }
-                });
+            notesToShow.forEach((note, index) => {
+                console.log('Adding note:', note); // Log each note being added
+                addNoteBox(note.id, note.title, note.link, note.privacy, note.userName, notesWrapper, note.created_on);
+
+                // Move to the next row after 4 items for the first row and 5 items for the second row
+                if ((index === 3) || (index === 8)) {
+                    notesWrapper = document.createElement('div');
+                    notesWrapper.className = 'd-flex justify-content-center flex-wrap gap-3 w-100';
+                    parentWrapper.appendChild(notesWrapper);
+                }
+            });
+
+
 
                 updatePagination(data.total_notes, page, searchQuery, privacy, sort);
             }
