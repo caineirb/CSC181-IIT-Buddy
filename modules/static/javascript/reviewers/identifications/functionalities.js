@@ -39,12 +39,12 @@ function createidentificationFromData(identificationData, count) {
         </div>
         <div class="identification-content">
             <div class="input-container">
-                <textarea class="term-input" name="term-${count}" placeholder="Enter term" maxlength="255">${identificationData.answer}</textarea>
-                <label class="input-label">TERM</label>
+                <textarea class="term-input" name="term-${count}" placeholder="Enter term" maxlength="150">${identificationData.answer}</textarea>
+                <label class="input-label">ANSWER</label>
             </div>
             <div class="input-container">
                 <textarea class="definition-input" name="definition-${count}" placeholder="Enter definition" maxlength="255">${identificationData.question}</textarea>
-                <label class="input-label">DEFINITION</label>
+                <label class="input-label">QUESTION</label>
             </div>
             <input type="file" name="identification-image-${count}" id="identification-image-${count}" style="display: none;" accept="image/*" onchange="previewImage(event, ${count})">
             <input type="hidden" id="identification-image-base64-${count}" value="${imageUrl}">
@@ -86,7 +86,7 @@ function createidentification() {
         </div>
         <div class="identification-content">
             <div class="input-container">
-                <textarea class="term-input" name="term-${identificationCount}" placeholder="Enter answer" maxlength="255"></textarea>
+                <textarea class="term-input" name="term-${identificationCount}" placeholder="Enter answer" maxlength="150"></textarea>
                 <label class="input-label">ANSWER</label>
             </div>
             <div class="input-container">

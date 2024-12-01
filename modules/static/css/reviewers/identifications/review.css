@@ -138,12 +138,13 @@
 }
 
 .identification-front p{
-    text-align: left;
-    margin-left: 30px;
-    padding-right: 50px; 
+    text-align: justify;
+    padding-left: 20px;
+    padding-right: 20px;
     font-family: "Lexend", sans-serif;
     font-size: 2rem;
 }
+
 .type-answer {
     width: 100%;
     padding: 10px;
