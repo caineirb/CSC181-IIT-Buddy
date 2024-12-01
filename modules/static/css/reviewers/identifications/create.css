@@ -371,9 +371,3 @@
     background-color: var(--white-color);
     transform: scale(1.05);
 }
-
-.identification-image {
-    width: 300px;
-    max-height: 200px;
-    object-fit: cover;
-}

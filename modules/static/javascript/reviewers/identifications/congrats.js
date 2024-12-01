@@ -105,7 +105,7 @@ window.onload = function () {
                 if (userAnswer === correctAnswer) {
                     row.style.backgroundColor = "#c3e6cb";
                 } else if (userAnswer === "no answer") {
-                    row.style.backgroundColor = "#e2e3e5";
+                    row.style.backgroundColor = "#f8f9fa";
                 } else {
                     row.style.backgroundColor = "#f1c6c1";
                 }
@@ -147,6 +147,14 @@ window.onload = function () {
             row.appendChild(questionCell);
             row.appendChild(correctAnswerCell);
             row.appendChild(userAnswerCell);
+
+            if (userAnswer === correctAnswer) {
+                userAnswerCell.style.color = '#155724';
+            } else if (userAnswer === "no answer") {
+                userAnswerCell.style.color = '#e2e3e5';
+            } else {
+                userAnswerCell.style.color = '#721c24';
+            }
 
             resultsContainer.appendChild(row);
         });

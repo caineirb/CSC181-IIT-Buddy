@@ -228,3 +228,9 @@ textarea.answer-text {
 .counter span {
     margin: 0 5px;
 }
+
+.flashcard-image {
+    width: 300px;
+    max-height: 200px;
+    object-fit: cover;
+}
