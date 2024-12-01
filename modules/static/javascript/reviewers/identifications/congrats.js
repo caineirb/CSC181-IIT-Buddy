@@ -83,54 +83,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // fetch data questions, correct answer, and user answer
 window.onload = function() {
+    // Retrieve data from localStorage
     const correct = localStorage.getItem('score');
     const mistake = localStorage.getItem('mistakes');
     const missing = localStorage.getItem('missing');
-    const identifications = JSON.parse(localStorage.getItem('identifications'));
-    const userAnswers = JSON.parse(localStorage.getItem('userAnswers'));
+    const identifications = JSON.parse(localStorage.getItem('identifications')) || [];
+    const userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || [];
 
     const resultsContainer = document.querySelector('.results');
 
-    identifications.forEach((identification, index) => {
-        const userAnswer = userAnswers[index]?.trim() || "";
-        const correctAnswer = identification['answer'];
+    if (identifications.length && userAnswers.length) {
+        identifications.forEach((identification, index) => {
+            const userAnswer = userAnswers[index]?.trim() || "No Answer";
+            const correctAnswer = identification['answer'];
 
-        const row = document.createElement('div');
-        row.classList.add('table-row');
+            // Create a row for the table
+            const row = document.createElement('div');
+            row.classList.add('table-row');
 
-        // cells ni adtong para sa question, correct answer, and user answer
-        const questionCell = document.createElement('div');
-        questionCell.classList.add('table-column');
-        questionCell.textContent = identification['question'];
+            // Create cells for question, correct answer, and user answer
+            const questionCell = document.createElement('div');
+            questionCell.classList.add('table-column');
+            questionCell.textContent = identification['question'];
 
-        const correctAnswerCell = document.createElement('div');
-        correctAnswerCell.classList.add('table-column');
-        correctAnswerCell.textContent = correctAnswer;
+            const correctAnswerCell = document.createElement('div');
+            correctAnswerCell.classList.add('table-column');
+            correctAnswerCell.textContent = correctAnswer;
 
-        const userAnswerCell = document.createElement('div');
-        userAnswerCell.classList.add('table-column');
-        userAnswerCell.textContent = userAnswer || "No Answer";
+            const userAnswerCell = document.createElement('div');
+            userAnswerCell.classList.add('table-column');
+            userAnswerCell.textContent = userAnswer;
 
-        if (userAnswer === correctAnswer) {
-            userAnswerCell.style.color = 'green';
-        } else if (!userAnswer) {
-            userAnswerCell.style.color = 'gray';
-        } else {
-            userAnswerCell.style.color = 'red';
-        }
+            if (userAnswer === correctAnswer) {
+                userAnswerCell.style.color = 'green';
+            } else if (userAnswer === "No Answer") {
+                userAnswerCell.style.color = 'gray';
+            } else {
+                userAnswerCell.style.color = 'red';
+            }
 
-        row.appendChild(questionCell);
-        row.appendChild(correctAnswerCell);
-        row.appendChild(userAnswerCell);
+            row.appendChild(questionCell);
+            row.appendChild(correctAnswerCell);
+            row.appendChild(userAnswerCell);
 
-        resultsContainer.appendChild(row);
-    });
+            resultsContainer.appendChild(row);
+        });
 
-    const scoreDisplay = document.querySelector('#user-score');
-    const mistakesDisplay = document.querySelector('#user-mistakes');
-    const unansweredDisplay = document.querySelector('#user-unanswered');
+        const scoreDisplay = document.querySelector('#user-score');
+        const mistakesDisplay = document.querySelector('#user-mistakes');
+        const unansweredDisplay = document.querySelector('#user-unanswered');
 
-    scoreDisplay.textContent = correct;
-    mistakesDisplay.textContent = mistake;
-    unansweredDisplay.textContent = missing;
+        scoreDisplay.textContent = correct || 0;
+        mistakesDisplay.textContent = mistake || 0;
+        unansweredDisplay.textContent = missing || 0;
+
+        // Clear data from localStorage after rendering
+        localStorage.removeItem('score');
+        localStorage.removeItem('mistakes');
+        localStorage.removeItem('missing');
+        localStorage.removeItem('identifications');
+        localStorage.removeItem('userAnswers');
+    } else {
+        console.warn("No data found in localStorage.");
+    }
 };

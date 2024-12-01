@@ -50,13 +50,14 @@ function showNextIdentification() {
             }
         });
 
+        // save data to local storage
         localStorage.setItem('score', correct);
         localStorage.setItem('mistakes', mistake);
         localStorage.setItem('missing', missing);
         localStorage.setItem('identifications', JSON.stringify(identifications));
         localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
 
-        // Redirect to the congrats page
+        // redirect to the congrats page
         window.location.href = document.getElementById("congrats-url").value;
     }
 }
@@ -71,32 +72,3 @@ function showPreviousIdentification() {
 
 // Initial display
 updateIdentificationDisplay();
-
-// let userAnswers = [];
-        // document.querySelectorAll('.answer-text').forEach((answer) => {
-        //     userAnswers.push(answer.value);
-        // });
-        // let correct = 0;
-        // let mistake = 0;
-        // let missing = 0;
-
-        // identifications.forEach((identification, index) => {
-        //     const userAnswer = userAnswers[index]?.trim().toLowerCase() || "";
-        //     const correctAnswer = identification['answer'].trim().toLowerCase();
-        //     const question = identification['question'];
-
-        //     if (userAnswer === correctAnswer) {
-        //         correct++;
-        //     } else if (userAnswer === "") {
-        //         missing++;
-        //     } else {
-        //         mistake++;
-        //     }
-
-        //     console.log(`Question: ${question}`);
-        //     console.log(`Correct Answer: ${identification['answer']}`);
-        //     console.log(`Your Answer: ${userAnswers[index]}`);
-        // });
-        // console.log(`Score: ${correct}`);
-        // console.log(`Mistakes: ${mistake}`);
-        // console.log(`Unanswered: ${missing}`);
