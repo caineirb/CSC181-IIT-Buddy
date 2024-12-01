@@ -123,7 +123,11 @@
     font-size: 2rem;
     font-weight: bold;
     align-self: flex-end;
-    margin-right: 30px;
+    width: 100%;
+    padding-left: 800px;
+    background-color: var(--primary-color);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--white-color);
 }
 
 .identification .identification-front .identification-image {

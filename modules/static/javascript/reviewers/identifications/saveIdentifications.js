@@ -60,8 +60,8 @@ function sendidentificationsToBackend(next_url = null) {
 
     if (hasIncompleteidentifications) {
         Swal.fire({
-            title: "Incomplete Cards Detected.",
-            text: "Complete every Term and Definition pair first before playing.",
+            title: "Incomplete Questions Detected.",
+            text: "Complete every Answer and Question pair first before playing.",
             icon: "warning"
           });
     } else if (valididentificationCount > 0) {
