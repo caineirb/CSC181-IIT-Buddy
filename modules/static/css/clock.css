@@ -124,3 +124,12 @@
     height: 14.58px;
     background: var(--close-icon);
 }
+
+/* need ichange kay ga libog nakoooooo */
+.play-timer:hover, .pause-timer:hover, .reset-timer:hover {
+    color: var(--white-color);
+    transform: scale(1.1);
+}
+.play-timer.clicked, .pause-timer.clicked, .reset-timer.clicked {
+    background-color: var(--black-color);
+}
