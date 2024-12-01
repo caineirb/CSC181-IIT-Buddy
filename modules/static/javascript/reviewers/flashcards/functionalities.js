@@ -32,7 +32,7 @@ function createFlashcardFromData(flashcardData, count) {
         </div>
         <div class="flashcard-content">
             <div class="input-container">
-                <textarea class="term-input" name="term-${count}" placeholder="Enter term" maxlength="255">${flashcardData.answer}</textarea>
+                <textarea class="term-input" name="term-${count}" placeholder="Enter term" maxlength="150">${flashcardData.answer}</textarea>
                 <label class="input-label">TERM</label>
             </div>
             <div class="input-container">
@@ -72,7 +72,7 @@ function createFlashcard() {
         </div>
         <div class="flashcard-content">
             <div class="input-container">
-                <textarea class="term-input" name="term-${flashcardCount}" placeholder="Enter term" maxlength="255"></textarea>
+                <textarea class="term-input" name="term-${flashcardCount}" placeholder="Enter term" maxlength="150"></textarea>
                 <label class="input-label">TERM</label>
             </div>
             <div class="input-container">
