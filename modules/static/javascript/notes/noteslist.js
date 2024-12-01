@@ -125,11 +125,18 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(noteData)
         })
-        
         .then(response => {
             if (!response.ok) {
                 return response.json().then(errorData => {
-                    throw new Error(errorData.message || 'Failed to add note');
+                    console.log(errorData.message); // Debug the actual error message
+                    if (errorData.message === 'Duplicate title' || errorData.message === 'Duplicate link') {
+                        Swal.fire({
+                            text: 'A note with the title or link already exists for this user.',
+                            icon: "error"
+                        });
+                    } else {
+                        throw new Error(errorData.message || 'Failed to add note');
+                    }
                 });
             }
             return response.json();
@@ -146,7 +153,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error(data.message || 'Failed to add the note.');
             }
         })
-        .catch(error => console.error('Error adding note:', error));
+        .catch(error => {
+            console.error('Error adding note:', error);
+            Swal.fire({
+                text: error.message || 'An error occurred while adding the note.',
+                icon: "error"
+            });
+        });
     });
 });
 
