@@ -129,10 +129,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!response.ok) {
                 return response.json().then(errorData => {
                     console.log(errorData.message); // Debug the actual error message
-                    if (errorData.message === 'Duplicate title' || errorData.message === 'Duplicate link') {
+                    if (errorData.message === 'Duplicate title') {
                         Swal.fire({
-                            text: 'A note with the title or link already exists for this user.',
-                            icon: "error"
+                            
+                           
                         });
                     } else {
                         throw new Error(errorData.message || 'Failed to add note');
@@ -372,7 +372,7 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
                     });
                 } else {
                     Swal.fire({
-                        text:  'Failed to update the note. Please try again.',
+                        text:  'Failed to update the note. Note with the same title or link already exist.',
                         icon: "error"
                     });
                 }
@@ -390,7 +390,7 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
 
 // Update pagination controls
 function updatePagination(totalNotes, currentPage, searchQuery = '', privacy = 'All', sort = 'Most Recent') {
-    const notesPerPage = 10;  // Set notes per page to 10
+    const notesPerPage = 9;  // Set notes per page to 9
     const totalPages = Math.ceil(totalNotes / notesPerPage);
     const paginationNav = document.querySelector('.pagination-nav .pagination');
     paginationNav.innerHTML = ''; // Clear existing pagination

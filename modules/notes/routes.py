@@ -22,11 +22,8 @@ def add_note():
 
         return make_response(jsonify({'message': 'Note added successfully'}), 201)
     except ValueError as e:
-        return make_response(jsonify({'message': str(e)}), 400)
+        return make_response(jsonify({'message': "Note with the same title or link already exists."}), 400)
     except Exception as e:
-        if 'duplicate entry' in str(e).lower():
-            return make_response(jsonify({'message': 'Note already exists'}), 400)
-        print(f"Error: {str(e)}")
         return make_response(jsonify({'message': 'Failed to add note', 'error': str(e)}), 500)
     
 @notes_bp.route('/delete_note/<string:id>', methods=["DELETE"])
