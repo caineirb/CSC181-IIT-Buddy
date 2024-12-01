@@ -1,7 +1,7 @@
 from flask import request, redirect, flash, session, url_for, make_response, jsonify
-from modules.controller import require_login, customErrorMessages
+from modules.controller import require_login
 from . import reviewers_bp
-from .controller import createReviewer, editReviewerInfo, deleteReviewer, checkDuplicateTitle
+from .controller import createReviewer, editReviewerInfo, deleteReviewer, checkDuplicateTitle, customErrorMessages
 from modules import mysql
 
 @reviewers_bp.route('/create', methods=["POST"])

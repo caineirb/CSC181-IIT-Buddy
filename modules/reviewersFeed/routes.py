@@ -1,5 +1,6 @@
 from flask import flash, render_template, request, session, redirect, url_for
-from modules.controller import require_login, fetchStudent, customErrorMessages
+from modules.controller import require_login, fetchStudent
+from modules.reviewers.controller import customErrorMessages
 from modules.reviewersFeed.controller import countReviewers, fetchReviewers
 from . import reviewers_feed_bp
 from modules import mysql
