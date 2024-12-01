@@ -44,12 +44,12 @@
     </div>
 
     <label for="reviewer-description" class="form-label">Reviewer Description</label>
-    <textarea name="reviewer-description" id="reviewer-description" placeholder="Description" maxlength="300">{{ data['information'][1] | e }}></textarea>
+    <textarea name="reviewer-description" id="reviewer-description" placeholder="Description" maxlength="300">{{ data['information'][1] | e }}</textarea>
 </div>
 
 <div class="action-buttons-container">
     <div>
-        <button type="button" id="delete-identifications-btn" class="delete-identifications-btn" title="Delete Identification Reviewer" onclick="deleteIdentification()">
+        <button type="button" id="delete-identifications-btn" class="delete-identifications-btn" title="Delete Identification Reviewer" onclick="deleteCard()">
             <i class="bi bi-trash"></i>
         </button>
     </div>
