@@ -320,17 +320,7 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
             const newTitle = document.getElementById('editNoteTitle').value.trim();
             const newLink = document.getElementById('editNoteLink').value.trim();
             const newPrivacy = document.getElementById('editNotePrivacy').value;
-            if (newTitle) {
-                noteBox.querySelector('.note-link span').innerText = newTitle;
-            }
-            if (newLink) {
-                noteBox.querySelector('.note-link').href = newLink;
-            }
-            if (newPrivacy) {
-                noteBox.querySelector('.note-link p:last-child').innerText = newPrivacy;
-            }
-            editModal.hide();
-
+  
             if (!newTitle || !newLink || !newPrivacy) {
                 alert('All fields are required.');
                 return;
