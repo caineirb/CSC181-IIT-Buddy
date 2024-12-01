@@ -55,7 +55,7 @@
     text-align: center;
 }
 
-.play-timer, .reset-timer, .pause-timer {
+.set-timer, .play-stop-timer, .pause-resume-timer {
     width: 39px;
     height: 25px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -66,21 +66,21 @@
     margin-left: 10px;
 }
 
-.play-timer {
-    background: var(--play-bg);
-}
-
-.reset-timer {
+.set-timer {
     background: rgba(255, 0, 0, 0.50);
 }
 
-.pause-timer {
+.play-stop-timer {
+    background: var(--play-bg);
+}
+
+.pause-resume-timer {
     background: var(--pause-bg);
 }
 
-.reset-timer .stop-circle, 
-.play-timer .play-circle, 
-.pause-timer .pause-circle {
+.play-stop-timer .play-stop-circle, 
+.set-timer .set-circle, 
+.pause-resume-timer .pause-resume-circle {
     width: 16px;
     height: 16px;
     padding: 1.33px;
@@ -126,10 +126,68 @@
 }
 
 /* need ichange kay ga libog nakoooooo */
-.play-timer:hover, .pause-timer:hover, .reset-timer:hover {
-    color: var(--white-color);
+.set-timer:hover, .pause-resume-timer:hover, .play-stop-timer:hover {
+    background-color: var(--white-color);
     transform: scale(1.1);
 }
-.play-timer.clicked, .pause-timer.clicked, .reset-timer.clicked {
-    background-color: var(--black-color);
+
+.set-timer-modal {
+    display: none;
+    position: absolute;
+    bottom: -150px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 250px;
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.set-timer-modal h4 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.modal-timer-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.modal-input {
+    width: 50px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0 2px;
+    font-family: "Kode Mono";
+}
+
+.modal-actions {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* need ichange pero unya na kay kapoy huhu */
+.modal-actions button {
+    margin: 0 5px;
+    padding: 5px 15px;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+.modal-actions button:hover {
+    background-color: #0056b3;
 }

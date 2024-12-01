@@ -4,28 +4,40 @@ let minutes = 0;
 let seconds = 0;
 let isRunning = false;
 
+const timeDisplay = document.getElementById('time-display');
+const modal = document.getElementById('set-timer-modal');
+const setBtn = document.getElementById('set-btn');
+
 function updateDisplay() {
-    const timeDisplay = document.getElementById('time-display');
     timeDisplay.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
 }
 
-// format sa timer
 function formatTime(time) {
     return time < 10 ? `0${time}` : time;
 }
 
-// start go
 function startTimer() {
     if (!isRunning) {
         isRunning = true;
         timer = setInterval(() => {
-            seconds++;
-            if (seconds === 60) {
-                seconds = 0;
-                minutes++;
-                if (minutes === 60) {
-                    minutes = 0;
-                    hours++;
+            if (seconds === 0 && minutes === 0 && hours === 0) {
+                clearInterval(timer);
+                isRunning = false;
+                alert("Time's up!"); // planning on alisdan ni kadtong kay caine gamiton nga warning ish
+            } else {
+                if (seconds === 0) {
+                    if (minutes === 0) {
+                        if (hours > 0) {
+                            hours--;
+                            minutes = 59;
+                            seconds = 59;
+                        }
+                    } else {
+                        minutes--;
+                        seconds = 59;
+                    }
+                } else {
+                    seconds--;
                 }
             }
             updateDisplay();
@@ -33,45 +45,70 @@ function startTimer() {
     }
 }
 
-// stopp
 function stopTimer() {
     clearInterval(timer);
     isRunning = false;
 }
 
-// resetttttt
-function resetTimer() {
-    clearInterval(timer);
-    isRunning = false;
-    hours = 0;
-    minutes = 0;
-    seconds = 0;
+// sa modal kadtong pag set
+setBtn.addEventListener('click', () => {
+    modal.style.display = 'block';
+});
+
+document.getElementById('cancel-timer').addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+// values adtong inig mag set nag timer
+document.getElementById('save-timer').addEventListener('click', () => {
+    hours = parseInt(document.getElementById('modal-hours').value) || 0;
+    minutes = parseInt(document.getElementById('modal-minutes').value) || 0;
+    seconds = parseInt(document.getElementById('modal-seconds').value) || 0;
     updateDisplay();
+    modal.style.display = 'none';
+});
+
+// play stop btn
+document.getElementById('play-stop-btn').addEventListener('click', () => {
+    if (isRunning) {
+        stopTimer();
+    } else {
+        startTimer();
+    }
+});
+
+// pause resume buttonn
+document.getElementById('pause-resume-btn').addEventListener('click', () => {
+    if (isRunning) {
+        stopTimer();
+    } else {
+        startTimer();
+    }
+});
+
+// sa kadtong ang timer by 00 nya 01
+function formatInput(input) {
+    let value = parseInt(input.value) || 0;
+    if (value < 10) {
+        input.value = `0${value}`; // add leading 0 if less than 10
+    } else {
+        input.value = `${value}`;
+    }
 }
 
-function handleButtonHover(button) {
-    button.addEventListener('mouseenter', () => {
-        button.style.backgroundColor = '#ddd';
-        button.style.transform = 'scale(1.1)';
+document.querySelectorAll('.modal-input').forEach(input => {
+    input.addEventListener('input', () => {
+        formatInput(input);
     });
-    button.addEventListener('mouseleave', () => {
-        button.style.backgroundColor = '';
-        button.style.transform = '';
+
+    input.addEventListener('blur', () => {
+        formatInput(input);
     });
-}
 
-function handleButtonClick(button) {
-    button.addEventListener('click', () => {
-        button.classList.toggle('clicked');
+    input.addEventListener('change', () => {
+        if (parseInt(input.value) > parseInt(input.max)) {
+            input.value = input.max;
+        }
+        formatInput(input);
     });
-}
-
-document.getElementById('play-btn').addEventListener('click', startTimer);
-document.getElementById('pause-btn').addEventListener('click', stopTimer);
-document.getElementById('reset-btn').addEventListener('click', resetTimer);
-
-const buttons = document.querySelectorAll('.play-timer, .pause-timer, .reset-timer');
-    buttons.forEach(button => {
-        handleButtonHover(button);
-        handleButtonClick(button);
 });
