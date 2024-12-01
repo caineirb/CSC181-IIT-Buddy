@@ -1,0 +1,126 @@
+/* importing google font: kode mono */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Kode+Mono:wght@400..700&family=Miniver&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+    --clock-bg: #FBA421;
+    --play-bg: #51C886;
+    --pause-bg: #61C7E7;
+    --close-bg: #E07878;
+    --white-color: #fff;
+    --black-color: #000;
+    --icon-border: #1E1E1E;
+    --close-border: #F6F5F5;
+    --close-icon: #FEF7FF;
+}
+
+.clock-container {
+    width: 347px;
+    height: 60px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.clock-base {
+    width: 335px;
+    height: 49px;
+    background: var(--clock-bg);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer-base {
+    width: 170px;
+    height: 33px;
+    background: var(--black-color);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) inset;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 5px;
+}
+
+.time-display {
+    color: var(--white-color);
+    font-size: 20px;
+    font-family: "Kode Mono";
+    font-weight: 400;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.play-timer, .reset-timer, .pause-timer {
+    width: 39px;
+    height: 25px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.play-timer {
+    background: var(--play-bg);
+}
+
+.reset-timer {
+    background: rgba(255, 0, 0, 0.50);
+}
+
+.pause-timer {
+    background: var(--pause-bg);
+}
+
+.reset-timer .stop-circle, 
+.play-timer .play-circle, 
+.pause-timer .pause-circle {
+    width: 16px;
+    height: 16px;
+    padding: 1.33px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: 13.33px;
+    height: 13.33px;
+    border: 1.60px solid var(--icon-border);
+}
+
+.close-clock {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: -5px;
+    left: -10px;
+    background: var(--close-bg);
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    display: inline-flex;
+}
+
+.close {
+    width: 25px;
+    height: 25px;
+    padding: 5.21px;
+    border-radius: 4px;
+    border: 1px solid var(--close-border);
+    justify-content: center;
+    align-items: center;
+    display: inline-flex;
+}
+
+.close .icon {
+    width: 14.58px;
+    height: 14.58px;
+    background: var(--close-icon);
+}
