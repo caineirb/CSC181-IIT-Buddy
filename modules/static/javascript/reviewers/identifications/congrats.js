@@ -174,6 +174,11 @@ window.onload = function () {
         localStorage.removeItem('identifications');
         localStorage.removeItem('userAnswers');
     } else {
+        const review = document.createElement('div');
+        review.textContent = "No data to review. Go back to answering, and avoid refreshing the page. Thank you."
+        review.style = "margin: 0 auto";
+        
+        resultsContainer.appendChild(review);
         console.warn("No data found in localStorage.");
     }
 };
