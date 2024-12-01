@@ -81,7 +81,7 @@ def get_notes():
             raise ValueError("User ID not found in session")
 
         page = request.args.get('page', 1, type=int)
-        notes_per_page = 10  # Set notes per page to 10
+        notes_per_page = 9  # Set notes per page to 9
         offset = (page - 1) * notes_per_page
         search_query = request.args.get('search_query', '', type=str)
         privacy = request.args.get('privacy', 'All', type=str)
