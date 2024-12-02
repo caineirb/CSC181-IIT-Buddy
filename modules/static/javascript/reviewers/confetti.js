@@ -1,4 +1,3 @@
-//uniform confetttti
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('congrats-confetti');
     const ctx = canvas.getContext('2d');
@@ -69,9 +68,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function startConfetti() {
-        generateConfetti();
         const confettiInterval = setInterval(generateConfetti, 100);
         animateConfetti();
+
+        const confettiDuration = 5000;
+        setTimeout(() => {
+            clearInterval(confettiInterval);
+        }, confettiDuration);
     }
 
     startConfetti();
