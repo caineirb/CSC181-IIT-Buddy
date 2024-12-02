@@ -166,10 +166,9 @@
 
       <!-- Iterate over reviewers and create cards -->
       {% for reviewer in reviewers_data['data'] %}
-      <a href="{{ url_for('reviewers.edit', id=reviewer[0], type=reviewer[2]) }}" class="card"
-        style="background-color: {{ reviewers_data['bgcolor'][reviewer[2]] }};">
+      <a href="{{ url_for('reviewers.edit', id=reviewer[0], type=reviewer[2]) }}" class="card" style="background-color: {{ reviewers_data['bgcolor'][reviewer[2]] }};">
         <div class="card-content" style="color: {{ reviewers_data['fgcolor'][reviewer[2]] }};">
-          <div style="padding-bottom: 130px;">
+          <div>
             <div class="card-name"><b>{{ reviewer[1] }}</b></div>
             <div class="card-type">{{ reviewer[2] }}</div>
             <div class="card-time">{{ reviewer[4] }}</div> <!-- here caine need i fix -->
