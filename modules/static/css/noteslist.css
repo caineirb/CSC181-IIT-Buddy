@@ -44,7 +44,7 @@
 }
 
 .search-bar input {
-    flex-grow: 1; /* Allow the input to grow and fill the container */
+    flex-grow: 1;
     border: none;
     outline: none;
     padding: 0.2rem 1rem;
@@ -61,9 +61,9 @@
     border-radius: 10px;
     border: 1px solid var(--white-color);
     background-color: var(--primary-color);
-    box-shadow: var(--light-main-color);
     cursor: pointer;
     margin-left: 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .dropdown-text {
@@ -73,7 +73,7 @@
     font-size: 1rem;
     font-weight: 500;
     color: var(--white-color);
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
 }
 
 .dropdown-list {
@@ -100,10 +100,6 @@
     transition: margin-left 0.2s ease;
 }
 
-.dropdown-text .bi {
-    color: var(--white-color);
-}
-
 .dropdown-list-item:hover {
     margin-left: 0.5rem;
     color: var(--primary-color);
@@ -114,8 +110,8 @@
     display: flex;
     align-items: center;
     padding-right: 1rem;
-    width: 544px; /* Adjusted width to fit with search-bar */
-    height: 45px; /* Adjusted height to fit with search-bar */
+    width: 544px;
+    height: 45px;
     color: var(--primary-color);
     border-radius: 10px;
     padding: 0.2rem 1rem;
@@ -149,6 +145,13 @@
     background-color: var(--white-color);
     color: var(--primary-color);
     border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+
+
+.search-btn:active {
+    transform: scale(0.95);
 }
 
 .searchbar {
@@ -163,7 +166,7 @@
 }
 
 #dropdownMenuButton {
-  width: 100%; 
+    width: 100%;
 }
 
 .sort {
@@ -182,26 +185,26 @@
     font-weight: 700;
 }
 
-.subheader{
+.subheader {
     margin-top: 70px;
-    position: fixed; /* Added */
-    top: 0; /* Added */
-    z-index: 1000; /* Added */
+    position: fixed;
+    top: 0;
+    z-index: 1000;
     transition: top 0.3s ease-in-out;
 }
 
-.subheader.show{
+.subheader.show {
     top: 0;
 }
 
-.reched{
+.reched {
     background-color: #d9d9d9;
     width: 100%;
     position: fixed;
 }
 
 .reviewers {
-    color: var(--primary-color); /* Changed from secondary-color to primary-color */
+    color: var(--primary-color);
     font-size: 48px;
     word-wrap: break-word;
     position: relative;
@@ -209,12 +212,12 @@
 }
 
 .list {
-    color: var(--secondary-color); /* Changed from primary-color to secondary-color */
+    color: var(--secondary-color);
     font-size: 60px;
     word-wrap: break-word;
 }
 
-.back-button{
+.back-button {
     position: fixed;
     transform: translateX(-20px) translateY(40px);
     display: flex;
@@ -223,35 +226,41 @@
 
 .pagination-nav {
     display: flex;
-    justify-content: center; /* Center the pagination */
-    align-items: center; /* Center vertically */
-    margin-top: 20px; /* Adjust as needed */
-    position: fixed; 
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    position: fixed;
     bottom: 0;
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Center horizontally */
-    width: 100%;  
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
     z-index: 1000;
     padding: 10px 20px;
 }
 
 .pagination-nav .pagination {
     display: flex;
-    justify-content: center; /* Center the pagination items */
+    justify-content: center;
     width: 100%;
 }
 
 .pagination-nav .page-link {
-    font-weight: var(--font-weight-medium); 
-    color: var(--primary-color); 
-    text-decoration: none; 
-    border-radius: var(--border-radius-s); 
+    font-weight: var(--font-weight-medium);
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: var(--border-radius-s);
     padding: 6px 12px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .pagination-nav .page-link:hover {
     color: var(--white-color);
     background-color: var(--primary-color);
+}
+
+.pagination-nav .page-link:focus {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 4px;
 }
 
 .subheader .ForBgFixed {
@@ -261,27 +270,51 @@
     box-sizing: border-box;
 }
 
-/* Add margin to note elements */
 .withpad {
     margin: 5px;
 }
 
 .note-box {
-    width: 250px; /* Ensure the width is fixed */
-    max-width: 250px; /* Ensure the width does not exceed 250px */
+    width: 250px;
+    max-width: 250px;
     background-color: #FFFFF0;
     border-radius: 15px;
     text-decoration: none;
 }
 
-<style>
-  .row.d-flex.flex-wrap.gap-3 { /* Parent of the dynamically added notes */
-    gap: 16px; /* Space between notes */
-  }
+/* Responsive Design */
+@media (max-width: 768px) {
+    .search-bar,
+    .filter,
+    .sort {
+        top: 50px;
+        left: 10px;
+        width: calc(100% - 20px);
+    }
 
-  .withpad { 
-    margin: 0; /* Remove any pre-set margin */
-  }
-</style>
+    .reviewerslist {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pagination-nav {
+        padding: 5px;
+    }
+}
 
 
+.d-flex.flex-column.align-items-center.gap-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px; /* Adjust spacing between rows */
+    width: 100%;
+}
+
+.d-flex.justify-content-center.flex-wrap.gap-3 {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px; /* Adjust spacing between items */
+    width: 100%;
+}
