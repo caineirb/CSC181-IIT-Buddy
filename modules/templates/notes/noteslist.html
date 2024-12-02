@@ -14,6 +14,7 @@
 </style>
 <link href="{{ url_for('static', filename='css/noteslist.css') }}" rel="stylesheet">
 
+
 <!-- CSRF Token Meta Tag -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -112,13 +113,13 @@
     <!-- Search, Filter, and Sort Section -->
     <div class="searchbar d-flex">
         <!-- Search Bar -->
-        <form id="searchForm" class="search-bar" style="width: 544px; height: 45px; flex-shrink: 0; border-radius: 10px; border: 1px solid #000; background: #FFF; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);">
-            <button type="button" class="clear-btn" onclick="document.getElementById('search-input').value='';" style="background: none; border: none; font-size: 1.5rem;">
+        <form id="searchForm" class="search-bar" style="width: 544px; height: 45px; flex-shrink: 0; border-radius: 10px; border: 1px solid #000; background: #FFF;">
+            <button type="button" class="clear-btn" onclick="document.getElementById('search-input').value='';" style="background: none; border: none; font-size: 2rem;">
                 <i class="bi bi-x"></i>
             </button>
             <input type="text" id="search-input" name="search_query" placeholder="Search here...">
             <button type="submit" class="search-btn">
-                <i class="bi bi-search"></i>
+                <i class="bi bi-search" style="font-size: 1.4rem;"></i>
             </button>
         </form>
 
@@ -179,5 +180,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 <script src="{{ url_for('static', filename='javascript/notes/noteslist.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 {% endblock %}
