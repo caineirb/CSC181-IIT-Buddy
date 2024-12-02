@@ -128,21 +128,38 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => {
             if (!response.ok) {
                 return response.json().then(errorData => {
-                    throw new Error(errorData.message || 'Failed to add note');
+                    console.log(errorData.message); // Debug the actual error message
+                    if (errorData.message === 'Duplicate title') {
+                        Swal.fire({
+                            
+                           
+                        });
+                    } else {
+                        throw new Error(errorData.message || 'Failed to add note');
+                    }
                 });
             }
             return response.json();
         })
         .then(data => {
             if (data.message === 'Note added successfully') {
-                // Fetch the updated notes list
-                location.reload();
-                fetchNotes(1);
+                Swal.fire({
+                    text:  data.message,
+                    icon: "success"
+                }).then(() => {
+                    location.reload();
+                });
             } else {
-                console.error('Error adding note:', data.message);
+                throw new Error(data.message || 'Failed to add the note.');
             }
         })
-        .catch(error => console.error('Error adding note:', error));
+        .catch(error => {
+            console.error('Error adding note:', error);
+            Swal.fire({
+                text: error.message || 'An error occurred while adding the note.',
+                icon: "error"
+            });
+        });
     });
 });
 
@@ -156,37 +173,43 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
                 const notesContainer = document.getElementById('notesContainer');
                 notesContainer.innerHTML = ''; // Clear existing notes
 
-                // Create a wrapper div for the button and notes
-                let notesWrapper = document.createElement('div');
-                notesWrapper.className = 'row d-flex justify-content-center flex-wrap gap-3';
-                notesContainer.appendChild(notesWrapper);
+                                // Create a parent wrapper for all rows
+            let parentWrapper = document.createElement('div');
+            parentWrapper.className = 'd-flex flex-column align-items-center gap-3 w-100';
+            parentWrapper.style.marginLeft = '200px';
+            notesContainer.appendChild(parentWrapper);
 
-                // Button that triggers the modal
-                const addButton = document.createElement('button');
-                addButton.type = 'button';
-                addButton.className = 'd-flex justify-content-center align-items-center withpad';
-                addButton.style = 'height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none; margin-left: 20px; margin-right: 1rem;';
-                addButton.setAttribute('data-bs-toggle', 'modal');
-                addButton.setAttribute('data-bs-target', '#addNoteModal'); // Updated modal target
-                addButton.innerHTML = '<i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>';
-                notesWrapper.appendChild(addButton);
+            // Create the first row for notes
+            let notesWrapper = document.createElement('div');
+            notesWrapper.className = 'd-flex justify-content-center flex-wrap gap-3 w-100';
+            parentWrapper.appendChild(notesWrapper);
 
-                
+            // Button that triggers the modal
+            const addButton = document.createElement('button');
+            addButton.type = 'button';
+            addButton.className = 'd-flex justify-content-center align-items-center withpad';
+            addButton.style = 'height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none; margin: 5px';
+            addButton.setAttribute('data-bs-toggle', 'modal');
+            addButton.setAttribute('data-bs-target', '#addNoteModal'); // Modal target
+            addButton.innerHTML = '<i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>';
+            notesWrapper.appendChild(addButton);
 
-                // Ensure only 10 items per page
-                const notesToShow = data.notes;
+            // Ensure only 9 items per page
+            const notesToShow = data.notes.slice(0, 9);
 
-                notesToShow.forEach((note, index) => {
-                    console.log('Adding note:', note); // Log each note being added
-                    addNoteBox(note.id, note.title, note.link, note.privacy, note.userName, notesWrapper, note.created_on);
+            notesToShow.forEach((note, index) => {
+                console.log('Adding note:', note); // Log each note being added
+                addNoteBox(note.id, note.title, note.link, note.privacy, note.userName, notesWrapper, note.created_on);
 
-                    // Ensure only 5 items per row
-                    if ((index + 1) % 5 === 0) {
-                        const newRow = document.createElement('div');
-                        newRow.className = 'row d-flex justify-content-center flex-wrap gap-3';
-                        notesContainer.appendChild(newRow);
-                    }
-                });
+                // Move to the next row after 4 items for the first row and 5 items for the second row
+                if ((index === 3) || (index === 8)) {
+                    notesWrapper = document.createElement('div');
+                    notesWrapper.className = 'd-flex justify-content-center flex-wrap gap-3 w-100';
+                    parentWrapper.appendChild(notesWrapper);
+                }
+            });
+
+
 
                 updatePagination(data.total_notes, page, searchQuery, privacy, sort);
             }
@@ -297,17 +320,7 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
             const newTitle = document.getElementById('editNoteTitle').value.trim();
             const newLink = document.getElementById('editNoteLink').value.trim();
             const newPrivacy = document.getElementById('editNotePrivacy').value;
-            if (newTitle) {
-                noteBox.querySelector('.note-link span').innerText = newTitle;
-            }
-            if (newLink) {
-                noteBox.querySelector('.note-link').href = newLink;
-            }
-            if (newPrivacy) {
-                noteBox.querySelector('.note-link p:last-child').innerText = newPrivacy;
-            }
-            editModal.hide();
-
+  
             if (!newTitle || !newLink || !newPrivacy) {
                 alert('All fields are required.');
                 return;
@@ -349,7 +362,7 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
                     });
                 } else {
                     Swal.fire({
-                        text:  'Failed to update the note. Please try again.',
+                        text:  'Failed to update the note. Note with the same title or link already exist.',
                         icon: "error"
                     });
                 }
@@ -367,7 +380,7 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
 
 // Update pagination controls
 function updatePagination(totalNotes, currentPage, searchQuery = '', privacy = 'All', sort = 'Most Recent') {
-    const notesPerPage = 10;  // Set notes per page to 10
+    const notesPerPage = 9;  // Set notes per page to 9
     const totalPages = Math.ceil(totalNotes / notesPerPage);
     const paginationNav = document.querySelector('.pagination-nav .pagination');
     paginationNav.innerHTML = ''; // Clear existing pagination
