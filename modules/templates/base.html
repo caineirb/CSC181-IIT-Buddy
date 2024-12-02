@@ -20,6 +20,7 @@
 
     <!-- linking custom css sa clock -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/clock.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=resume" />
 </head>
 <body style="background-color: #D9D9D9;">
     <style>
@@ -81,7 +82,9 @@
                             <div class="pause-resume-timer" id="pause-resume-btn">
                                 <div class="pause-resume-circle">
                                     <i class="bi bi-pause-circle" id="pause-circle" style="display: inline;"></i>
-                                    <i class="bi bi-play-circle" id="play-circle" style="display: none;"></i>
+                                    <i class="material-symbols-outlined" id="play-circle" style="display: none;">
+                                        resume
+                                    </i>
                                 </div>
                             </div>
                         </div>
