@@ -30,8 +30,8 @@ def edit(id :str, type :str):
     match type:
         case "Flashcard":
             return redirect(url_for('reviewers.flashcards.edit', id=id))
-        # case "Identification":
-        #     return redirect(url_for('', id=id))
+        case "Identification":
+            return redirect(url_for('reviewers.identifications.edit', id=id))
         # case "Multiple Choice":
         #     return redirect(url_for('', id=id))
         # case "Mixed":
