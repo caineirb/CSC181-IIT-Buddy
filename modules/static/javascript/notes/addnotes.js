@@ -115,11 +115,17 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
             <p style="font-size: 16px; margin: 0; text-align: left;">${userName}</p>
         </div>
     </a>
-    
-    <div class="note-buttons-container" style="background-color: #0C203E; width: 100%; padding: 5px 0; position: absolute; top: 0; left: 0;  border-radius: 10px 10px 0 0;">
-        <div style="position: relative; display: flex; justify-content: flex-end; padding-right: 10px;">
-            <button class="options-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: #0C203E; color: white; border: 0;">
+    <div class="note-buttons" style="background-color: #0C203E; width: 100%; padding: 5px 0; position: absolute; top: 0; left: 0;  border-radius: 10px 10px 0 0;">
+      <div style="position: relative; display: flex; justify-content: flex-end; padding-right: 10px;">
+        <button class="options-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: #0C203E; color: white; border: 0;">
                 <i class="fas fa-ellipsis-h"></i>
+        </button>
+        <div class="options-menu" style="display: none; position: absolute; top: 30px; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);">
+            <button class="edit-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: green; color: white; border: none; border-bottom: 1px solid #ccc;">
+                Edit
+            </button>
+            <button class="delete-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: red; color: white; border: none;">
+                Delete
             </button>
        
             <div class="options-menu" style="display: none; position: absolute; top: 30px; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);">
@@ -131,6 +137,7 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
                 </button>
             </div>
         </div>
+      </div>
     </div>
 `;
 
