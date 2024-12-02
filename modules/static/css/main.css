@@ -53,7 +53,7 @@ body {
 .card {
     width: 500px;
     height: 245px;
-    margin: 15px; 
+    margin: 15px;
     border-radius: 15px;
     text-decoration: none;
     border: 3px dashed var(--primary-color);

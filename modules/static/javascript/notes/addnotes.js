@@ -84,11 +84,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     const addNotesButton = document.createElement('div');
                     addNotesButton.classList.add("col-2");
                     addNotesButton.innerHTML = `
+                    
                     <button type="button" class="d-flex justify-content-center align-items-center withpad"
-                        style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none; margin-right = 10px;"
+                        style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none; margin-right = 50px;"
                         data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>
                     </button>
+                    
                     `
                     notesContainer.insertBefore(addNotesButton, notesContainer.firstChild)
                     data['notes'].forEach(note => {
