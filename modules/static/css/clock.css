@@ -210,3 +210,12 @@
     background-color: var(--primary-color);
     color: var(--white-color);
 }
+
+#play-circle,
+#pause-circle,
+#play-icon,
+#reset-icon,
+#set-btn,
+#close-clock {
+    cursor: pointer;
+}
