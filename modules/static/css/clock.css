@@ -202,11 +202,11 @@
 }
 
 .save-timer:hover{
-    background-color: #fff;
-    color: var(--play-bg);
+    background-color: var(--primary-color);
+    color: var(--white-color);
 }
 
 .cancel-timer:hover{
-    background-color: #fff;
-    color: var(--close-bg);
+    background-color: var(--primary-color);
+    color: var(--white-color);
 }

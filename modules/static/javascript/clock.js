@@ -3,34 +3,55 @@ let hours = 0;
 let minutes = 0;
 let seconds = 0;
 let isRunning = false;
+let isTimerSet = false;
 
 const timeDisplay = document.getElementById('time-display');
 const modal = document.getElementById('set-timer-modal');
 const setBtn = document.getElementById('set-btn');
+const playStopBtn = document.getElementById('play-stop-btn');
+const pauseResumeBtn = document.getElementById('pause-resume-btn');
+const playIcon = document.getElementById('play-icon');
+const resetIcon = document.getElementById('reset-icon');
+const pauseCircle = document.getElementById('pause-circle');
+const playCircle = document.getElementById('play-circle'); // cholera ga libog nakoooooooooooo
 
+// mo red ang timer if 10 sec and less na
 function updateDisplay() {
     timeDisplay.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
-
-    // check if 10 seconds na ang time
     if (hours === 0 && minutes === 0 && seconds <= 10 && isRunning) {
-        timeDisplay.style.color = 'red'; // then ma change ang color to red
+        timeDisplay.style.color = 'red';
     } else {
         timeDisplay.style.color = '';
     }
 }
 
+// aron two digit and format sa timer not one
 function formatTime(time) {
     return time < 10 ? `0${time}` : time;
 }
 
+// enabled and disabled si mr set timer btn
+function disableSetButton(disable) {
+    setBtn.style.pointerEvents = disable ? 'none' : 'auto';
+    setBtn.style.opacity = disable ? '0.5' : '1';
+}
+
+// start ang timer
 function startTimer() {
-    if (!isRunning) {
+    if (!isRunning && isTimerSet) {
         isRunning = true;
+        disableSetButton(true); // ma disabled an set timer btn if i click sa start/play btn
+        disablePauseResume(false); // and obcurs ma enable si pause-resume btn
         timer = setInterval(() => {
-            if (seconds === 0 && minutes === 0 && hours === 0) {
+            if (hours === 0 && minutes === 0 && seconds === 0) {
                 clearInterval(timer);
                 isRunning = false;
+                isTimerSet = false;
                 alert("Time's up!");
+                togglePlayStopIcon(false);
+                disablePauseResume(true);
+                disableTimerControls(true);
+                disableSetButton(false); // si set timer ra ang ma enabled if times up na
             } else {
                 if (seconds === 0) {
                     if (minutes === 0) {
@@ -52,65 +73,101 @@ function startTimer() {
     }
 }
 
+// stop timer
 function stopTimer() {
     clearInterval(timer);
     isRunning = false;
 }
 
+// reset timer
+function resetTimer() {
+    stopTimer();
+    hours = 0;
+    minutes = 0;
+    seconds = 0;
+    updateDisplay();
+    isTimerSet = false;
+    disableTimerControls(true); // disabled ang other buttons until naay iset nga time
+    disablePauseResume(true);
+    togglePlayStopIcon(false);
+    togglePauseResumeIcon(false);
+    disableSetButton(false);
+}
+
+// toggle play/stop icons
+function togglePlayStopIcon(isPlaying) {
+    playIcon.style.display = isPlaying ? 'none' : 'inline';
+    resetIcon.style.display = isPlaying ? 'inline' : 'none';
+}
+
+// toggle pause/resume icons
+function togglePauseResumeIcon(isPaused) {
+    pauseCircle.style.display = isPaused ? 'none' : 'inline';
+    playCircle.style.display = isPaused ? 'inline' : 'none';
+}
+
+// disable or enable timer controls
+function disableTimerControls(disable) {
+    playStopBtn.style.pointerEvents = disable ? 'none' : 'auto';
+    playStopBtn.style.opacity = disable ? '0.5' : '1';
+}
+
+// disabled resume pause/resume 
+function disablePauseResume(disable) {
+    pauseResumeBtn.style.pointerEvents = disable ? 'none' : 'auto';
+    pauseResumeBtn.style.opacity = disable ? '0.5' : '1';
+}
+
+// function switch2 ang play-stop button
+playStopBtn.addEventListener('click', () => {
+    if (isRunning) {
+        resetTimer();
+    } else {
+        startTimer();
+        togglePlayStopIcon(true);
+    }
+});
+
+// same goes here switch2 btn/icon
+pauseResumeBtn.addEventListener('click', () => {
+    if (isRunning) {
+        stopTimer();
+        togglePauseResumeIcon(true);
+    } else {
+        startTimer();
+        togglePauseResumeIcon(false);
+    }
+});
+
+// modal sa pag set sa timer, pag ni
 setBtn.addEventListener('click', () => {
     modal.style.display = 'block';
 });
 
+// cancel adtong sa set timer modal
 document.getElementById('cancel-timer').addEventListener('click', () => {
     modal.style.display = 'none';
 });
 
+// set/save sa set timer modal
 document.getElementById('save-timer').addEventListener('click', () => {
     hours = parseInt(document.getElementById('modal-hours').value) || 0;
     minutes = parseInt(document.getElementById('modal-minutes').value) || 0;
     seconds = parseInt(document.getElementById('modal-seconds').value) || 0;
-    updateDisplay();
-    modal.style.display = 'none';
-});
 
-document.getElementById('play-stop-btn').addEventListener('click', () => {
-    if (isRunning) {
-        stopTimer();
+    if (hours === 0 && minutes === 0 && seconds === 0) {
+        alert('Please set a valid timer.');
     } else {
-        startTimer();
+        isTimerSet = true;
+        updateDisplay();
+        modal.style.display = 'none';
+
+        disableTimerControls(false);
+        togglePlayStopIcon(false); 
     }
 });
 
-document.getElementById('pause-resume-btn').addEventListener('click', () => {
-    if (isRunning) {
-        stopTimer();
-    } else {
-        startTimer();
-    }
-});
-
-function formatInput(input) {
-    let value = parseInt(input.value) || 0;
-    if (value < 10) {
-        input.value = `0${value}`;
-    } else {
-        input.value = `${value}`;
-    }
-}
-
-document.querySelectorAll('.modal-input').forEach(input => {
-    input.addEventListener('input', () => {
-        formatInput(input);
-    });
-
-    input.addEventListener('blur', () => {
-        formatInput(input);
-    });
-
-    input.addEventListener('change', () => {
-        if (parseInt(input.value) > parseInt(input.max)) {
-            input.value = input.max;
-        }
-        formatInput(input);
-    });
-});
+updateDisplay();
+disableTimerControls(true);
+disablePauseResume(true);
+disableSetButton(false);

@@ -74,30 +74,56 @@
                             </div>
                             <div class="play-stop-timer" id="play-stop-btn">
                                 <div class="play-stop-circle">
-                                    <i class="bi bi-play-circle"></i>
+                                    <i class="bi bi-play-circle" id="play-icon" style="display: inline;"></i>
+                                    <i class="bi bi-stop-circle" id="reset-icon" style="display: none;"></i>
                                 </div>
                             </div>
                             <div class="pause-resume-timer" id="pause-resume-btn">
                                 <div class="pause-resume-circle">
-                                    <i class="bi bi-pause-circle"></i>
+                                    <i class="bi bi-pause-circle" id="pause-circle" style="display: inline;"></i>
+                                    <i class="bi bi-play-circle" id="play-circle" style="display: none;"></i>
                                 </div>
                             </div>
                         </div>
-                        <div class="close-clock">
+                        <div class="close-clock" id="close-clock">
                             <div class="close">
                                 <i class="bi bi-x-lg"></i>
+                                <!-- mawala sa world ang clock container -->
                             </div>
                         </div>
 
                         <div class="set-timer-modal" id="set-timer-modal">
                             <h4>Set Timer</h4>
                             <div class="modal-timer-display">
-                                <input type="number" id="modal-hours" class="modal-input hrs timer" min="0" max="99" value="00" step="1"> :
-                                <input type="number" id="modal-minutes" class="modal-input min timer" min="0" max="59" value="00" step="1"> :
-                                <input type="number" id="modal-seconds" class="modal-input sec timer" min="0" max="59" value="00" step="1">
+                                <input 
+                                type="number" 
+                                id="modal-hours" 
+                                class="modal-input hrs timer" 
+                                min="0" 
+                                max="99" 
+                                value="00" 
+                                step="1"> 
+                                :
+                                <input 
+                                type="number" 
+                                id="modal-minutes" 
+                                class="modal-input min timer" 
+                                min="0" 
+                                max="59" 
+                                value="00" 
+                                step="1"> 
+                                :
+                                <input 
+                                type="number" 
+                                id="modal-seconds" 
+                                class="modal-input sec timer" 
+                                min="0" 
+                                max="59" 
+                                value="00" 
+                                step="1">
                             </div>
                             <div class="modal-actions">
-                                <button class="save-timer" id="save-timer">Set</button>
+                                <button class="save-timer" id="save-timer">Set</button> <!-- planning on changing the styling sa modal action buttons -->
                                 <button class="cancel-timer" id="cancel-timer">Cancel</button>
                             </div>
                         </div>
