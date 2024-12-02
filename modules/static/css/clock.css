@@ -11,6 +11,8 @@
     --icon-border: #1E1E1E;
     --close-border: #F6F5F5;
     --close-icon: #FEF7FF;
+    --primary-color: #0D1A26;
+    --secondary-color: #0E7373;
 }
 
 .clock-container {
@@ -139,7 +141,7 @@
     right: 0;
     margin: auto;
     width: 250px;
-    padding: 15px;
+    padding-bottom: 15px;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -148,6 +150,10 @@
 }
 
 .set-timer-modal h4 {
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+    background-color: var(--primary-color);
+    color: var(--white-color);
     margin-bottom: 10px;
     text-align: center;
 }
@@ -183,11 +189,24 @@
     padding: 5px 15px;
     cursor: pointer;
     border: none;
-    background-color: #007bff;
     color: white;
     border-radius: 5px;
 }
 
-.modal-actions button:hover {
-    background-color: #0056b3;
+.save-timer{
+    background-color: var(--play-bg);
+}
+
+.cancel-timer{
+    background-color: var(--close-bg);
+}
+
+.save-timer:hover{
+    background-color: #fff;
+    color: var(--play-bg);
+}
+
+.cancel-timer:hover{
+    background-color: #fff;
+    color: var(--close-bg);
 }

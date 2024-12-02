@@ -10,6 +10,13 @@ const setBtn = document.getElementById('set-btn');
 
 function updateDisplay() {
     timeDisplay.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+
+    // check if 10 seconds na ang time
+    if (hours === 0 && minutes === 0 && seconds <= 10 && isRunning) {
+        timeDisplay.style.color = 'red'; // then ma change ang color to red
+    } else {
+        timeDisplay.style.color = '';
+    }
 }
 
 function formatTime(time) {
@@ -23,7 +30,7 @@ function startTimer() {
             if (seconds === 0 && minutes === 0 && hours === 0) {
                 clearInterval(timer);
                 isRunning = false;
-                alert("Time's up!"); // planning on alisdan ni kadtong kay caine gamiton nga warning ish
+                alert("Time's up!");
             } else {
                 if (seconds === 0) {
                     if (minutes === 0) {
@@ -50,7 +57,6 @@ function stopTimer() {
     isRunning = false;
 }
 
-// sa modal kadtong pag set
 setBtn.addEventListener('click', () => {
     modal.style.display = 'block';
 });
@@ -59,7 +65,6 @@ document.getElementById('cancel-timer').addEventListener('click', () => {
     modal.style.display = 'none';
 });
 
-// values adtong inig mag set nag timer
 document.getElementById('save-timer').addEventListener('click', () => {
     hours = parseInt(document.getElementById('modal-hours').value) || 0;
     minutes = parseInt(document.getElementById('modal-minutes').value) || 0;
@@ -68,7 +73,6 @@ document.getElementById('save-timer').addEventListener('click', () => {
     modal.style.display = 'none';
 });
 
-// play stop btn
 document.getElementById('play-stop-btn').addEventListener('click', () => {
     if (isRunning) {
         stopTimer();
@@ -77,7 +81,6 @@ document.getElementById('play-stop-btn').addEventListener('click', () => {
     }
 });
 
-// pause resume buttonn
 document.getElementById('pause-resume-btn').addEventListener('click', () => {
     if (isRunning) {
         stopTimer();
@@ -86,11 +89,10 @@ document.getElementById('pause-resume-btn').addEventListener('click', () => {
     }
 });
 
-// sa kadtong ang timer by 00 nya 01
 function formatInput(input) {
     let value = parseInt(input.value) || 0;
     if (value < 10) {
-        input.value = `0${value}`; // add leading 0 if less than 10
+        input.value = `0${value}`;
     } else {
         input.value = `${value}`;
     }
