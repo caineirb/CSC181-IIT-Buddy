@@ -215,6 +215,10 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
                 notesContainer.style.flexWrap = 'wrap';
                 notesContainer.style.gap = '1rem';
 
+                notesContainer.style.display = 'flex';
+                notesContainer.style.flexWrap = 'wrap';
+                notesContainer.style.gap = '1rem';
+
                 updatePagination(data.total_notes, page, searchQuery, privacy, sort);
             }
         })
