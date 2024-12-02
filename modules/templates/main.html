@@ -47,17 +47,22 @@
   </div>
   
   <!-- Dynamically added notes -->
-  <div class="row d-flex flex-wrap flex-row-reverse gap-3" id="notesContainer">
+  <div class="row d-flex flex-wrap flex-row-reverse gap-0" id="notesContainer">
     <!-- Example of a dynamically added note box -->
   </div>
+
+  {% if notes_data|length == 5 %}
+  <div class="mt-3" style="display: flex; flex-direction: column; justify-content: center; align-items: center; position: absolute; top: 27.5%; right: 255px; transform: translateY(-50%); width: 50px; height: 180px; background-color: #0C203E; border-color: #0C203E; border-radius: 10px;">
+    <a href="{{ url_for('notes.notes_list') }}" class="btn" style="color: white; font-size: 30px; display: flex; justify-content: center; align-items: center; height: 100%; width: 100%; text-decoration: none;">
+      &gt;
+    </a>
+  </div>
+  {% endif %}
+
+
 </div>
 
 <!-- Button to redirect to notes list -->
-<div class="ms-5 mt-3">
-  <a href="{{ url_for('notes.notes_list') }}" class="btn btn-primary" style="background-color: var(--primary-color); border-color: var(--primary-color);">
-    Show All Notes
-  </a>
-</div>
 
 <!-- Modal for adding new notes -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
