@@ -171,3 +171,22 @@ updateDisplay();
 disableTimerControls(true);
 disablePauseResume(true);
 disableSetButton(false);
+
+// function appear and ma close si clock container
+const clockIcon = document.getElementById('clock-icon');
+const clockContainer = document.getElementById('clock-container');
+const closeClock = document.getElementById('close-clock');
+
+function toggleClockContainer(show) {
+    if (show) {
+        clockContainer.style.display = 'block';
+    } else {
+        clockContainer.style.display = 'none';
+    }
+}
+
+// show clock if ma click tong clock nga icon sa base
+clockIcon.addEventListener('click', () => toggleClockContainer(true));
+
+// hide clock is ma tong clock clock id sa container mismo sa clock
+closeClock.addEventListener('click', () => toggleClockContainer(false));
