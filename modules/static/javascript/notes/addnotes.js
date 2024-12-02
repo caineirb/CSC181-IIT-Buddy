@@ -82,15 +82,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     
                     // Add the button to the notes container
                     const addNotesButton = document.createElement('div');
-                    addNotesButton.classList.add("col-2");
+                    addNotesButton.className = 'd-flex justify-content-center align-items-center position-relative col withpad note-box';
+                    addNotesButton.style = 'padding: 0;';
+                    addNotesButton.style.height = '245px'; // Set fixed height
+                    addNotesButton.style.width = '250px'; // Set fixed width
+                    addNotesButton.style.marginRight = '10px'; // Add margin to the right for spacing
+                    addNotesButton.style.marginLeft = '20px';
                     addNotesButton.innerHTML = `
-                    
                     <button type="button" class="d-flex justify-content-center align-items-center withpad"
-                        style="height: 245px; width: 250px; background-color: #FFFFF0; border-radius: 15px; border: 2px dashed black; text-decoration: none; margin-right = 50px;"
+                        style="height: 245px; width: 250px; text-decoration: none; background-color: #FFFFF0; border: none; margin: 0; background-color: #FFFFF0; border-radius: 15px; border: 3px dashed black;"
                         data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>
                     </button>
-                    
                     `
                     notesContainer.insertBefore(addNotesButton, notesContainer.firstChild)
                     data['notes'].forEach(note => {
