@@ -211,6 +211,14 @@ function fetchNotes(page, searchQuery = '', privacy = 'All', sort = 'Most Recent
 
 
 
+                notesContainer.style.display = 'flex';
+                notesContainer.style.flexWrap = 'wrap';
+                notesContainer.style.gap = '1rem';
+
+                notesContainer.style.display = 'flex';
+                notesContainer.style.flexWrap = 'wrap';
+                notesContainer.style.gap = '1rem';
+
                 updatePagination(data.total_notes, page, searchQuery, privacy, sort);
             }
         })
@@ -225,6 +233,8 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
     noteBox.style.height = '245px'; // Set fixed height
     noteBox.style.width = '250px'; // Set fixed width
 
+    
+
     // Truncate title if it exceeds 10 characters
     const truncatedTitle = title.length > 10 ? title.substring(0, 10) + '...' : title;
 
@@ -233,27 +243,34 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
         <div class="text-center" style="margin-top: 25px;">
             <span style="display: block; font-size: 24px; font-family: Inter; color: black; margin-top: 10px;" title="${title}">${truncatedTitle}</span>
         </div>
-        <div style="font-family: Inter; color: rgba(0, 0, 0, 0.5); margin-top: 20px; position: relative;"> <!-- Set position to relative -->
+        <div style="font-family: Inter; color: rgba(0, 0, 0, 0.5); margin-top: 20px; position: relative;">
             <p style="font-size: 14px; margin-top: 10px; text-align: left; bottom: -40px; position: relative;">${privacy}</p>
             <p style="font-size: 12px; margin-top: 5px; text-align: left; bottom: -20px; position: relative;">Created on: ${createdAt}</p>
             <p style="font-size: 16px; margin: 0; text-align: left;">${userName}</p>
         </div>
-
     </a>
-    <div class="note-buttons" style="position: absolute; top: 5px; right: 10px; display: flex;">
-        <button class="options-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: gray; color: white;">
-            <i class="fas fa-ellipsis-h"></i>
-        </button>
-        <div class="options-menu" style="display: none; position: absolute; top: 30px; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);">
-            <button class="edit-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: green; color: white; border: none; border-bottom: 1px solid #ccc;">
-                Edit
+    
+    <!-- Add a styled container for the options buttons -->
+    <div class="note-buttons-container" style="background-color: #0C203E; width: 100%; padding: 5px 0; position: absolute; top: 0; left: 0; border-radius: 10px 10px 0 0;">
+        <div style="position: relative; display: flex; justify-content: flex-end; padding-right: 10px;">
+            <!-- Options Button (Ellipsis) -->
+            <button class="options-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: #0C203E; color: white; border: 0;">
+                <i class="fas fa-ellipsis-h"></i>
             </button>
-            <button class="delete-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: red; color: white; border: none;">
-                Delete
-            </button>
+            
+            <!-- Options Menu (Edit/Delete) -->
+            <div class="options-menu" style="display: none; position: absolute; top: 30px; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);">
+                <button class="edit-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: green; color: white; border: none; border-bottom: 1px solid #ccc;">
+                    Edit
+                </button>
+                <button class="delete-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: red; color: white; border: none;">
+                    Delete
+                </button>
+            </div>
         </div>
     </div>
 `;
+
     notesWrapper.appendChild(noteBox);
 
     // Toggle options menu visibility
