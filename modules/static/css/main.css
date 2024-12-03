@@ -53,7 +53,7 @@ body {
 .card {
     width: 500px;
     height: 245px;
-    margin: 15px; 
+    margin: 10px; 
     border-radius: 15px;
     text-decoration: none;
     border: 3px dashed var(--primary-color);
@@ -78,22 +78,20 @@ body {
     font-size: 14px;
 }
 
-.card-time{
-    position: absolute;
-    bottom: 60px;
-    right: 20px;
-}
-
 .card-footer {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
 }
 
+.card-time{
+    position: absolute;
+    bottom: 60px;
+    right: 20px;
+}
+
 .card-owner {
     font-size: 12px;
-    position: relative;
-    right: 15px;
 }
 
 .card-share-type {
