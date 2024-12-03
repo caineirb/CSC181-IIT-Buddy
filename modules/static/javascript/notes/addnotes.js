@@ -79,6 +79,23 @@ document.addEventListener('DOMContentLoaded', function () {
                         return;
                     }
                     notesContainer.innerHTML = ''; // Clear existing notes
+                    
+                    // Add the button to the notes container
+                    const addNotesButton = document.createElement('div');
+                    addNotesButton.className = 'd-flex justify-content-center align-items-center position-relative col withpad note-box';
+                    addNotesButton.style = 'padding: 0;';
+                    addNotesButton.style.height = '245px'; // Set fixed height
+                    addNotesButton.style.width = '250px'; // Set fixed width
+                    addNotesButton.style.marginRight = '10px'; // Add margin to the right for spacing
+                    addNotesButton.style.marginLeft = '20px';
+                    addNotesButton.innerHTML = `
+                    <button type="button" class="d-flex justify-content-center align-items-center withpad"
+                        style="height: 245px; width: 250px; text-decoration: none; background-color: #FFFFF0; border: none; margin: 0; background-color: #FFFFF0; border-radius: 15px; border: 3px dashed black;"
+                        data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="fa-solid fa-plus fa-2xl" style="color: black;"></i>
+                    </button>
+                    `
+                    notesContainer.insertBefore(addNotesButton, notesContainer.firstChild)
                     data['notes'].forEach(note => {
                         console.log('Adding note:', note); // Log each note being added
                         addNoteBox(note[0], note[1], note[2], note[3], note[4], notesContainer, note[5]);
@@ -109,16 +126,16 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
         <div class="text-center" style="margin-top: 25px;">
             <span style="display: block; font-size: 24px; font-family: Inter; color: black; margin-top: 10px;" title="${title}">${truncatedTitle}</span>
         </div>
-        <div style="font-family: Inter; color: rgba(0, 0, 0, 0.5); margin-top: 20px; position: relative;"> <!-- Set position to relative -->
+        <div style="font-family: Inter; color: rgba(0, 0, 0, 0.5); margin-top: 20px; position: relative;">
             <p style="font-size: 14px; margin-top: 10px; text-align: left; bottom: -40px; position: relative;">${privacy}</p>
             <p style="font-size: 12px; margin-top: 5px; text-align: left; bottom: -20px; position: relative;">Created : ${createdAt}</p>
             <p style="font-size: 16px; margin: 0; text-align: left;">${userName}</p>
         </div>
-
     </a>
-    <div class="note-buttons" style="position: absolute; top: 5px; right: 10px; display: flex;">
-        <button class="options-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: gray; color: white;">
-            <i class="fas fa-ellipsis-h"></i>
+    <div class="note-buttons" style="background-color: #0C203E; width: 100%; padding: 5px 0; position: absolute; top: 0; left: 0;  border-radius: 10px 10px 0 0;">
+      <div style="position: relative; display: flex; justify-content: flex-end; padding-right: 10px;">
+        <button class="options-btn" style="font-size: 12px; padding: 5px 10px; margin: 2px; background-color: #0C203E; color: white; border: 0;">
+                <i class="fas fa-ellipsis-h"></i>
         </button>
         <div class="options-menu" style="display: none; position: absolute; top: 30px; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);">
             <button class="edit-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: green; color: white; border: none; border-bottom: 1px solid #ccc;">
@@ -127,9 +144,20 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
             <button class="delete-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: red; color: white; border: none;">
                 Delete
             </button>
+       
+            <div class="options-menu" style="display: none; position: absolute; top: 30px; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);">
+                <button class="edit-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: green; color: white; border: none; border-bottom: 1px solid #ccc;">
+                    Edit
+                </button>
+                <button class="delete-note-btn" style="font-size: 12px; padding: 5px 10px; width: 100%; background-color: red; color: white; border: none;">
+                    Delete
+                </button>
+            </div>
         </div>
+      </div>
     </div>
 `;
+
     notesWrapper.insertBefore(noteBox, notesWrapper.firstChild); // Insert noteBox at the beginning of notesWrapper
 
     // Toggle options menu visibility
