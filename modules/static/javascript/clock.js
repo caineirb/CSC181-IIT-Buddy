@@ -1,3 +1,10 @@
+// kulang nga mga functions:
+// 1. ang delete kay reset dapat like mo balik sa gi set nga time
+// 2. mo display sa lain route even tho timer is still running
+// 3. let's see haha galibog nakooooooooooo
+// 4. think shir nga countdown dili like ano ano
+// galibog naaaaaaaaaaaaaaaaaaaaaaa
+
 let timer;
 let hours = 0;
 let minutes = 0;
@@ -51,7 +58,7 @@ function startTimer() {
                 togglePlayStopIcon(false);
                 disablePauseResume(true);
                 disableTimerControls(true);
-                disableSetButton(false); // si set timer ra ang ma enabled if times up na
+                disableSetButton(false);
             } else {
                 if (seconds === 0) {
                     if (minutes === 0) {
@@ -82,12 +89,20 @@ function stopTimer() {
 // reset timer
 function resetTimer() {
     stopTimer();
-    hours = 0;
-    minutes = 0;
-    seconds = 0;
+    // reset to the set nga time daan
+    const savedHours = parseInt(document.getElementById('modal-hours').value) || 0;
+    const savedMinutes = parseInt(document.getElementById('modal-minutes').value) || 0;
+    const savedSeconds = parseInt(document.getElementById('modal-seconds').value) || 0;
+
+    hours = savedHours;
+    minutes = savedMinutes;
+    seconds = savedSeconds;
+
     updateDisplay();
-    isTimerSet = false;
-    disableTimerControls(true); // disabled ang other buttons until naay iset nga time
+    isRunning = false;
+    isTimerSet = savedHours !== 0 || savedMinutes !== 0 || savedSeconds !== 0;
+
+    disableTimerControls(!isTimerSet);
     disablePauseResume(true);
     togglePlayStopIcon(false);
     togglePauseResumeIcon(false);
@@ -177,16 +192,29 @@ const clockIcon = document.getElementById('clock-icon');
 const clockContainer = document.getElementById('clock-container');
 const closeClock = document.getElementById('close-clock');
 
+// kabuing na dugayyyyy ko diri huhu
+function positionClockContainer() {
+    const iconRect = clockIcon.getBoundingClientRect();
+    clockContainer.style.top = `${iconRect.top}px`;
+    clockContainer.style.left = `${iconRect.left}px`;
+}
+
+clockIcon.addEventListener('click', () => {
+    positionClockContainer();
+    toggleClockContainer(true);
+});
+
 function toggleClockContainer(show) {
     if (show) {
+        positionClockContainer();
         clockContainer.style.display = 'block';
+        clockIcon.style.display = 'none';
     } else {
         clockContainer.style.display = 'none';
+        clockIcon.style.display = 'inline';
     }
 }
 
-// show clock if ma click tong clock nga icon sa base
+// show icon kung ma click ang specific icon and vice verse
 clockIcon.addEventListener('click', () => toggleClockContainer(true));
-
-// hide clock is ma tong clock clock id sa container mismo sa clock
 closeClock.addEventListener('click', () => toggleClockContainer(false));
