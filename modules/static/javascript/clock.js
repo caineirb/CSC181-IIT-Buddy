@@ -54,7 +54,14 @@ function startTimer() {
                 clearInterval(timer);
                 isRunning = false;
                 isTimerSet = false;
-                alert("Time's up!");
+
+                Swal.fire({
+                    title: "Ooops! Time's up!",
+                    text: "Your timer has finished.",
+                    iconHtml: '<i class="bi bi-alarm tickle"></i>',
+                    confirmButtonText: 'OK',
+                });
+
                 togglePlayStopIcon(false);
                 disablePauseResume(true);
                 disableTimerControls(true);
@@ -171,7 +178,12 @@ document.getElementById('save-timer').addEventListener('click', () => {
     seconds = parseInt(document.getElementById('modal-seconds').value) || 0;
 
     if (hours === 0 && minutes === 0 && seconds === 0) {
-        alert('Please set a valid timer.');
+        Swal.fire({
+            title: "Invalid Timer",
+            text: "Please set a valid timer.",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
     } else {
         isTimerSet = true;
         updateDisplay();

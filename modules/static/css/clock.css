@@ -15,6 +15,28 @@
     --secondary-color: #0E7373;
 }
 
+@keyframes tickle {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(5deg);
+    }
+    50% {
+        transform: rotate(-5deg);
+    }
+    75% {
+        transform: rotate(5deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.tickle {
+    animation: tickle 0.5s ease-in-out infinite;
+}
+
 .clock-container {
     width: 347px;
     height: 60px;
