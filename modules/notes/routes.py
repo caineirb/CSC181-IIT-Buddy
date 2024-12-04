@@ -2,7 +2,7 @@ from . import notes_bp
 from modules import mysql
 from flask import session, render_template, request, jsonify, make_response
 from modules.controller import require_login, fetchStudent, calculate_time_passed
-from modules.notes.controller import createNote, deleteNote, updateNote, fetchPreviewNotes
+from modules.notes.controller import createNote, deleteNote, updateNote, fetchPreviewNotes, addCount
 
 @notes_bp.route('/add_note', methods=["POST"])
 @require_login
@@ -130,3 +130,14 @@ def get_notes():
     except Exception as e:
         print(f"Error fetching notes: {str(e)}")  # Add detailed logging
         return jsonify({'error': f'Failed to fetch notes: {str(e)}'}), 500
+    
+@notes_bp.route('/counter', methods=["PATCH"])
+@require_login
+def counter():
+    try:
+        req = request.get_json()
+        addCount(req['id'])
+        return make_response(jsonify({'message': 'Note Count Incremented Successfully'}), 200)
+    except Exception as e:
+        print(f"Error: {e}")  # Or log it to your logger
+        return make_response(jsonify({'message': 'Invalid Request.'}), 400) 

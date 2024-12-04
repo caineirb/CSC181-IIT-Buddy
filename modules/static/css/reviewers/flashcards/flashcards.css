@@ -298,6 +298,15 @@
     text-align: center;
 }
 
+.copy-clip button {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    width: 50px;
+    text-align: center;
+}
+
 .action-buttons-container {
     display: flex;
     align-items: center;

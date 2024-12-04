@@ -49,9 +49,49 @@ function createFlashcardFromData(flashcardData, count) {
 }
 
 function takeReview(){
-    const take_review_url = document.getElementById('take_review_url').value;
-    const reviewer_id = document.getElementById('reviewer-id').value;
-    const is_random = document.getElementById('shuffle-switch').checked;
+    if (flashcardCount > 1){
+        const take_review_url = document.getElementById('take_review_url').value;
+        const reviewer_id = document.getElementById('reviewer-id').value;
+        const is_random = document.getElementById('shuffle-switch').checked;
 
-    window.location.href = take_review_url.replace('id_here', reviewer_id).replace('random_here', is_random);
+        const csrfToken = document.getElementById("_token_csrf").value;
+        const counterURL = document.getElementById('counter-url').value;
+        fetch(counterURL, {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json",
+                'X-CSRF-Token': csrfToken
+            },
+            body: JSON.stringify({
+                'id': reviewer_id
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            } 
+            return response.json();
+        })
+        .then(data => {
+            window.location.href = take_review_url.replace('id_here', reviewer_id).replace('random_here', is_random);
+        })
+        .catch(error => {
+            console.error("There was a problem with the fetch operation:", error);
+        });        
+    }
+}
+
+function copyURL() {
+    const shareURL = document.getElementById('share-url').value;
+    navigator.clipboard.writeText(shareURL)
+        .then(() => {
+            const alertBox = document.getElementById("copy-alert");
+            alertBox.style.display = "block";
+            setTimeout(() => {
+                alertBox.style.display = "none";
+            }, 1000); // Hide the alert after 1 second
+        })
+        .catch(err => {
+            console.error("Failed to copy: ", err);
+        });
 }

@@ -69,7 +69,31 @@ function clearSearch(form){
 function openInNewTab(button) {
     const link = button.getAttribute('data-link'); // Get the value of the data-link attribute
     if (link) {
-        window.open(link, '_blank'); // Open the link in a new tab
+        const note_id = button.getAttribute('data-id');
+        const csrfToken = document.getElementById("_token_csrf").value;
+        const counterURL = document.getElementById('counter-url').value;
+        fetch(counterURL, {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json",
+                'X-CSRF-Token': csrfToken
+            },
+            body: JSON.stringify({
+                'id': note_id
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            } 
+            return response.json();
+        })
+        .then(data => {
+            window.open(link, '_blank'); // Open the link in a new tab
+        })
+        .catch(error => {
+            console.error("There was a problem with the fetch operation:", error);
+        });
     } else {
         Swal.fire({
             text: "Link not found",

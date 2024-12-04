@@ -19,6 +19,7 @@
 <div class="reviewer-info">
     <input type="hidden" name="save_flashcard_url" id="save_flashcard_url" value="{{ url_for('reviewers.flashcards.save_flashcard') }}">
     <input type="hidden" name="check_duplicate_url" id="check_duplicate_url" value="{{ url_for('reviewers.check_duplicate') }}">
+    <input type="hidden" name="share-url" id="share-url" value="{{ url_for('reviewers_feed.take_reviewer', _external=True , id=data['id'], type=data['information'][2]) }}">
     <input type="hidden" name="_token_csrf" id="_token_csrf" value="{{ csrf_token() }}">
     <input type="hidden" name="reviewer-id" id="reviewer-id" value="{{ data['id'] }}" />
     
@@ -34,13 +35,21 @@
             </div>
             <!--here-->
             <div class="d-flex">
-                <select name="reviewer-privacy" id="reviewer-privacy" class="form-select" style="max-width: 200px; color: black;">
+                <select name="reviewer-privacy" id="reviewer-privacy" class="form-select" style="max-width: 200px; color: black;" onchange="allowCopy()">
                     {% set privacy = ["Private", "Public", "Shared"] %}
                     {% for priv in privacy %}
                     <option value="{{ priv }}" {% if data['information'][3] == priv %}selected{% endif %}>{{ priv }}</option>
                     {% endfor %}
                 </select>
             </div>
+            <div class="copy-clip" title="Share Reviewer" style="position: relative;">
+                <button type="button" id="share-url-button" onclick="copyURL()">
+                    <i class="bi bi-copy"></i>
+                </button>
+                <div id="copy-alert" style="display: none; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 5px; font-size: 0.9em; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                    Copied!
+                </div>
+            </div>            
     </div>
     
     <label for="reviewer-description" class="form-label">Reviewer Description</label>

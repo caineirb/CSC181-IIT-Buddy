@@ -122,6 +122,22 @@ def checkDuplicateTitle(title :str, type :str, id :str = None):
     finally:
         cur.close()  # Ensure the cursor is closed
 
+def addCount(id :str):
+    try:
+        cur = mysql.connection.cursor()
+        counter_update = """
+            UPDATE `reviewers`
+            SET `takes_count` = `takes_count` + 1
+            WHERE `id` = %s;
+        """
+        cur.execute(counter_update, (id,))
+        mysql.connection.commit()
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
 
 def customErrorMessages(error):
     if error.args[0] == 1062:  # Check the error code first

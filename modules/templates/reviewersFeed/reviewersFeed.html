@@ -8,7 +8,6 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/reviewersFeed/style.css') }}">
-
 <div class="subheader">
     <div class="ForBgFixed">
         <!-- title ni diri -->
@@ -132,10 +131,9 @@
 </div>
 
 <!-- below kay mga templates rani -->
-<section class="content sample one" style="display: flex; margin-top: 220px;">
-    <!-- first flashcard content -->
-    {% for reviewer in reviewers_data['data'] %}
+<section class="content sample one" style="display: flex; margin-top: 220px;">    
     {% if not reviewers_data['searchParams']['type'] == "Notes" %}
+    {% for reviewer in reviewers_data['data'] %}
         <div class="card">
             <form class="card-content" action="{{ url_for('reviewers_feed.take_reviewer', id=reviewer[0], type=reviewer[2]) }}" method="get">
                 <div class="card-header">
@@ -160,14 +158,18 @@
                 </div>
             </form>
         </div>
+    {% endfor %}
     {% else %}
+    <input type="hidden" name="_token_csrf" id="_token_csrf" value="{{ csrf_token() }}">
+    <input type="hidden" name="counter-url" id="counter-url" value="{{ url_for('notes.counter') }}">
+    {% for reviewer in reviewers_data['data'] %}
         <div class="card">
             <div class="card-header">
                 <div>
                     <div class="card-name"><b>{{ reviewer[1] }}</b></div>
                     <div class="card-type">{{ reviewer[2] }}</div>
                 </div>
-                <button type="button" class="play-icon" data-link="{{ reviewer[2] }}" onclick="openInNewTab(this)">
+                <button type="button" class="play-icon" data-id="{{ reviewer[0] }}" data-link="{{ reviewer[2] }}" onclick="openInNewTab(this)">
                     <i class="bi bi-window"></i>
                 </button>
             </div>
@@ -182,9 +184,8 @@
                 <span class="card-share-type">Public</span>
             </div>
         </div>
-    {% endif %}
-
     {% endfor %}
+    {% endif %}
 </section>
 
 <script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewersFeed/functionalities.js') }}"></script>          
