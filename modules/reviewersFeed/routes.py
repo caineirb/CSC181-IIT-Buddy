@@ -1,7 +1,7 @@
-from flask import flash, render_template, request, session, redirect, url_for
+from flask import flash, render_template, request, session, redirect, url_for, make_response, jsonify
 from modules.controller import require_login, fetchStudent
-from modules.reviewers.controller import customErrorMessages
-from modules.reviewersFeed.controller import countReviewers, fetchReviewers
+from modules.reviewers.controller import customErrorMessages, fetchReviewerInfo
+from modules.reviewersFeed.controller import countReviewers, fetchReviewers, addViewCount
 from . import reviewers_feed_bp
 from modules import mysql
 
@@ -77,14 +77,31 @@ def index():
 @reviewers_feed_bp.route('/take/<string:id>/<string:type>', methods=["GET"])
 @require_login
 def take_reviewer(id :str, type :str):
+    # Redirect to edit when the viewer is the owner
+    # if session['user-id'] == fetchReviewerInfo(id, type)[5]:
+    #     return redirect(url_for('reviewers.edit', id=id, type=type))
+    
     match type:
         case "Flashcard":
             return redirect(url_for('reviewers.flashcards.take', id=id))
-        # case "Identification":
-        #     return redirect(url_for('', id=id))
+        case "Identification":
+            return redirect(url_for('reviewers.identifications.take', id=id))
         # case "Multiple Choice":
         #     return redirect(url_for('', id=id))
         # case "Mixed":
         #     return redirect(url_for('', id=id))
         case _:
             return 'Invalid choice. <a href="\\">Go Back</a>'
+        
+@reviewers_feed_bp.route('/counter', methods=["PATCH"])
+@require_login
+def viewCounter():
+    try:
+        req = request.get_json()
+        # Only increment when the viewer is not the owner
+        # if not session['user-id'] == fetchReviewerInfo(req['id'], req['type'])[5]:
+        addViewCount(req['id'])
+        return make_response(jsonify({'message': 'Note Count Incremented Successfully'}), 200)
+    except Exception as e:
+        print(f"Error: {e}")  # Or log it to your logger
+        return make_response(jsonify({'message': 'Invalid Request.'}), 400) 

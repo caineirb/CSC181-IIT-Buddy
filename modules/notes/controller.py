@@ -77,12 +77,29 @@ def fetchPreviewNotes(owner_id :str):
     finally:
         cur.close()  # Ensure the cursor is closed
 
-def addCount(id :str):
+def fetchNoteOwner(id :str):
+    try:
+        cur = mysql.connection.cursor()
+        fetch_owner = """
+            SELECT `owner_id` 
+            FROM `notes`
+            WHERE `id` = %s;
+        """
+        cur.execute(fetch_owner, (id,))
+        return cur.fetchone()[0]
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
+
+def addViewer(id :str):
     try:
         cur = mysql.connection.cursor()
         counter_update = """
             UPDATE `notes`
-            SET `takes_count` = `takes_count` + 1
+            SET `view_count` = `view_count` + 1
             WHERE `id` = %s;
         """
         cur.execute(counter_update, (id,))

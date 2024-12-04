@@ -129,10 +129,11 @@
         </form>
     </div>    
 </div>
-
+<input type="hidden" name="_token_csrf" id="_token_csrf" value="{{ csrf_token() }}">
 <!-- below kay mga templates rani -->
 <section class="content sample one" style="display: flex; margin-top: 220px;">    
     {% if not reviewers_data['searchParams']['type'] == "Notes" %}
+    <input type="hidden" name="counter-url" id="counter-url" value="{{ url_for('reviewers_feed.viewCounter') }}">
     {% for reviewer in reviewers_data['data'] %}
         <div class="card">
             <form class="card-content" action="{{ url_for('reviewers_feed.take_reviewer', id=reviewer[0], type=reviewer[2]) }}" method="get">
@@ -141,7 +142,7 @@
                         <div class="card-name"><b>{{ reviewer[1] }}</b></div>
                         <div class="card-type">{{ reviewer[2] }}</div>
                     </div>
-                    <button type="submit" class="play-icon">
+                    <button type="submit" class="play-icon" data-type="{{ reviewer[2] }}" data-id="{{ reviewer[0] }}" onclick="viewReviewer(event, this)">
                         <i class="bi bi-play-circle"></i>
                     </button>
                 </div>
@@ -160,8 +161,7 @@
         </div>
     {% endfor %}
     {% else %}
-    <input type="hidden" name="_token_csrf" id="_token_csrf" value="{{ csrf_token() }}">
-    <input type="hidden" name="counter-url" id="counter-url" value="{{ url_for('notes.counter') }}">
+    <input type="hidden" name="counter-url" id="counter-url" value="{{ url_for('notes.viewCounter') }}">
     {% for reviewer in reviewers_data['data'] %}
         <div class="card">
             <div class="card-header">

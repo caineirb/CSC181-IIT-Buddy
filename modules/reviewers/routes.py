@@ -1,7 +1,7 @@
 from flask import request, redirect, flash, session, url_for, make_response, jsonify
 from modules.controller import require_login
 from . import reviewers_bp
-from .controller import createReviewer, editReviewerInfo, deleteReviewer, checkDuplicateTitle, addCount, customErrorMessages
+from .controller import createReviewer, editReviewerInfo, deleteReviewer, checkDuplicateTitle, addTakeCount, customErrorMessages
 from modules import mysql
 
 @reviewers_bp.route('/create', methods=["POST"])
@@ -84,10 +84,10 @@ def check_duplicate():
     
 @reviewers_bp.route('/counter', methods=["PATCH"])
 @require_login
-def counter():
+def takeCounter():
     try:
         req = request.get_json()
-        addCount(req['id'])
+        addTakeCount(req['id'])
         return make_response(jsonify({'message': 'Reviewer Count Incremented Successfully'}), 200)
     except Exception as e:
         print(f"Error: {e}")  # Or log it to your logger

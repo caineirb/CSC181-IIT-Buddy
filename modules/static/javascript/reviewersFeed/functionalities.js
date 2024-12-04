@@ -60,6 +60,38 @@ for (let item of listItems) {
         };
 }
 
+function viewReviewer(event, button){
+    event.preventDefault();
+
+    const reviewerId = button.getAttribute('data-id');
+    const reviewerType = button.getAttribute('data-type');
+    const csrfToken = document.getElementById("_token_csrf").value;
+    const counterURL = document.getElementById('counter-url').value;
+
+    fetch(counterURL, {
+        method: 'PATCH',
+        headers: {
+            "Content-Type": "application/json",
+            'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({
+            'id': reviewerId,
+            'type': reviewerType
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        } 
+        return response.json();
+    })
+    .then(data => {
+        button.form.submit();
+    })
+    .catch(error => {
+        console.error("There was a problem with the fetch operation:", error);
+    });
+}
 
 function clearSearch(form){
     document.getElementById('search_input').value = ''; 

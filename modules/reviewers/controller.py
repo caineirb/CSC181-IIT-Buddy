@@ -122,12 +122,12 @@ def checkDuplicateTitle(title :str, type :str, id :str = None):
     finally:
         cur.close()  # Ensure the cursor is closed
 
-def addCount(id :str):
+def addTakeCount(id :str):
     try:
         cur = mysql.connection.cursor()
         counter_update = """
             UPDATE `reviewers`
-            SET `takes_count` = `takes_count` + 1
+            SET `take_count` = `take_count` + 1
             WHERE `id` = %s;
         """
         cur.execute(counter_update, (id,))

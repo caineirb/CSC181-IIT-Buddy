@@ -18,7 +18,7 @@
     
     <div class="button-group">
         <button type="button" onclick="window.location.href='{{ url_for('reviewers.flashcards.take_review', id=info['data'][0], isRandom=info['isRandom']) }}'"> Restart </button>
-        <button type="button" onclick="window.location.href='{{ url_for('reviewers_feed.take_reviewer', id=info['data'][0], type="Flashcard") }}'"> Edit </button>
+        <button type="button" onclick="window.location.href='{{ url_for('reviewers_feed.take_reviewer', id=info['data'][0], type="Flashcard") }}'"> View Again </button>
         <button type="button" onclick="window.location.href='{{ url_for('index') }}'"> Go Home </button>
     </div>
 </div>

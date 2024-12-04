@@ -326,17 +326,12 @@
     padding: 10px 20px;
     border: 1px solid var(--border-color);
     border-radius: 5px;
-    cursor: pointer;
+    cursor: not-allowed;
     color: var(--white-color);
     background-color: maroon;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, transform 0.1s ease;
-}
-
-.delete-identifications-btn:hover {
-    background-color: var(--white-color);
-    color: maroon;
-    transform: scale(1.05);
+    opacity: 0.5;
 }
 
 .shuffle-toggle {

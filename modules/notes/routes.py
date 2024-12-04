@@ -2,7 +2,7 @@ from . import notes_bp
 from modules import mysql
 from flask import session, render_template, request, jsonify, make_response
 from modules.controller import require_login, fetchStudent, calculate_time_passed
-from modules.notes.controller import createNote, deleteNote, updateNote, fetchPreviewNotes, addCount
+from modules.notes.controller import createNote, deleteNote, updateNote, fetchPreviewNotes, addViewer, fetchNoteOwner
 
 @notes_bp.route('/add_note', methods=["POST"])
 @require_login
@@ -133,10 +133,12 @@ def get_notes():
     
 @notes_bp.route('/counter', methods=["PATCH"])
 @require_login
-def counter():
+def viewCounter():
     try:
         req = request.get_json()
-        addCount(req['id'])
+        # Only increment when the viewer is not the owner
+        if not session['user-id'] == fetchNoteOwner(req['id']):
+            addViewer(req['id'])
         return make_response(jsonify({'message': 'Note Count Incremented Successfully'}), 200)
     except Exception as e:
         print(f"Error: {e}")  # Or log it to your logger
