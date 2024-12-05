@@ -224,8 +224,10 @@ function toggleClockContainer(show) {
 clockIcon.addEventListener('click', () => toggleClockContainer(true));
 closeClock.addEventListener('click', () => toggleClockContainer(false));
 
+let isClockContainerOpen = JSON.parse(localStorage.getItem('isClockContainerOpen')) ?? false;
 
 window.addEventListener('beforeunload', () => {
+    localStorage.setItem('isClockContainerOpen', JSON.stringify(isClockContainerOpen));
     const time = { 
         "hours": hours, 
         "minutes": minutes, 
@@ -266,7 +268,43 @@ window.addEventListener('load', async () => {
                 disableSetButton(false);
             }
         }
+        toggleClockDisplay(isClockContainerOpen);
+        updateClockDisplay();
     } catch (error) {
         console.error('Error fetching timer state:', error);
     }
 });
+
+function toggleClockDisplay(isClockContainerOpen) {
+    const modal = document.getElementById('clock-container');
+    const clockIcon = document.getElementById('clock-icon');
+
+    if (isClockContainerOpen) {
+        if (modal) modal.style.display = 'block';
+        if (clockIcon) clockIcon.style.display = 'none';
+    } else {
+        if (modal) modal.style.display = 'none';
+        if (clockIcon) clockIcon.style.display = 'block';
+    }
+}
+
+clockIcon.addEventListener('click', () => {
+    isClockContainerOpen = true;
+    toggleClockDisplay(isClockContainerOpen);
+});
+
+const closeclock = document.getElementById('close-clock'); 
+if (closeclock) {
+    closeclock.addEventListener('click', () => {
+        isClockContainerOpen = false;
+        toggleClockDisplay(isClockContainerOpen);
+    });
+}
+
+function updateClockDisplay() {
+    const clockDisplay = document.getElementById('clock-display');
+    if (clockDisplay) {
+        clockDisplay.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+    }
+}
+
