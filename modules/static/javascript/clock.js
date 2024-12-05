@@ -1,10 +1,3 @@
-// kulang nga mga functions:
-// 1. ang delete kay reset dapat like mo balik sa gi set nga time
-// 2. mo display sa lain route even tho timer is still running
-// 3. let's see haha galibog nakooooooooooo
-// 4. think shir nga countdown dili like ano ano
-// galibog naaaaaaaaaaaaaaaaaaaaaaa
-
 let timer;
 let hours = 0;
 let minutes = 0;
