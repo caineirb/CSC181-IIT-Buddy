@@ -257,17 +257,22 @@ window.addEventListener('load', async () => {
             minutes = timerState.minutes || 0;
             seconds = timerState.seconds || 0;
             isRunning = timerState.isRunning;
+
             console.log(timerState);
-            if (timerState.isRunning) {
-                isRunning = false;
+
+            if (isRunning) {
                 isTimerSet = true;
                 startTimer();
+                togglePlayStopIcon(true);
+                togglePauseResumeIcon(false);
+            } else {
                 updateDisplay();
-                disableTimerControls(true);
-                disablePauseResume(true);
-                disableSetButton(false);
+                isTimerSet = hours > 0 || minutes > 0 || seconds > 0;
+                togglePlayStopIcon(false);
+                togglePauseResumeIcon(true);
             }
         }
+
         toggleClockDisplay(isClockContainerOpen);
         updateClockDisplay();
     } catch (error) {
@@ -308,3 +313,26 @@ function updateClockDisplay() {
     }
 }
 
+async function saveTimerState() {
+    const timerState = {
+        hours,
+        minutes,
+        seconds,
+        isRunning,
+    };
+
+    try {
+        const response = await fetch('/timer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(timerState),
+        });
+        if (!response.ok) {
+            console.error('Failed to save timer state');
+        }
+    } catch (error) {
+        console.error('Error saving timer state:', error);
+    }
+}
