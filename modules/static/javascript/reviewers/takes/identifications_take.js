@@ -48,9 +48,6 @@ function createidentificationFromData(identificationData, count) {
             <label for="identification-image-${count}" class="image-button" style="${imageUrl ? 'background-image: url(' + imageUrl + '); background-size: cover;' : ''}">
                 <span class="button-label" ${imageUrl ? 'style="display: none;"' : ''}>IMAGE</span>
             </label>
-            <button type="button" class="remove-image-button" title="Delete Card" onclick="removeImage(${count})">
-                <i class="bi bi-trash"></i>
-            </button>
         </div>
     `;
 
