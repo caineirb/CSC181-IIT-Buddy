@@ -230,3 +230,50 @@ function toggleClockContainer(show) {
 // show icon kung ma click ang specific icon and vice verse
 clockIcon.addEventListener('click', () => toggleClockContainer(true));
 closeClock.addEventListener('click', () => toggleClockContainer(false));
+
+
+window.addEventListener('beforeunload', () => {
+    const time = { 
+        "hours": hours, 
+        "minutes": minutes, 
+        "seconds": seconds, 
+        "isRunning": isRunning 
+    };
+    const clockCSRF = document.getElementById('clock_csrf').value;
+    fetch('/timer',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            "X-CSRFToken": clockCSRF
+        },
+        body: JSON.stringify(time)
+    })
+});
+
+
+window.addEventListener('load', async () => {
+    try {
+        const response = await fetch('/timer');
+        if (!response.ok) throw new Error('Failed to fetch timer state');
+
+        const timerState = await response.json();
+        if (timerState) {
+            hours = timerState.hours || 0;
+            minutes = timerState.minutes || 0;
+            seconds = timerState.seconds || 0;
+            isRunning = timerState.isRunning;
+            console.log(timerState);
+            if (timerState.isRunning) {
+                isRunning = false;
+                isTimerSet = true;
+                startTimer();
+                updateDisplay();
+                disableTimerControls(true);
+                disablePauseResume(true);
+                disableSetButton(false);
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching timer state:', error);
+    }
+});

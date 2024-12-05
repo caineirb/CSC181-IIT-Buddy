@@ -72,4 +72,43 @@ def login():
 def logout():
     session.pop('user-id', None)
     session.pop('user-photo', None)
+    global timer_state
+
+    timer_state = {
+        "hours": 0,
+        "minutes": 0,
+        "seconds": 0,
+        "isRunning": False
+    }
     return redirect(url_for('index'))
+
+
+'''
+Timer API
+'''
+timer_state = {
+    "hours": 0,
+    "minutes": 0,
+    "seconds": 0,
+    "isRunning": False
+}
+
+@app.route('/timer', methods=["POST", "GET"])
+@require_login
+def timer():
+    try:
+        global timer_state
+        if request.method == "GET":
+            return make_response(jsonify(timer_state), 200)
+        else:
+            time = request.get_json()
+            timer_state = {
+                "hours": time.get("hours", 0),
+                "minutes": time.get("minutes", 0),
+                "seconds": time.get("seconds", 0),
+                "isRunning": time.get("isRunning", False)
+            }
+            return make_response(jsonify({"message": "Timer state saved successfully"}), 200)
+    except Exception as e:
+        print(str(e))
+        return make_response(jsonify({"error": str(e)}), 400)

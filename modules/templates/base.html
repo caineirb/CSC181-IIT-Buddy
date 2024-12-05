@@ -58,6 +58,7 @@
                         <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo" class="logo-img"/>
                     </a>
                 </div>
+                <input type="hidden" name="clock_csrf" id="clock_csrf" value="{{ csrf_token() }}">
                 <!--Buttons and profile-->
                 <div class="d-flex align-items-center gap-3">
                     <div class="clock-container" id="clock-container" style="display: none;">
