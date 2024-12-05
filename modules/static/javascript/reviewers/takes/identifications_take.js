@@ -36,21 +36,18 @@ function createidentificationFromData(identificationData, count) {
         </div>
         <div class="identification-content">
             <div class="input-container">
-                <textarea class="term-input" name="term-${count}" placeholder="Enter term" maxlength="150">${identificationData.answer}</textarea>
+                <textarea class="term-input" name="term-${count}" placeholder="Enter term" maxlength="150" readonly>${identificationData.answer}</textarea>
                 <label class="input-label">ANSWER</label>
             </div>
             <div class="input-container">
-                <textarea class="definition-input" name="definition-${count}" placeholder="Enter definition" maxlength="255">${identificationData.question}</textarea>
+                <textarea class="definition-input" name="definition-${count}" placeholder="Enter definition" maxlength="255" readonly>${identificationData.question}</textarea>
                 <label class="input-label">QUESTION</label>
             </div>
-            <input type="file" name="identification-image-${count}" id="identification-image-${count}" style="display: none;" accept="image/*" onchange="previewImage(event, ${count})">
+            <input type="file" name="identification-image-${count}" id="identification-image-${count}" style="display: none;" accept="image/*" onchange="previewImage(event, ${count})" disabled>
             <input type="hidden" id="identification-image-base64-${count}" value="${imageUrl}">
             <label for="identification-image-${count}" class="image-button" style="${imageUrl ? 'background-image: url(' + imageUrl + '); background-size: cover;' : ''}">
                 <span class="button-label" ${imageUrl ? 'style="display: none;"' : ''}>IMAGE</span>
             </label>
-            <button type="button" class="remove-image-button" title="Delete Card" onclick="removeImage(${count})">
-                <i class="bi bi-trash"></i>
-            </button>
         </div>
     `;
 
