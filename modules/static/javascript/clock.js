@@ -297,6 +297,10 @@ window.addEventListener('beforeunload', () => {
     })
 });
 
+// force leading 0 if < 10
+function formatToTwoDigits(value) {
+    return value < 10 ? `0${value}` : value;
+}
 
 window.addEventListener('load', async () => {
     try {
@@ -316,9 +320,9 @@ window.addEventListener('load', async () => {
             isPaused = timerState.isPaused || false;
 
             // for the reset of the timer
-            document.getElementById('modal-hours').value = timerSet.set_hours || 0;
-            document.getElementById('modal-minutes').value = timerSet.set_minutes || 0;
-            document.getElementById('modal-seconds').value = timerSet.set_seconds || 0;
+            document.getElementById('modal-hours').value = formatToTwoDigits(timerSet.set_hours || 0);
+            document.getElementById('modal-minutes').value = formatToTwoDigits(timerSet.set_minutes || 0);
+            document.getElementById('modal-seconds').value = formatToTwoDigits(timerSet.set_seconds || 0);
 
             if (isRunning || isPaused) {
                 toggleClockDisplay(true);   // Only open after loading if the time is still > 0
@@ -355,11 +359,9 @@ function toggleClockDisplay(isClockContainerOpen) {
 }
 
 clockIcon.addEventListener('click', () => {
-    isClockContainerOpen = true;
-    toggleClockDisplay(isClockContainerOpen);
+    toggleClockDisplay(true);
 });
 
-// TODO: Fix var isClockContainerOpen, basin mag error
 const closeclock = document.getElementById('close-clock');
 if (closeclock) {
     closeclock.addEventListener('click', () => {

@@ -81,6 +81,12 @@ def logout():
         "isRunning": False,
         "isPaused": False
     }
+
+    timer_set = {
+        "set_hours": 0,
+        "set_minutes": 0,
+        "set_seconds": 0
+    }
     return redirect(url_for('index'))
 
 
@@ -137,7 +143,7 @@ def timerSet():
                 "set_minutes": time.get("set_minutes", 0),
                 "set_seconds": time.get("set_seconds", 0)
             }
-            return make_response(jsonify({"message": "Timer state saved successfully"}), 200)
+            return make_response(jsonify({"message": "Timer set successfully"}), 200)
     except Exception as e:
         print(str(e))
         return make_response(jsonify({"error": str(e)}), 400)
