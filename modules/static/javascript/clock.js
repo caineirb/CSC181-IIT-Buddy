@@ -1,8 +1,8 @@
 // kulang2 nga func: mo supak
-// (1) clock-container una mogawas imbis clock-icon
-// (2) guba ang reset kung mo navigate sa pikas route
-// (3) di mo toggle ang play and stop button bottt
-// (4) kung i pause nako nya mo navigate ko sa lain page kay mobalik siyas una
+// (1) clock-container una mogawas imbis clock-icon (Done?)
+// (2) guba ang reset kung mo navigate sa pikas route (Done?)
+// (3) di mo toggle ang play and stop button bottt (idk asa ni)
+// (4) kung i pause nako nya mo navigate ko sa lain page kay mobalik siyas una (Pa check nalang)
 
 // and goods na ang all functionalities i guess??
 let timer; 
@@ -10,6 +10,7 @@ let hours = 0;
 let minutes = 0;
 let seconds = 0;
 let isRunning = false;
+let isPaused = false;
 let isTimerSet = false;
 
 const timeDisplay = document.getElementById('time-display');
@@ -54,7 +55,7 @@ function startTimer() {
                 clearInterval(timer);
                 isRunning = false;
                 isTimerSet = false;
-
+                isPaused = false;
                 Swal.fire({
                     title: "Ooops! Time's up!",
                     text: "Your timer has finished.",
@@ -142,6 +143,7 @@ function disablePauseResume(disable) {
 
 // function switch2 ang play-stop button
 playStopBtn.addEventListener('click', () => {
+    isPaused = false;
     if (isRunning) {
         resetTimer();
     } else {
@@ -152,6 +154,7 @@ playStopBtn.addEventListener('click', () => {
 
 // same goes here switch2 btn/icon
 pauseResumeBtn.addEventListener('click', () => {
+    isPaused = !isPaused;
     if (isRunning) {
         stopTimer();
         togglePauseResumeIcon(true);
@@ -231,15 +234,13 @@ function toggleClockContainer(show) {
 clockIcon.addEventListener('click', () => toggleClockContainer(true));
 closeClock.addEventListener('click', () => toggleClockContainer(false));
 
-let isClockContainerOpen = JSON.parse(localStorage.getItem('isClockContainerOpen')) ?? false;
-
 window.addEventListener('beforeunload', () => {
-    localStorage.setItem('isClockContainerOpen', JSON.stringify(isClockContainerOpen));
     const time = { 
         "hours": hours, 
         "minutes": minutes, 
         "seconds": seconds, 
-        "isRunning": isRunning 
+        "isRunning": isRunning,
+        "isPaused": isPaused
     };
     const clockCSRF = document.getElementById('clock_csrf').value;
     fetch('/timer',{
@@ -263,19 +264,24 @@ window.addEventListener('load', async () => {
             hours = timerState.hours || 0;
             minutes = timerState.minutes || 0;
             seconds = timerState.seconds || 0;
-            isRunning = timerState.isRunning;
-            console.log(timerState);
-            if (timerState.isRunning) {
+            isRunning = timerState.isRunning || false;
+            isPaused = timerState.isPaused || false;
+
+            if (isRunning || isPaused) {
+                toggleClockDisplay(true);   // Only open after loading if the time is still > 0
+                togglePlayStopIcon(true);
                 isRunning = false;
                 isTimerSet = true;
                 startTimer();
-                updateDisplay();
                 disableTimerControls(false);
-                disablePauseResume(false);
-                disableSetButton(true);
+                if (isPaused){
+                    pauseResumeBtn.click();
+                    isPaused = true;
+                }
+                updateDisplay();
             }
         }
-        toggleClockDisplay(isClockContainerOpen);
+        
         updateClockDisplay();
     } catch (error) {
         console.error('Error fetching timer state:', error);
@@ -313,27 +319,4 @@ function updateClockDisplay() {
     if (clockDisplay) {
         clockDisplay.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
     }
-}
-
-function saveTimerState() {
-    const timerState = {
-        hours,
-        minutes,
-        seconds,
-        isRunning,
-    };
-
-    fetch('/timer', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(timerState),
-    })
-    .then(response => {
-        if (!response.ok) {
-            console.error('Failed to save timer state');
-        }
-    })
-    .catch(error => {
-        console.error('Error saving timer state:', error);
-    });
 }

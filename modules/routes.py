@@ -78,7 +78,8 @@ def logout():
         "hours": 0,
         "minutes": 0,
         "seconds": 0,
-        "isRunning": False
+        "isRunning": False,
+        "isPaused": False
     }
     return redirect(url_for('index'))
 
@@ -90,7 +91,8 @@ timer_state = {
     "hours": 0,
     "minutes": 0,
     "seconds": 0,
-    "isRunning": False
+    "isRunning": False,
+    "isPaused": False
 }
 
 @app.route('/timer', methods=["POST", "GET"])
@@ -106,7 +108,8 @@ def timer():
                 "hours": time.get("hours", 0),
                 "minutes": time.get("minutes", 0),
                 "seconds": time.get("seconds", 0),
-                "isRunning": time.get("isRunning", False)
+                "isRunning": time.get("isRunning", False),
+                "isPaused": time.get("isPaused", False)
             }
             return make_response(jsonify({"message": "Timer state saved successfully"}), 200)
     except Exception as e:
