@@ -87,15 +87,18 @@ def logout():
 '''
 Timer API
 '''
+timer_set = {
+    "set_hours": 0,
+    "set_minutes": 0,
+    "set_seconds": 0
+}
+
 timer_state = {
     "hours": 0,
     "minutes": 0,
     "seconds": 0,
     "isRunning": False,
-    "isPaused": False,
-    "set_hours": 0,
-    "set_minutes": 0,
-    "set_seconds": 0,
+    "isPaused": False
 }
 
 @app.route('/timer', methods=["POST", "GET"])
@@ -112,7 +115,24 @@ def timer():
                 "minutes": time.get("minutes", 0),
                 "seconds": time.get("seconds", 0),
                 "isRunning": time.get("isRunning", False),
-                "isPaused": time.get("isPaused", False),
+                "isPaused": time.get("isPaused", False)
+            }
+            return make_response(jsonify({"message": "Timer state saved successfully"}), 200)
+    except Exception as e:
+        print(str(e))
+        return make_response(jsonify({"error": str(e)}), 400)
+
+
+@app.route('/set-timer', methods=["POST", "GET"])
+@require_login
+def timerSet():
+    try:
+        global timer_set
+        if request.method == "GET":
+            return make_response(jsonify(timer_set), 200)
+        else:
+            time = request.get_json()
+            timer_set = {
                 "set_hours": time.get("set_hours", 0),
                 "set_minutes": time.get("set_minutes", 0),
                 "set_seconds": time.get("set_seconds", 0)
