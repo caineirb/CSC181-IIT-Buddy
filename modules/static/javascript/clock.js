@@ -1,4 +1,11 @@
-let timer;
+// kulang2 nga func: mo supak
+// (1) clock-container una mogawas imbis clock-icon
+// (2) guba ang reset kung mo navigate sa pikas route
+// (3) di mo toggle ang play and stop button bottt
+// (4) kung i pause nako nya mo navigate ko sa lain page kay mobalik siyas una
+
+// and goods na ang all functionalities i guess??
+let timer; 
 let hours = 0;
 let minutes = 0;
 let seconds = 0;
@@ -257,22 +264,17 @@ window.addEventListener('load', async () => {
             minutes = timerState.minutes || 0;
             seconds = timerState.seconds || 0;
             isRunning = timerState.isRunning;
-
             console.log(timerState);
-
-            if (isRunning) {
+            if (timerState.isRunning) {
+                isRunning = false;
                 isTimerSet = true;
                 startTimer();
-                togglePlayStopIcon(true);
-                togglePauseResumeIcon(false);
-            } else {
                 updateDisplay();
-                isTimerSet = hours > 0 || minutes > 0 || seconds > 0;
-                togglePlayStopIcon(false);
-                togglePauseResumeIcon(true);
+                disableTimerControls(false);
+                disablePauseResume(false);
+                disableSetButton(true);
             }
         }
-
         toggleClockDisplay(isClockContainerOpen);
         updateClockDisplay();
     } catch (error) {
@@ -313,7 +315,7 @@ function updateClockDisplay() {
     }
 }
 
-async function saveTimerState() {
+function saveTimerState() {
     const timerState = {
         hours,
         minutes,
@@ -321,18 +323,17 @@ async function saveTimerState() {
         isRunning,
     };
 
-    try {
-        const response = await fetch('/timer', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(timerState),
-        });
+    fetch('/timer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(timerState),
+    })
+    .then(response => {
         if (!response.ok) {
             console.error('Failed to save timer state');
         }
-    } catch (error) {
+    })
+    .catch(error => {
         console.error('Error saving timer state:', error);
-    }
+    });
 }
