@@ -28,6 +28,7 @@ const playCircle = document.getElementById('play-circle'); // cholera ga libog n
 
 // mo red ang timer if 10 sec and less na
 function updateDisplay() {
+    formatTime();
     timeDisplay.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
     if (hours === 0 && minutes === 0 && seconds <= 10 && isRunning) {
         timeDisplay.style.color = 'red';
@@ -40,6 +41,29 @@ function updateDisplay() {
 function formatTime(time) {
     return time < 10 ? `0${time}` : time;
 }
+
+// input format and constrainttts
+function handleTimeInput(event, minValue, maxValue) {
+    let value = parseInt(event.target.value) || 0;
+    if (value < minValue) {
+        value = minValue;
+    } else if (value > maxValue) {
+        value = maxValue;
+    }
+    event.target.value = formatTime(value);
+}
+
+document.getElementById('modal-hours').addEventListener('input', function (event) {
+    handleTimeInput(event, 0, 99);
+});
+
+document.getElementById('modal-minutes').addEventListener('input', function (event) {
+    handleTimeInput(event, 0, 59);
+});
+
+document.getElementById('modal-seconds').addEventListener('input', function (event) {
+    handleTimeInput(event, 0, 59);
+});
 
 // enabled and disabled si mr set timer btn
 function disableSetButton(disable) {
@@ -336,11 +360,10 @@ clockIcon.addEventListener('click', () => {
 });
 
 // TODO: Fix var isClockContainerOpen, basin mag error
-const closeclock = document.getElementById('close-clock'); 
+const closeclock = document.getElementById('close-clock');
 if (closeclock) {
     closeclock.addEventListener('click', () => {
-        isClockContainerOpen = false;
-        toggleClockDisplay(isClockContainerOpen);
+        toggleClockDisplay(false);
     });
 }
 
