@@ -1,10 +1,3 @@
-// kulang2 nga func: mo supak
-// (1) clock-container una mogawas imbis clock-icon (Done?)
-// (2) guba ang reset kung mo navigate sa pikas route (Done?)
-// (3) di mo toggle ang play and stop button bottt (idk asa ni)
-// (4) kung i pause nako nya mo navigate ko sa lain page kay mobalik siyas una (Pa check nalang)
-
-// and goods na ang all functionalities i guess??
 let timer; 
 let hours = 0;
 let minutes = 0;
@@ -24,7 +17,7 @@ const pauseResumeBtn = document.getElementById('pause-resume-btn');
 const playIcon = document.getElementById('play-icon');
 const resetIcon = document.getElementById('reset-icon');
 const pauseCircle = document.getElementById('pause-circle');
-const playCircle = document.getElementById('play-circle'); // cholera ga libog nakoooooooooooo
+const playCircle = document.getElementById('play-circle');
 
 // mo red ang timer if 10 sec and less na
 function updateDisplay() {
@@ -251,7 +244,7 @@ const clockIcon = document.getElementById('clock-icon');
 const clockContainer = document.getElementById('clock-container');
 const closeClock = document.getElementById('close-clock');
 
-// kabuing na dugayyyyy ko diri huhu
+// dynamic positioning for the clockcontainer
 function positionClockContainer() {
     const iconRect = clockIcon.getBoundingClientRect();
     clockContainer.style.top = `${iconRect.top}px`;
@@ -297,11 +290,6 @@ window.addEventListener('beforeunload', () => {
     })
 });
 
-// force leading 0 if < 10
-function formatToTwoDigits(value) {
-    return value < 10 ? `0${value}` : value;
-}
-
 window.addEventListener('load', async () => {
     try {
         const time_state = await fetch('/timer');
@@ -320,9 +308,9 @@ window.addEventListener('load', async () => {
             isPaused = timerState.isPaused || false;
 
             // for the reset of the timer
-            document.getElementById('modal-hours').value = formatToTwoDigits(timerSet.set_hours || 0);
-            document.getElementById('modal-minutes').value = formatToTwoDigits(timerSet.set_minutes || 0);
-            document.getElementById('modal-seconds').value = formatToTwoDigits(timerSet.set_seconds || 0);
+            document.getElementById('modal-hours').value = formatTime(timerSet.set_hours || 0);
+            document.getElementById('modal-minutes').value = formatTime(timerSet.set_minutes || 0);
+            document.getElementById('modal-seconds').value = formatTime(timerSet.set_seconds || 0);
 
             if (isRunning || isPaused) {
                 toggleClockDisplay(true);   // Only open after loading if the time is still > 0
