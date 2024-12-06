@@ -12,6 +12,9 @@ let seconds = 0;
 let isRunning = false;
 let isPaused = false;
 let isTimerSet = false;
+let set_hours = 0;
+let set_minutes = 0;
+let set_seconds =  0;
 
 const timeDisplay = document.getElementById('time-display');
 const modal = document.getElementById('set-timer-modal');
@@ -94,27 +97,69 @@ function stopTimer() {
     isRunning = false;
 }
 
+function fetchSetTimer() {
+    const setHours = parseInt(document.getElementById('modal-hours').value) || 0;
+    const setMinutes = parseInt(document.getElementById('modal-minutes').value) || 0;
+    const setSeconds = parseInt(document.getElementById('modal-seconds').value) || 0;
+
+    const timerState = {
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        isRunning: false,
+        isPaused: false,
+        set_hours: setHours,
+        set_minutes: setMinutes,
+        set_seconds: setSeconds
+    };
+
+    fetch('/timer', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(timerState)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to save timer state');
+        }
+        console.log('Timer set successfully');
+    })
+}
+
 // reset timer
 function resetTimer() {
     stopTimer();
-    // reset to the set nga time daan
-    const savedHours = parseInt(document.getElementById('modal-hours').value) || 0;
-    const savedMinutes = parseInt(document.getElementById('modal-minutes').value) || 0;
-    const savedSeconds = parseInt(document.getElementById('modal-seconds').value) || 0;
 
-    hours = savedHours;
-    minutes = savedMinutes;
-    seconds = savedSeconds;
+    fetch('/timer')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch timer state');
+            }
+            return response.json();
+        })
+        .then(timerState => {
+            const savedHours = timerState.set_hours || 0;
+            const savedMinutes = timerState.set_minutes || 0;
+            const savedSeconds = timerState.set_seconds || 0;
 
-    updateDisplay();
-    isRunning = false;
-    isTimerSet = savedHours !== 0 || savedMinutes !== 0 || savedSeconds !== 0;
+            hours = savedHours;
+            minutes = savedMinutes;
+            seconds = savedSeconds;
 
-    disableTimerControls(!isTimerSet);
-    disablePauseResume(true);
-    togglePlayStopIcon(false);
-    togglePauseResumeIcon(false);
-    disableSetButton(false);
+            updateDisplay();
+            isRunning = false;
+            isTimerSet = savedHours !== 0 || savedMinutes !== 0 || savedSeconds !== 0;
+
+            disableTimerControls(!isTimerSet);
+            disablePauseResume(true);
+            togglePlayStopIcon(false);
+            togglePauseResumeIcon(false);
+            disableSetButton(false);
+
+            fetchSetTimer();
+        })
 }
 
 // toggle play/stop icons
@@ -240,7 +285,10 @@ window.addEventListener('beforeunload', () => {
         "minutes": minutes, 
         "seconds": seconds, 
         "isRunning": isRunning,
-        "isPaused": isPaused
+        "isPaused": isPaused,
+        "set_hours": set_hours,
+        "set_minutes": set_minutes,
+        "set_seconds": set_seconds
     };
     const clockCSRF = document.getElementById('clock_csrf').value;
     fetch('/timer',{
@@ -266,6 +314,9 @@ window.addEventListener('load', async () => {
             seconds = timerState.seconds || 0;
             isRunning = timerState.isRunning || false;
             isPaused = timerState.isPaused || false;
+            set_hours = timerState.set_hours || 0;
+            set_minutes = timerState.set_minutes || 0;
+            set_seconds = timerState.set_seconds || 0;
 
             if (isRunning || isPaused) {
                 toggleClockDisplay(true);   // Only open after loading if the time is still > 0

@@ -92,7 +92,10 @@ timer_state = {
     "minutes": 0,
     "seconds": 0,
     "isRunning": False,
-    "isPaused": False
+    "isPaused": False,
+    "set_hours": 0,
+    "set_minutes": 0,
+    "set_seconds": 0,
 }
 
 @app.route('/timer', methods=["POST", "GET"])
@@ -109,7 +112,10 @@ def timer():
                 "minutes": time.get("minutes", 0),
                 "seconds": time.get("seconds", 0),
                 "isRunning": time.get("isRunning", False),
-                "isPaused": time.get("isPaused", False)
+                "isPaused": time.get("isPaused", False),
+                "set_hours": time.get("set_hours", 0),
+                "set_minutes": time.get("set_minutes", 0),
+                "set_seconds": time.get("set_seconds", 0)
             }
             return make_response(jsonify({"message": "Timer state saved successfully"}), 200)
     except Exception as e:
