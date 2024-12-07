@@ -192,7 +192,7 @@ body{
     position: fixed;
     width: 80%;
     top: 0;
-    z-index: 1000;
+    z-index: 999;
     transition: top 0.3s ease-in-out;
 }
 
