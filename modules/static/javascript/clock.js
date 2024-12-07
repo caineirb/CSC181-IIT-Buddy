@@ -234,6 +234,38 @@ document.getElementById('save-timer').addEventListener('click', () => {
     }
 });
 
+document.getElementById('default').addEventListener('click', () => {
+    document.getElementById('modal-hours').value = formatTime(0);
+    document.getElementById('modal-minutes').value = formatTime(0);
+    document.getElementById('modal-seconds').value = formatTime(0);
+
+    //gi apil nlng sab nako ang time display
+    const timerDisplay = document.querySelector('.time-display');
+    timerDisplay.style.display = 'block';
+    timerDisplay.textContent = formatTime(0) + ':' + formatTime(0) + ':' + formatTime(0);
+
+    const time_reset = {
+        "set_hours": 0,
+        "set_minutes": 0,
+        "set_seconds": 0
+    };
+
+    const clockCSRF = document.getElementById('clock_csrf').value;
+    fetch('/set-timer', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            "X-CSRFToken": clockCSRF
+        },
+        body: JSON.stringify(time_reset)
+    })
+    .then(response => response.json())
+    .then(data => {
+        isTimerSet = false;
+    });
+    disableTimerControls(true); 
+});
+
 updateDisplay();
 disableTimerControls(true);
 disablePauseResume(true);
