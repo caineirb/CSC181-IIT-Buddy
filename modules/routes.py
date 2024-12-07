@@ -1,4 +1,4 @@
-from . import app, mysql, json
+from . import app
 from flask import session, redirect, url_for, render_template, request, jsonify, make_response
 from modules.controller import checkStudent, createStudent, require_login, decode_google_jwt, fetchStudent, timer_get_set, timer_save_set, timer_get_state, timer_save_state, default_user_timer
 from modules.reviewers.controller import fetchPreview
