@@ -286,6 +286,7 @@
 
 #modal-reset-time button.default:hover {
     background-color: var(--cancel-hover-bg-color);
+    color: var(--black-color);
     transform: scale(1.1);
 }
 
