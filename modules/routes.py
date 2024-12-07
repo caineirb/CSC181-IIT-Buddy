@@ -1,6 +1,6 @@
 from . import app, mysql, json
 from flask import session, redirect, url_for, render_template, request, jsonify, make_response
-from modules.controller import checkStudent, createStudent, require_login, decode_google_jwt, fetchStudent
+from modules.controller import checkStudent, createStudent, require_login, decode_google_jwt, fetchStudent, timer_get_set, timer_save_set, timer_get_state, timer_save_state, default_user_timer
 from modules.reviewers.controller import fetchPreview
 from modules.notes.controller import fetchPreviewNotes
 from config import CLIENT_ID
@@ -70,65 +70,22 @@ def login():
 @app.route('/logout')
 @require_login
 def logout():
+    default_user_timer(session['user-id'])
+    
     session.pop('user-id', None)
     session.pop('user-photo', None)
-    global timer_state
-
-    timer_state = {
-        "hours": 0,
-        "minutes": 0,
-        "seconds": 0,
-        "isRunning": False,
-        "isPaused": False
-    }
-
-    timer_set = {
-        "set_hours": 0,
-        "set_minutes": 0,
-        "set_seconds": 0
-    }
     return redirect(url_for('index'))
 
 
 '''
 Timer API
 '''
-timer_set = {
-    "set_hours": 0,
-    "set_minutes": 0,
-    "set_seconds": 0
-}
-
-timer_state = {
-    "hours": 0,
-    "minutes": 0,
-    "seconds": 0,
-    "isRunning": False,
-    "isPaused": False
-}
-
 @app.route('/timer', methods=["POST", "GET"])
 @require_login
 def timer():
     try:
-        global timer_state
         if request.method == "GET":
-            cur = mysql.connection.cursor()
-            query = "SELECT `timer_state`, `timer_set` FROM `timer` WHERE `student_id` = %s"
-            cur.execute(query, (session['user-id'],))
-
-            result = cur.fetchone()
-            if result:
-                timer_state = json.loads(result['timer_state'])
-            else:
-                timer_state = {
-                    "hours": 0,
-                    "minutes": 0,
-                    "seconds": 0,
-                    "isRunning": False,
-                    "isPaused": False
-                }
-            return make_response(jsonify(timer_state), 200)
+            return make_response(jsonify(timer_get_state(session['user-id'])), 200)
         else:
             time = request.get_json()
             timer_state = {
@@ -138,15 +95,7 @@ def timer():
                 "isRunning": time.get("isRunning", False),
                 "isPaused": time.get("isPaused", False)
             }
-            cur = mysql.connection.cursor()
-            update_query = """  
-                UPDATE `timer`
-                SET `timer_state` = %s, `timer_set` = %s
-                WHERE `student_id` = %s
-            """
-            cur.execute(update_query, (json.dumps(timer_state), session['user-id']))
-            mysql.connection.commit()
-
+            timer_save_state(session['user-id'], timer_state)
             return make_response(jsonify({"message": "Timer state saved successfully"}), 200)
     except Exception as e:
         print(str(e))
@@ -157,22 +106,8 @@ def timer():
 @require_login
 def timerSet():
     try:
-        global timer_set
         if request.method == "GET":
-            cur = mysql.connection.cursor(dictionary=True)
-            query = "SELECT `timer_set` FROM `timer` WHERE `student_id` = %s"
-            cur.execute(query, (session['user-id'],))
-
-            result = cur.fetchone()
-            if result:
-                timer_set = json.loads(result['timer_set'])
-            else:
-                timer_set = {
-                    "set_hours": 0,
-                    "set_minutes": 0,
-                    "set_seconds": 0
-                }
-            return make_response(jsonify(timer_set), 200)
+            return make_response(jsonify(timer_get_set(session['user-id'])), 200)
         else:
             time = request.get_json()
             timer_set = {
@@ -180,15 +115,7 @@ def timerSet():
                 "set_minutes": time.get("set_minutes", 0),
                 "set_seconds": time.get("set_seconds", 0)
             }
-            cur = mysql.connection.cursor()
-            update_query = """
-                UPDATE `timer`
-                SET `timer_set` = %s
-                WHERE `student_id` = %s
-            """
-            cur.execute(update_query, (json.dumps(timer_set), 'student_id'))
-            mysql.connection.commit()
-
+            timer_save_set(session['user-id'], timer_set)
             return make_response(jsonify({"message": "Timer set successfully"}), 200)
     except Exception as e:
         print(str(e))
