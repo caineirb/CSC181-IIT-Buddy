@@ -286,6 +286,7 @@
     right: 230px;
     display: flex;
     gap: 10px;
+    z-index: 999;
 }
 
 .dropdown select {

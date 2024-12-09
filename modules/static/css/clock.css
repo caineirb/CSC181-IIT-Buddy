@@ -1,0 +1,297 @@
+/* importing google font: kode mono */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Kode+Mono:wght@400..700&family=Miniver&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+    --clock-bg: #FBA421;
+    --play-bg: #51C886;
+    --pause-bg: #61C7E7;
+    --close-bg: #E07878;
+    --white-color: #fff;
+    --black-color: #000;
+    --icon-border: #1E1E1E;
+    --close-border: #F6F5F5;
+    --close-icon: #FEF7FF;
+    --primary-color: #0D1A26;
+    --secondary-color: #0E7373;
+    --timer-label: #555;
+    --botder-color: #ccc;
+    --set-bg-color: #5CB85C;
+    --set-hover-bg-color: #4CAE4C;
+    --cancel-bg-color: #B0B0B0;
+    --cancel-hover-bg-color: #D6D6D6;
+    --light-green: #E6FFE6;
+    --dark-gray: #333333;
+}
+
+@keyframes tickle {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(5deg);
+    }
+    50% {
+        transform: rotate(-5deg);
+    }
+    75% {
+        transform: rotate(5deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.tickle {
+    animation: tickle 0.5s ease-in-out infinite;
+}
+
+.clock-container {
+    width: 347px;
+    height: 60px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.clock-base {
+    width: 335px;
+    height: 49px;
+    background: var(--clock-bg);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer-base {
+    width: 170px;
+    height: 33px;
+    background: var(--black-color);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) inset;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 5px;
+}
+
+.time-display {
+    color: var(--white-color);
+    font-size: 20px;
+    font-family: "Kode Mono";
+    font-weight: 400;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.set-timer, .play-stop-timer, .pause-resume-timer {
+    width: 39px;
+    height: 25px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.set-timer {
+    background: rgba(255, 0, 0, 0.50);
+}
+
+.play-stop-timer {
+    background: var(--play-bg);
+}
+
+.pause-resume-timer {
+    background: var(--pause-bg);
+}
+
+.play-stop-timer .play-stop-circle, 
+.set-timer .set-circle, 
+.pause-resume-timer .pause-resume-circle {
+    width: 16px;
+    height: 16px;
+    padding: 1.33px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: 13.33px;
+    height: 13.33px;
+    border: 1.60px solid var(--icon-border);
+}
+
+.close-clock {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: -5px;
+    left: -10px;
+    background: var(--close-bg);
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    display: inline-flex;
+}
+
+.close {
+    width: 25px;
+    height: 25px;
+    padding: 5.21px;
+    border-radius: 4px;
+    border: 1px solid var(--close-border);
+    justify-content: center;
+    align-items: center;
+    display: inline-flex;
+}
+
+.close .icon {
+    width: 14.58px;
+    height: 14.58px;
+    background: var(--close-icon);
+}
+
+/* need ichange kay ga libog nakoooooo */
+.set-timer:hover, .pause-resume-timer:hover, .play-stop-timer:hover {
+    background-color: var(--white-color);
+    transform: scale(1.1);
+}
+
+.set-timer-modal {
+    display: none;
+    position: absolute;
+    bottom: -150px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 250px;
+    padding-bottom: 15px;
+    background-color: var(--white-color);
+    border: 1px solid var(--botder-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000 !important;
+}
+
+.set-timer-modal h4 {
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 22px;
+}
+
+.modal-timer-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.modal-input {
+    width: 50px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    border: 1px solid var(--botder-color);
+    border-radius: 5px;
+    margin: 0 2px;
+    font-family: "Kode Mono";
+}
+
+.modal-actions {
+    position: relative;
+    text-align: right;
+    right: 10px;
+    margin: 0;
+}
+
+.modal-actions button {
+    margin: 5 5px;
+    cursor: pointer;
+    border: none;
+    color: var(--white-color);
+    border-radius: 5px;
+    font-size: 14px;
+    width: 65px;
+    height: 30px;
+}
+
+.save-timer {
+    background-color: var(--set-bg-color);
+    color: var(--white-color);
+}
+
+.cancel-timer {
+    background-color: var(--cancel-bg-color);
+    color: var(--white-color);
+}
+
+.save-timer:hover {
+    background-color: var(--set-hover-bg-color);
+    color: var(--light-green);
+}
+
+.cancel-timer:hover {
+    background-color: var(--cancel-hover-bg-color);
+    color: var(--dark-gray);
+}
+
+#play-circle,
+#pause-circle,
+#play-icon,
+#reset-icon,
+#set-btn,
+#close-clock {
+    cursor: pointer;
+}
+
+.timer-label {
+    font-size: 22px;
+    margin-left: 2px;
+    color: var(--timer-label);
+}
+
+#modal-reset-time {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 15px;
+}
+
+#modal-reset-time button.default {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--cancel-bg-color);
+    border: 1px solid var(--botder-color);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    color: var(--white-color);
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#modal-reset-time button.default:hover {
+    background-color: var(--cancel-hover-bg-color);
+    color: var(--black-color);
+    transform: scale(1.1);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
