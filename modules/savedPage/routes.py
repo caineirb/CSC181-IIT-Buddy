@@ -1,0 +1,79 @@
+from flask import flash, render_template, request, session
+from modules.controller import require_login, fetchStudent, customErrorMessages
+from modules.savedPage.controller import countReviewers, fetchReviewers
+from . import saved_page_bp
+from modules import mysql
+
+
+'''
+Saved Page routes
+'''
+
+ITEMS_PER_PAGE = 5  # Change lang if ganahan ka
+
+@saved_page_bp.route('/', methods=["GET"])
+@require_login
+def index():
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+    try:
+        type = request.args.get('list', 'All Reviewers', type=str)
+        searched_item = request.args.get('search_input', None, type=str)
+        order = request.args.get('sort_by', 'DESC', type=str)
+        page = request.args.get('page', 1, type=int)
+
+        reviewers_data = {
+            'data': fetchReviewers(type, searched_item, order, page, ITEMS_PER_PAGE),
+            'details': {
+                'totalCount': countReviewers(type, searched_item, order),
+                'countPerPage': ITEMS_PER_PAGE
+            },
+            'searchParams': {
+                'type': type,
+                'searched_item': searched_item,
+                'order': order,
+                'page': page
+            },
+            'bgcolor': {
+                'Flashcard': "#0C203E",
+                'Identification': "#D1E078",
+                'Multiple Choice': "#E07878",
+                'Mixed': "#004456"
+            },
+            'fgcolor': {
+                'Flashcard': "#FFFFFF",
+                'Identification': "#000000",
+                'Multiple Choice': "#000000",
+                'Mixed': "#FFFFFF"
+            }
+        }
+
+        return render_template('savedPage/savedPage.html', user_name=user_name, reviewers_data=reviewers_data)
+
+    except mysql.connection.Error as e:
+        flash(customErrorMessages(e), "danger")
+        print(e)
+        # Provide default values for the template in case of an error
+        reviewers_data = {
+            'data': [],
+            'details': {
+                'totalCount': 0,
+                'countPerPage': ITEMS_PER_PAGE
+            },
+            'searchParams': {
+                'type': 'All',
+                'searched_item': '',
+                'order': 'DESC',
+                'page': 1
+            },
+            'bgcolor': {},
+            'fgcolor': {}
+        }
+        return render_template('savedPage/savedPage.html', user_name=user_name , reviewers_data=reviewers_data)
+    
+
+
+@saved_page_bp.route('/take/<string:id>', methods=["GET"])
+@require_login
+def take_reviewer(id :str):
+    return f"<h1>Take reviewer function is not available right now, try again next sprint. Reviewer ID: {id}</h1>"
