@@ -34,10 +34,10 @@ def edit(id :str, type :str):
             return redirect(url_for('reviewers.identifications.edit', id=id))
         # case "Multiple Choice":
         #     return redirect(url_for('', id=id))
-        # case "Mixed":
-        #     return redirect(url_for('', id=id))
+        case "Mixed":
+            return redirect(url_for('reviewers.mixed.edit', id=id))
         case _:
-            return f"Invalid choice. "
+            return f"Invalid choice."
     
 
 @reviewers_bp.route('/save-info', methods=["PUT"])
