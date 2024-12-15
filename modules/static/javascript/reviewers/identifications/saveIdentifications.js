@@ -64,7 +64,7 @@ function sendidentificationsToBackend(next_url = null) {
             text: "Complete every Answer and Question pair first before playing.",
             icon: "warning"
           });
-    } else if (valididentificationCount > 0) {
+    } else if (valididentificationCount > 0 || next_url) {
         formData.append("identification_count", valididentificationCount);
         fetch(sidentificationUrl, {
             method: 'PUT',

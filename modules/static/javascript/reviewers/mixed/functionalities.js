@@ -1,12 +1,7 @@
-/**
- * Handles the functionalities of the mixed. Adding, deleting, editing, moving, etc.
- */
-
 let mixed_count = 1;
 
 document.addEventListener("DOMContentLoaded", function() {
     const mixed = JSON.parse(document.getElementById("data-json").textContent);
-
     // Load existing mixed into the mixed container
     mixed.forEach((mixData, index) => {
         createmixFromData(mixData, index + 1);
@@ -30,126 +25,155 @@ function createmixFromData(mixData, count) {
     newmix.setAttribute('data-number', count);
 
     // Insert the template content
-    newmix.innerHTML = getTemplate(mixData.type, parseInt(newmix.getAttribute('data-number')), mixData);
+    newmix.innerHTML = getTemplate(mixData.type, count, mixData);
 
     // Attach the change event listener programmatically
-    const selectElement = newmix.querySelector(`#reviewer-type-${parseInt(newmix.getAttribute('data-number'))}`);
-    selectElement.addEventListener('change', (event) => { handleTypeChange(event, parseInt(newmix.getAttribute('data-number')), mixData);});
+    const selectElement = newmix.querySelector(`#reviewer-type-${count}`);
+    if (selectElement) {
+        selectElement.addEventListener('change', (event) => handleTypeChange(event, count, mixData));
+    }
+
+    if (mixData.type === "Multiple Choice"){
+        console.log(mixData.answer);
+        newmix.querySelectorAll('.correct-answer-checkbox').forEach((checkbox, index) => {
+            console.log(checkbox.value);
+            if (mixData.answer[index][1] === 1) checkbox.checked = true;
+        });
+    }
 
     mixContainer.appendChild(newmix);
+    
 
-    mixed_count = Math.max(mixed_count, count + 1);
+    mixed_count = Math.max(mixed_count, count + 1); // Ensure mixed_count is updated
 }
 
-function getTemplate(type, count, mixData){
+function getTemplate(type, count, mixData) {
     const imageUrl = mixData.image ? `data:image/jpeg;base64,${mixData.image}` : "";
 
-    const template = {
-        'Identification': `
+    if (type === "Identification"){
+        return `
             <div class="mix-header">
                 <span class="mix-number">${count}</span>
                 <div class="mix-actions">
                     <button type="button" class="switch-button" onclick="switchTermAndDefinition(${count})"><i class="material-icons">swap_horiz</i></button>
                     <button type="button" class="drag-button"><i class="material-icons">drag_handle</i></button>
                     <button type="button" class="delete-button"><i class="material-icons">remove_circle_outline</i></button>
-                    <div class="ms-5 dropdowns">
-                        <div class="d-flex">
-                            <select name="reviewer-type-${count}" id="reviewer-type-${count}" class="form-select" style="max-width: 200px; color: black; transform: translate(100px, -145px);">
-                                <option value="Identification" selected>Identification</option>
-                                <option value="Multiple Choice">Multiple Choice</option>
-                            </select>
-                        </div>
+                    <div class="dropdowns">
+                        <select name="reviewer-type-${count}" id="reviewer-type-${count}" class="form-select question-type" style="max-width: 200px; color: black; transform: translate(100px, -145px);">
+                            <option value="Identification" selected>Identification</option>
+                            <option value="Multiple Choice">Multiple Choice</option>
+                        </select>
                     </div>
                 </div>
             </div>
             <div class="identification-content">
                 <div class="input-container">
-                    <textarea class="term-input" name="answer-${count}" id="answer-${count}" placeholder="Enter answer" maxlength="150">${mixData.answer}</textarea>
-                    <label class="input-label">ANSWER</label>
+                    <textarea class="definition-input" name="question-mixed-${count}" id="question-mixed-${count}" placeholder="Enter question" maxlength="255">${mixData.question || ''}</textarea>
+                    <label class="input-label">QUESTION</label>
                 </div>
                 <div class="input-container">
-                    <textarea class="definition-input" name="question-${count}" id="answer-${count}" placeholder="Enter question" maxlength="255">${mixData.question}</textarea>
-                    <label class="input-label">QUESTION</label>
+                    <textarea class="term-input" name="option-mixed-${count}-0" id="option-mixed-${count}-0" placeholder="Enter answer" maxlength="150">${mixData.answer[0][0] || ''}</textarea>
+                    <label class="input-label">ANSWER</label>
                 </div>
                 <input type="file" name="mix-image-${count}" id="mix-image-${count}" style="display: none;" accept="image/*" onchange="previewImage(event, ${count})">
                 <input type="hidden" id="mix-image-base64-${count}" value="${imageUrl}">
-                <label for="mix-image-${count}" class="image-button" style="${imageUrl ? 'background-image: url(' + imageUrl + '); background-size: cover;' : ''}">
+                <label for="mix-image-${count}" class="image-button" style="${imageUrl ? `background-image: url(${imageUrl}); background-size: cover;` : ''}">
                     <span class="button-label" ${imageUrl ? 'style="display: none;"' : ''}>IMAGE</span>
                 </label>
-                <button type="button" class="remove-image-button" title="Delete Card" onclick="removeImage(${count})">
+                <button type="button" class="remove-image-button" title="Delete Image" onclick="removeImage(${count})">
                     <i class="bi bi-trash"></i>
                 </button>
             </div>
-        `,
-        'Multiple Choice': `
+        `
+    } else {
+        return `
             <div class="mix-header">
                 <span class="mix-number">${count}</span>
                 <div class="mix-actions">
                     <button type="button" class="drag-button"><i class="material-icons">drag_handle</i></button>
                     <button type="button" class="delete-button"><i class="material-icons">remove_circle_outline</i></button>
-                    <div class="ms-5 dropdowns">
-                        <div class="d-flex">
-                            <select name="reviewer-type-${count}" id="reviewer-type-${count}" class="form-select" style="max-width: 200px; color: black; transform: translate(100px, -145px);">
-                                <option value="Identification">Identification</option>
-                                <option value="Multiple Choice" selected>Multiple Choice</option>
-                            </select>
-                        </div>
+                    <div class="dropdowns">
+                        <select name="reviewer-type-${count}" id="reviewer-type-${count}" class="form-select question-type" style="max-width: 200px; color: black; transform: translate(100px, -145px);">
+                            <option value="Identification">Identification</option>
+                            <option value="Multiple Choice" selected>Multiple Choice</option>
+                        </select>
                     </div>
                 </div>
             </div>
             <div class="mul-content">
-                <div class="mul-container" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding-top: 10px; width: 100%;">
-                    <div style="width: 80%">
-                        <textarea class="definition-input" name="question-${count}" id=name="question-${count}" placeholder="Enter question" maxlength="255">${mixData.question}</textarea>
+                <div class="mul-question-container">
+                    <div class="mul-question-input">
+                        <textarea class="definition-input" name="question-mixed-${count}" id=name="question-mixed-${count}" placeholder="Enter question" maxlength="255">${mixData.question}</textarea>
                         <label class="input-label">QUESTION</label>
                     </div>
                     <input type="file" name="mix-image-${count}" id="mix-image-${count}" style="display: none;" accept="image/*" onchange="previewImage(event, ${count})">
                     <input type="hidden" id="mix-image-base64-${count}" value="${imageUrl}">
-                    <label for="mix-image-${count}" class="image-button" style="${imageUrl ? 'background-image: url(' + imageUrl + '); background-size: cover;' : ''}">
+                    <label for="mix-image-${count}" class="image-button" style="${imageUrl ? `background-image: url(${imageUrl}); background-size: cover;` : ''}">
                         <span class="button-label" ${imageUrl ? 'style="display: none;"' : ''}>IMAGE</span>
                     </label>
-                    <button type="button" class="remove-image-button" title="Delete Card" onclick="removeImage(${count})">
+                    <button type="button" class="remove-image-button" title="Delete Image" onclick="removeImage(${count})">
                         <i class="bi bi-trash"></i>
                     </button>
                 </div>
+                <p class="input-label" style="margin: 10px auto;">OPTIONS</p>
                 <div class="options-container" id="options-container-${count}">
                     <div class="option">
-                        <input type="checkbox" class="correct-answer-checkbox" onclick="markCorrectOption(${count}, 0)">
-                        <input type="text" class="option-input" name="option-${count}-0" placeholder="Enter option" maxlength="150" style="width: 90%; height: 60px;" value=${mixData.answer}>
-                        <div class="upload-image">
-                            <input type="file" name="identification-image" id="identification-image" style="display: none;" accept="image/*" onchange="previewImage(event)">
-                            <input type="hidden" id="identification-image-base64" >
-                            <label for="mix-option-image-${count}" class="image-button">
-                                <span class="button-label">IMAGE</span>
-                            </label>
-                        </div>
-                        <button type="button" class="remove-image-button" title="Delete Card" onclick="removeImage">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                        <button type="button" class="remove-option-button" onclick="removeOption(${count}, 0)" style="background: none; border: none; padding: 0;">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
+                        <input type="radio" name="option-mixed-${count}" value="0" class="correct-answer-checkbox" title="Check if this Option is Correct">
+                        <input type="text" class="option-input" id="option-mixed-${count}-0" name="option-mixed-${count}-0" placeholder="Enter option" maxlength="150" style="width: 90%;" value="${mixData.answer[0][0] || ''}">
                     </div>
-            </div>
-            <button type="button" class="add-option-button" onclick="addOption(${count})" style="margin-left: 60px;">+ Add Option</button>
+                    <div class="option">
+                        <input type="radio" name="option-mixed-${count}" value="1" class="correct-answer-checkbox" title="Check if this Option is Correct">
+                        <input type="text" class="option-input" id="option-mixed-${count}-1" name="option-mixed-${count}-1" placeholder="Enter option" maxlength="150" style="width: 90%;" value="${mixData.answer[1][0] || ''}">
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="option-mixed-${count}" value="2" class="correct-answer-checkbox" title="Check if this Option is Correct">
+                        <input type="text" class="option-input" id="option-mixed-${count}-2" name="option-mixed-${count}-2" placeholder="Enter option" maxlength="150" style="width: 90%;" value="${mixData.answer[2][0] || ''}">
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="option-mixed-${count}" value="3" class="correct-answer-checkbox" title="Check if this Option is Correct">
+                        <input type="text" class="option-input" id="option-mixed-${count}-3" name="option-mixed-${count}-3" placeholder="Enter option" maxlength="150" style="width: 90%;" value="${mixData.answer[3][0] || ''}">
+                    </div>
+                    <label class="remove-chosen-label" for="remove-chosen=${count}">Remove Chosen</label>
+                    <input type="button" id="remove-chosen=${count}" onclick="removeChosen(${count})" style="display: none;">
+                </div>
             </div>
         `
-    };
-
-    return template[type]
+    }
 }
 
-// Function to handle type changes
+function removeChosen(count) {
+    document.querySelector(`input[name='option-mixed-${count}']:checked`).checked = false;
+}
 function handleTypeChange(event, count, mixData) {
-    const newType = event.target.value; // Get the selected value
-    const currentMix = document.querySelector(`.mix[data-number="${count}"]`); // Find the current mix element
-    console.log(count)
-    // Remove the old mix element
+    const newType = event.target.value;
+    const currentMix = document.querySelector(`.mix[data-number="${count}"]`);
+
+    if (!currentMix) return;
+    mixData.question = currentMix.querySelector(`.definition-input`).value || '';
+    const correct = currentMix.querySelector(`#option-mixed-${count}-0`).value || '';
+    if (mixData.type === "Identification"){
+        mixData.answer = [[correct, 1], ["", 0], ["", 0], ["", 0]];
+        mixData.type = "Multiple Choice";
+    } else {
+        mixData.answer = [[correct, 1]];
+        mixData.type = "Identification";
+    }
+
+    // Replace content
     currentMix.innerHTML = getTemplate(newType, count, mixData);
 
-    // Attach the change event listener programmatically
+    if (mixData.type === "Multiple Choice"){
+        currentMix.querySelectorAll('.correct-answer-checkbox').forEach((checkbox, index) => {
+            console.log(checkbox.value);
+            if (mixData.answer[index][1] === 1) checkbox.checked = true;
+        });
+    }
+
+    // Reattach event listener
     const selectElement = currentMix.querySelector(`#reviewer-type-${count}`);
-    selectElement.addEventListener('change', (event) => handleTypeChange(event, count, mixData));
+    if (selectElement) {
+        selectElement.addEventListener('change', (event) => handleTypeChange(event, count, mixData));
+    }
 }
 
 // Updated function to create a blank mix
@@ -261,6 +285,8 @@ function updatemixNumbers() {
 
         // Update name and id attributes for term, definition, image fields, and base64 hidden input
         const termInput = mix.querySelector('.term-input');
+        const optionInputs = mix.querySelectorAll('.option-input');
+        const optionCheckboxes = mix.querySelectorAll('.correct-answer-checkbox');
         const definitionInput = mix.querySelector('.definition-input');
         const imageInput = mix.querySelector('input[type="file"]');
         const imageLabel = mix.querySelector('label.image-button');
@@ -268,13 +294,24 @@ function updatemixNumbers() {
         const removeImageButton = mix.querySelector('.remove-image-button');
 
         if (termInput) {
-            termInput.setAttribute('name', `answer-${newNumber}`);
-            termInput.setAttribute('id', `answer-${newNumber}`);
+            termInput.setAttribute('name', `option-mixed-${newNumber}-0`);
+            termInput.setAttribute('id', `option-mixed-${newNumber}-0`);
         }
 
+        // Update options inputs and checkboxes
+        optionInputs.forEach((input, optionIndex) => {
+            input.setAttribute('name', `option-mixed-${newNumber}-${optionIndex}`);
+            input.setAttribute('id', `option-mixed-${newNumber}-${optionIndex}`);
+        });
+
+        optionCheckboxes.forEach((checkbox, optionIndex) => {
+            checkbox.setAttribute('name', `option-mixed-${newNumber}`);
+            checkbox.setAttribute('value', `${optionIndex}`);
+        });
+
         if (definitionInput) {
-            definitionInput.setAttribute('name', `question-${newNumber}`);
-            definitionInput.setAttribute('id', `question-${newNumber}`);
+            definitionInput.setAttribute('name', `question-mixed-${newNumber}`);
+            definitionInput.setAttribute('id', `question-mixed-${newNumber}`);
         }
 
         if (imageInput) {

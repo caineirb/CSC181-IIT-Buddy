@@ -26,14 +26,13 @@ def review(id: str, isRandom: str):
     mixed['id'] = id
     mixed['isRandom'] = isRandom
 
-    print(mixed)
     if not isRandom.lower() == 'false':
         # Convert isRandom to a boolean based on the string value
         if isRandom.lower() == 'true':
             random.shuffle(mixed['cards'])
         else:
             return "Invalid Parameter."
-        
+    print("Mixed: ", mixed)
     studentData = fetchStudent(session['user-id'])
     user_name = studentData[0][1] if studentData else None
     return render_template('reviewers/mixed/review.html', mixed=mixed, user_name=user_name)
@@ -63,9 +62,9 @@ def save_mix():
         
         mixed_count = request.form.get('mixed_count', type=int)
         for f in range(1, mixed_count + 1):
-            # Retrieve term, definition, and other data
-            term = request.form.get(f"mixed[{f}][term]")
-            definition = request.form.get(f"mixed[{f}][definition]")
+            item_type = request.form.get(f"mixed[{f}][item_type]", type=str)
+            question = request.form.get(f"mixed[{f}][question]", type=str)
+            correct_answer = request.form.get(f"mixed[{f}][correct_answer]", type=str)
             data_number = request.form.get(f"mixed[{f}][dataNumber]", type=int)
             isRandom=request.form.get("isRandom", type=str)
 
@@ -83,13 +82,17 @@ def save_mix():
             # Prepare data for saving
             data = {
                 'reviewer_id': reviewer_id,
+                'type': item_type,
                 'number': data_number,
-                'term': term,
-                'definition': definition,
+                'question': question,
                 'image': image_data
             }
+            data['correct_answer'] = correct_answer
+            if item_type == "Multiple Choice":
+                data['incorrect_answers'] = request.form.getlist(f"mixed[{f}][incorrect_answer]", type=str)
+            
             addCard(data)
-
+        
         return make_response(jsonify({'redirect_url': url_for('reviewers.mixed.review', id=reviewer_id, isRandom=isRandom)}), 200)
 
     except Exception as e:

@@ -379,6 +379,19 @@
 }
 
 /* Styling for the Add Option button */
+.mul-question-container {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding-top: 10px; 
+    width: 100%;
+}
+
+.mul-question-input {
+    width: 80%;
+}
+
 .add-option-button {
     width: 500px; 
     padding: 5px 10px;
@@ -419,8 +432,16 @@
     font-size: 14px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    height: 60px;
 }
 
 .correct-answer-checkbox {
     margin-left: 10px;
+}
+
+.remove-chosen-label {
+    cursor: pointer; 
+    color: red;
+    margin-left: 40px;
+    font-size: smaller;
 }

@@ -31,30 +31,90 @@ function sendmixedToBackend(next_url = null) {
     let hasIncompletemixed = false;
 
     document.querySelectorAll('.mix').forEach(mix => {
+        const type = mix.querySelector('.question-type');
         const dataNumber = mix.getAttribute('data-number');
-        const term = mix.querySelector('.term-input');
-        const definition = mix.querySelector('.definition-input');
+        const idenAnswer = mix.querySelector('.term-input');
+        const optionInputs = mix.querySelectorAll('.option-input');
+        const optionCheckboxes = mix.querySelectorAll('.correct-answer-checkbox');
+        const questions = mix.querySelector('.definition-input');
         const imageInput = mix.querySelector(`input[type="file"]`);
         const base64ImageInput = document.getElementById(`mix-image-base64-${dataNumber}`);
+        console.log(type.value);
+        if (type.value === "Identification"){
+            if (idenAnswer.value.trim() && questions.value.trim()) {
+                validmixCount++;
+                idenAnswer.style.borderColor = "";
+                questions.style.borderColor = "";
+    
+                formData.append(`mixed[${dataNumber}][correct_answer]`, idenAnswer.value.trim());
+                formData.append(`mixed[${dataNumber}][question]`, questions.value.trim());
+                formData.append(`mixed[${dataNumber}][dataNumber]`, dataNumber);
+                formData.append(`mixed[${dataNumber}][item_type]`, type.value);
 
-        if (term.value.trim() && definition.value.trim()) {
-            validmixCount++;
-            term.style.borderColor = "";
-            definition.style.borderColor = "";
-
-            formData.append(`mixed[${dataNumber}][term]`, term.value.trim());
-            formData.append(`mixed[${dataNumber}][definition]`, definition.value.trim());
-            formData.append(`mixed[${dataNumber}][dataNumber]`, dataNumber);
-
-            if (imageInput && imageInput.files[0]) {
-                formData.append(`mixed[${dataNumber}][image]`, imageInput.files[0]);
-            } else if (base64ImageInput && base64ImageInput.value) {
-                formData.append(`mixed[${dataNumber}][image_base64]`, base64ImageInput.value);
+                if (imageInput && imageInput.files[0]) {
+                    formData.append(`mixed[${dataNumber}][image]`, imageInput.files[0]);
+                } else if (base64ImageInput && base64ImageInput.value) {
+                    formData.append(`mixed[${dataNumber}][image_base64]`, base64ImageInput.value);
+                }
+            } else {
+                hasIncompletemixed = true;
+                if (!idenAnswer.value.trim()) idenAnswer.style.borderColor = "red";
+                if (!questions.value.trim()) questions.style.borderColor = "red";
             }
         } else {
-            hasIncompletemixed = true;
-            if (!term.value.trim()) term.style.borderColor = "red";
-            if (!definition.value.trim()) definition.style.borderColor = "red";
+            let correct_answer = null;
+
+            if (!questions.value.trim()) {
+                questions.style.borderColor = "red";
+                hasIncompletemixed = true;
+            } else {
+                questions.style.borderColor = "";
+            }
+
+            // Check if all options have inputs
+            optionInputs.forEach((input, optionIndex) => {
+                if (!input.value.trim() || input.value.trim() === "") {
+                    input.style.borderColor = "red";
+                    hasIncompletemixed = true;
+                }
+                else input.style.borderColor = "";
+            });
+
+            // Check if there is selected
+            optionCheckboxes.forEach((checkbox, optionIndex) => {
+                if (checkbox.checked){
+                    correct_answer = checkbox.value;
+                } 
+            });
+
+            if (correct_answer === null){
+                optionInputs.forEach((input, optionIndex) => {
+                    input.style.borderColor = "red";
+                });
+                hasIncompletemixed = true;
+            } else {
+                if (!hasIncompletemixed){
+                    formData.append(`mixed[${dataNumber}][question]`, questions.value.trim());
+                    formData.append(`mixed[${dataNumber}][dataNumber]`, dataNumber);
+                    formData.append(`mixed[${dataNumber}][item_type]`, type.value);
+
+                    if (imageInput && imageInput.files[0]) {
+                        formData.append(`mixed[${dataNumber}][image]`, imageInput.files[0]);
+                    } else if (base64ImageInput && base64ImageInput.value) {
+                        formData.append(`mixed[${dataNumber}][image_base64]`, base64ImageInput.value);
+                    }
+
+                    optionInputs.forEach((input, optionIndex) => {
+                        input.style.borderColor = "";
+                        if (optionIndex === parseInt(correct_answer)){
+                            formData.append(`mixed[${dataNumber}][correct_answer]`, input.value.trim());
+                        } else {
+                            formData.append(`mixed[${dataNumber}][incorrect_answer]`, input.value.trim());
+                        }
+                    });
+                    validmixCount++;
+                }
+            }
         }
     });
 
@@ -64,7 +124,7 @@ function sendmixedToBackend(next_url = null) {
             text: "Complete every Answer and Question pair first before playing.",
             icon: "warning"
           });
-    } else if (validmixCount > 0) {
+    } else if (validmixCount > 0 || next_url) {
         formData.append("mixed_count", validmixCount);
         fetch(smixedURL, {
             method: 'PUT',

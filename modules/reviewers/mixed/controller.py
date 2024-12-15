@@ -9,7 +9,7 @@ def addCard(data :dict):
             VALUE (%s, %s, %s, %s);
         """
         
-        cur.execute(insert_q_statement, (data['reviewer_id'], data['number'], data['definition'], data['image']))
+        cur.execute(insert_q_statement, (data['reviewer_id'], data['number'], data['question'], data['image']))
         mysql.connection.commit()
 
         insert_a_statement =  """
@@ -17,7 +17,12 @@ def addCard(data :dict):
             VALUE (%s, %s, %s, %s);
         """
         
-        cur.execute(insert_a_statement, (data['reviewer_id'], data['number'], data['term'], True))
+        cur.execute(insert_a_statement, (data['reviewer_id'], data['number'], data['correct_answer'], True))
+        
+        if data['type'] == "Multiple Choice":
+            for incorrect in data['incorrect_answers']:
+                cur.execute(insert_a_statement, (data['reviewer_id'], data['number'], incorrect, False))
+        
         mysql.connection.commit()
     except mysql.connection.Error as e:
         mysql.connection.rollback()  # Rollback in case of error
@@ -76,6 +81,7 @@ def fetchMixed(id: str):
 
             question_data = {
                 'number': question[0],
+                'type': "Multiple Choice" if len(answers) > 1 else "Identification",
                 'question': question[1],
                 'image': base64.b64encode(question[2]).decode('utf-8') if question[2] else None,
                 'type': "Identification" if len(answers) == 1 else "Multiple Choice",
