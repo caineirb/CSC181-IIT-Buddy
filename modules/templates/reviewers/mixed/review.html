@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %} Review Mixs {% endblock %}
+
+{% block name %} {{ user_name }} {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/mixed/review.css') }}">
+
+<button type="button" class="go-back-button" onclick='window.location.href="{{ url_for("reviewers.mixed.edit", id=mixed["id"], type="Mix") }}"'>
+    <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> 
+    <b style="font-weight: normal;">Go Back</b>
+</button>
+
+<div class="review-mixed-header">
+    <div>
+        <h1>{{ mixed['information'][0] }}</h1>
+    </div>      
+</div>
+
+<!-- for mixed na ni diri literal -->
+<div class="mixed-container">
+    {% for mix in mixed['cards'] %}
+    <div class="mix" id="mix-{{ loop.index }}">
+        <div class="mix-inner">
+            <span class="number-mixed">{{ loop.index }}</span>
+            <!-- front ni sa card = ang question diri -->
+            <div class="mix-front">
+                <p>{{ mix['question'] }}</p>
+                {% if mix['image'] %}
+                    <img src="data:image/jpeg;base64,{{ mix['image'] }}" alt="Mix Image" class="mix-image" style="max-width: 100%; height: auto;">
+                {% endif %}
+            </div>
+            <!-- Type Answer Section -->
+            <div class="type-answer" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around;">
+                {% if mix['type'] == "Identification" %}
+                <input type="text" data-num="{{ mix['number'] }}" class="answer-text" placeholder="Type your answer..." maxlength="150" />
+                {% else %}
+                    {% for answer in mix['answer'] %}
+                        <input type="radio" data-num="{{ mix['number'] }}" data-text="{{ answer[0] }}" class="user-answered-checkbox {{ mix['number'] }}" name="options-{{ mix['number'] }}" id="options-{{ mix['number'] }}-{{ loop.index }}" value="{{ answer[1] }}">
+                        <label for="options-{{ mix['number'] }}-{{ loop.index }}">{{ answer[0] }}</label>
+                    {% endfor %}
+                    <label class="remove-chosen-label" for="remove-chosen-{{ mix['number'] }}" style="cursor: pointer;">Remove Chosen</label>
+                    <input type="button" id="remove-chosen-{{ mix['number'] }}" onclick="removeChosen('{{ mix['number'] }}')" style="display: none;">
+                {% endif %}
+            </div>            
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<div class="navigation-buttons">
+    <button type="button" id="prev-btn" class="prev-btn" onclick="showPreviousMix()">
+        <i class="bi bi-caret-left-fill"></i>
+    </button>
+
+    <div class="counter">
+        <span id="current-count"> 1 </span> of {{ mixed['cards'] | length }}
+    </div>
+
+    <button type="button" id="next-btn" class="next-btn" onclick="showNextMix()">
+        <i class="bi bi-caret-right-fill"></i>
+    </button>
+</div>
+
+<input type="hidden" name="congrats-url" id="congrats-url" value="{{ url_for('reviewers.mixed.congrats', type="Mixed", id=mixed['id'], isRandom=mixed['isRandom']) }}">
+
+<script type="application/json" id="data-json">
+    {{ mixed['cards'] | tojson }}
+</script>
+
+<script type="application/json" id="data-length">
+    {{ mixed['cards'] | length }}
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/mixed/reviewFunctionalities.js') }}"></script>
+
+{% endblock %}
