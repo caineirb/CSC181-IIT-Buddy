@@ -94,3 +94,51 @@ def save_identification():
     except Exception as e:
         print(f"Error saving identifications: {e}")
         return jsonify({'message': 'Error saving identifications'}), 500
+    
+'''
+Take Reviewers
+'''
+@identifications_bp.route('/take/<string:id>', methods=["GET"])
+@require_login
+def take(id :str):
+    data = fetchIdentification(id)
+    if data['information'][3] == "Private":
+        return 'Flashcard is Private, access not allowed. <a href="\\">Go Back</a>'
+
+    data['id'] = id
+
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+    return render_template('reviewers/takes/identifications_take.html', data=data, user_name=user_name)
+
+@identifications_bp.route('/take/<string:id>/r=<string:isRandom>', methods=["GET"])
+@require_login
+def take_review(id: str, isRandom: str):
+    identifications = fetchIdentification(id)
+    if identifications['information'][3] == "Private":
+        return 'Flashcard is Private, access not allowed. <a href="\\">Go Back</a>'
+    identifications['id'] = id
+    identifications['isRandom'] = isRandom
+
+    if not isRandom.lower() == 'false':
+        # Convert isRandom to a boolean based on the string value
+        if isRandom.lower() == 'true':
+            random.shuffle(identifications['cards'])
+        else:
+            return "Invalid Parameter."
+        
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+    return render_template('reviewers/takes/identifications_review.html', identifications=identifications, user_name=user_name)
+
+@identifications_bp.route('/take/finished/<string:id>/<string:isRandom>', methods=["GET"])
+@require_login
+def take_congrats(id: str, isRandom: str):
+    info = {
+        'data': fetchReviewerInfo(id, "Identification"),
+        'isRandom': isRandom.lower()
+    }
+
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+    return render_template('reviewers/takes/identifications_congrats.html', info=info, user_name=user_name)

@@ -253,21 +253,6 @@ def decode_google_jwt(token):
         print(f"Error during token verification: {e}")
         return None
 
-
-def customErrorMessages(error):
-    if (error.args[0] == 1062): # Check the error code first
-        value = error.args[1].split("'")[1]
-
-        full_name = value.split("-")
-
-        type = full_name[len(full_name) - 1]
-        name_rev = ""
-        for name in range(0, len(full_name) - 2):
-            name_rev += full_name[name]
-        return f"{type} named '{name_rev}' already exist."
-    else:
-        return f"Error {error.args[0]} occurred. Please contact the developers."
-
 from datetime import datetime
 
 # For the datetime data displayed in the reviewer cards

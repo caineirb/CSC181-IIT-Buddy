@@ -6,12 +6,33 @@ let flashcardCount = 1;
 
 document.addEventListener("DOMContentLoaded", function() {
     const flashcards = JSON.parse(document.getElementById("data-json").textContent);
-
+    allowCopy();
     // Load existing flashcards into the flashcards container
     flashcards.forEach((flashcardData, index) => {
         createFlashcardFromData(flashcardData, index + 1);
     });
 });
+
+function allowCopy(){
+    const copyButton = document.getElementById('share-url-button');
+    const privacy = document.getElementById('reviewer-privacy').value;
+    copyButton.disabled = privacy === "Private";
+}
+
+function copyURL() {
+    const shareURL = document.getElementById('share-url').value;
+    navigator.clipboard.writeText(shareURL)
+        .then(() => {
+            const alertBox = document.getElementById("copy-alert");
+            alertBox.style.display = "block";
+            setTimeout(() => {
+                alertBox.style.display = "none";
+            }, 1000); // Hide the alert after 1 second
+        })
+        .catch(err => {
+            console.error("Failed to copy: ", err);
+        });
+}
 
 function createFlashcardFromData(flashcardData, count) {
     const flashcardContainer = document.querySelector('.flashcards-container');
@@ -130,6 +151,7 @@ function previewImage(event, id) {
 
     if (file) {
         const reader = new FileReader();
+        reader.readAsDataURL(file);
         reader.onload = function(e) {
             label.style.backgroundImage = `url('${e.target.result}')`;
             label.style.backgroundSize = "cover";
@@ -139,7 +161,6 @@ function previewImage(event, id) {
             label.style.width = "100px";
             buttonLabel.style.display = 'none';
         };
-        reader.readAsDataURL(file);
     } else {
         const initialImageBase64 = document.getElementById(`flashcard-image-base64-${id}`).value;
         if (initialImageBase64) {

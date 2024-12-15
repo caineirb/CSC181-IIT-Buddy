@@ -121,3 +121,45 @@ def checkDuplicateTitle(title :str, type :str, id :str = None):
         raise e
     finally:
         cur.close()  # Ensure the cursor is closed
+
+def addTakeCount(id :str):
+    try:
+        cur = mysql.connection.cursor()
+        counter_update = """
+            UPDATE `reviewers`
+            SET `take_count` = `take_count` + 1
+            WHERE `id` = %s;
+        """
+        cur.execute(counter_update, (id,))
+        mysql.connection.commit()
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
+
+def customErrorMessages(error):
+    if error.args[0] == 1062:  # Check the error code first
+        try:
+            types = ["Flashcard", "Identification", "Multiple Choice", "Mixed"]
+            # Extract the duplicate value from the error message
+            value = error.args[1].split("'")[1]
+            
+            # Split the value by dashes
+            parts = value.split("-")
+            
+            # Extract the type and the name
+            entry_type = parts[-1]  # Last part
+
+            if entry_type not in types:
+                return "Reviewer with the same name and type already exist."
+
+            name = "-".join(parts[:-2])  # Join all but the last two parts
+            
+            return f"{entry_type} named '{name}' already exists."
+        except (IndexError, ValueError) as e:
+            # Handle unexpected splitting issues
+            return "An unexpected error occurred while processing the duplicate entry."
+    else:
+        return f"Error {error.args[0]} occurred. Please contact the developers."

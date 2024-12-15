@@ -42,7 +42,7 @@ def countReviewers(type: str, param: str, order: str):
         cur.close()  # Ensure the cursor is closed
 
 # Fetch the reviewers based on the parameters n pieces at a time for pagination
-def fetchReviewers(type: str, param: str, order: str, page: int, items_per_page: int):
+def fetchReviewers(type: str, param: str, order: str, page: int, items_per_page: int, user_id :str):
     try:
         cur = mysql.connection.cursor()
         
@@ -83,10 +83,119 @@ def fetchReviewers(type: str, param: str, order: str, page: int, items_per_page:
             id, title, info, created_on, owner_id = row
             time_passed = calculate_time_passed(created_on)
             owner_name = fetchStudent(owner_id)[0][1]
-            processed_results.append((id, title, info, time_passed, owner_name))
+            processed_results.append((id, title, info, time_passed, owner_name, isReviewerSaved(id, user_id) if not type == "Notes" else isNoteSaved(id, user_id)))
 
         return processed_results
 
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
+def addViewCount(id :str):
+    try:
+        cur = mysql.connection.cursor()
+        counter_update = """
+            UPDATE `reviewers`
+            SET `view_count` = `view_count` + 1
+            WHERE `id` = %s;
+        """
+        cur.execute(counter_update, (id,))
+        mysql.connection.commit()
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
+def isReviewerSaved(reviewer_id :str, user_id :str):
+    try:
+        cur = mysql.connection.cursor()
+        check_query = """
+            SELECT COUNT(*) 
+            FROM `saved_reviewers`
+            WHERE `student_id` = %s AND `reviewer_id` = %s;
+        """
+        cur.execute(check_query, (user_id, reviewer_id))
+        return cur.fetchone()[0] == 1
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
+def saveReviewer(reviewer_id :str, user_id :str):
+    try:
+        cur = mysql.connection.cursor()
+        save_query = """
+            INSERT INTO `saved_reviewers` (`student_id`, `reviewer_id`)
+            VALUE (%s, %s);
+        """
+        cur.execute(save_query, (user_id, reviewer_id))
+        mysql.connection.commit()
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
+def unsaveReviewer(reviewer_id :str, user_id :str):
+    try:
+        cur = mysql.connection.cursor()
+        delete_query = """
+            DELETE FROM `saved_reviewers`
+            WHERE `student_id` = %s AND `reviewer_id` = %s;
+        """
+        cur.execute(delete_query, (user_id, reviewer_id))
+        mysql.connection.commit()
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
+
+def isNoteSaved(note_id :str, user_id :str):
+    try:
+        cur = mysql.connection.cursor()
+        check_query = """
+            SELECT COUNT(*) 
+            FROM `saved_notes`
+            WHERE `student_id` = %s AND `note_id` = %s;
+        """
+        cur.execute(check_query, (user_id, note_id))
+        return cur.fetchone()[0] == 1
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
+def saveNote(note_id :str, user_id :str):
+    try:
+        cur = mysql.connection.cursor()
+        save_query = """
+            INSERT INTO `saved_notes` (`student_id`, `note_id`)
+            VALUE (%s, %s);
+        """
+        cur.execute(save_query, (user_id, note_id))
+        mysql.connection.commit()
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
+def unsaveNote(note_id :str, user_id :str):
+    try:
+        cur = mysql.connection.cursor()
+        delete_query = """
+            DELETE FROM `saved_notes`
+            WHERE `student_id` = %s AND `note_id` = %s;
+        """
+        cur.execute(delete_query, (user_id, note_id))
+        mysql.connection.commit()
     except mysql.connection.Error as e:
         mysql.connection.rollback()  # Rollback in case of error
         raise e
