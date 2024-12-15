@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %} Review Identifications {% endblock %}
+
+{% block name %} {{ user_name }} {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/identifications/review.css') }}">
+
+<button type="button" class="go-back-button" onclick='window.location.href="{{ url_for("reviewers_feed.take_reviewer", id=identifications["id"], type=identifications['information'][2]) }}"'>
+    <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> 
+    <b style="font-weight: normal;">Go Back</b>
+</button>
+
+<div class="review-identifications-header">
+    <div>
+        <h1>{{ identifications['information'][0] }}</h1>
+    </div>      
+</div>
+
+<!-- for identifications na ni diri literal -->
+<div class="identifications-container">
+    {% for identification in identifications['cards'] %}
+    <div class="identification" id="identification-{{ loop.index }}">
+        <div class="identification-inner">
+            <span class="number-identifications">{{ loop.index }}</span>
+            <!-- front ni sa card = ang question diri -->
+            <div class="identification-front">
+                <p>{{ identification['question'] }}</p>
+                {% if identification['image'] %}
+                    <img src="data:image/jpeg;base64,{{ identification['image'] }}" alt="Flashcard Image" class="flashcard-image" style="max-width: 100%; height: auto;">
+                {% endif %}
+            </div>
+            <!-- Type Answer Section -->
+            <div class="type-answer">
+                <input type="text" class="answer-text" placeholder="Type your answer..." maxlength="150" />
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<div class="navigation-buttons">
+    <button type="button" id="prev-btn" class="prev-btn" onclick="showPreviousIdentification()">
+        <i class="bi bi-caret-left-fill"></i>
+    </button>
+
+    <div class="counter">
+        <span id="current-count"> 1 </span> of {{ identifications['cards'] | length }}
+    </div>
+
+    <button type="button" id="next-btn" class="next-btn" onclick="showNextIdentification()">
+        <i class="bi bi-caret-right-fill"></i>
+    </button>
+</div>
+
+<input type="hidden" name="congrats-url" id="congrats-url" value="{{ url_for('reviewers.identifications.take_congrats', type=identifications['information'][2], id=identifications['id'], isRandom=identifications['isRandom']) }}">
+
+<script type="application/json" id="data-json">
+    {{ identifications['cards'] | tojson }}
+</script>
+
+<script type="application/json" id="data-length">
+    {{ identifications['cards'] | length }}
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/takes/identifications_review.js') }}"></script>
+
+{% endblock %}

@@ -34,25 +34,21 @@
                 </div>
             </div>
         </div>
-        <div class="review-again-section" type="button" onclick="window.location.href='{{ url_for('reviewers.identifications.review', id=info['data'][0], isRandom=info['isRandom']) }}'">
+        <div class="review-again-section" type="button" onclick="window.location.href='{{ url_for('reviewers.identifications.take_review', id=info['data'][0], isRandom=info['isRandom']) }}'">
             <i class="bi bi-arrow-left"></i>
             <span class="review-again">review again</span>
         </div>
     </div>
-
     <!-- .congrats section -->
     <div class="congrats">
         <div class="confetti">
             <img src="{{ url_for('static', filename='img/confetti.png') }}" alt="Confetti" />
         </div>
-
         <div class="button-group">
             <button type="button" class="home" onclick="window.location.href='{{ url_for('index') }}'"> Home </button>
-            <button type="button" class="edit" onclick="window.location.href='{{ url_for('reviewers.edit', id=info['data'][0], type="Identification") }}'"> Edit </button>
+            <button type="button" class="edit" onclick="window.location.href='{{ url_for('reviewers_feed.take_reviewer', id=info['data'][0], type="Identification") }}'"> View Again </button>
         </div>
-
     </div>
-
 </div>
 
 <!-- results section outside the container -->
