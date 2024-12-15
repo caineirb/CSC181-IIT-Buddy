@@ -139,8 +139,7 @@ function openInNewTab(button) {
 function saveReviewer(checkbox){
     const checkboxData = checkbox.getAttribute("data-reviewer_id");
     const isSaved = checkbox.checked;
-    
-    alert(isSaved);
+
     fetch(saveURL, {
         method: 'POST',
         headers: {
@@ -166,7 +165,6 @@ function saveNote(checkbox){
     const checkboxData = checkbox.getAttribute("data-reviewer_id");
     const isSaved = checkbox.checked;
     
-    alert(isSaved);
     fetch(saveURL, {
         method: 'POST',
         headers: {

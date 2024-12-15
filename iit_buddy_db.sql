@@ -96,3 +96,19 @@ CREATE TABLE `answers`(
 	CONSTRAINT `pk_answer` PRIMARY KEY(`reviewer_id`, `question_number`),
 	CONSTRAINT `fk_answer_item` FOREIGN KEY(`reviewer_id`,`question_number`) REFERENCES `items`(`reviewer_id`,`number`) ON DELETE CASCADE
 );
+
+CREATE TABLE `saved_reviewers` (
+	`student_id` CHAR(21),
+	`reviewer_id` VARCHAR(40),
+	CONSTRAINT `pk_saved_reviewer` PRIMARY KEY(`student_id`, `reviewer_id`),
+	CONSTRAINT `fk_saved_reviewer_student` FOREIGN KEY(`student_id`) REFERENCES `students`(`id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_saved_reviewer_reviewer` FOREIGN KEY(`reviewer_id`) REFERENCES `reviewers`(`id`) ON DELETE CASCADE 
+);
+
+CREATE TABLE `saved_notes` (
+	`student_id` CHAR(21),
+	`note_id` VARCHAR(40),
+	CONSTRAINT `pk_saved_note` PRIMARY KEY(`student_id`, `note_id`),
+	CONSTRAINT `fk_saved_note_student` FOREIGN KEY(`student_id`) REFERENCES `students`(`id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_saved_note_reviewer` FOREIGN KEY(`note_id`) REFERENCES `reviewers`(`id`) ON DELETE CASCADE 
+);
