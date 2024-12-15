@@ -31,7 +31,6 @@ def removeCards(id :str):
         delete_q_statement =  """
             DELETE FROM `items` WHERE `reviewer_id` = %s;
         """
-        
         cur.execute(delete_q_statement, (id, ))
         mysql.connection.commit()
     except mysql.connection.Error as e:

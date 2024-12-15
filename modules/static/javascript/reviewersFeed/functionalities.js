@@ -24,6 +24,8 @@ let span = document.getElementById("span");
 let input = document.getElementById("search-input");
 let listItems = document.querySelectorAll(".dropdown-list-item");
 let searchFieldInput = document.getElementById("search-field");
+const saveURL = document.getElementById('save-url').value;
+const csrfToken = document.getElementById('_token_csrf').value;
         
 dropdownBtnText.onclick = function(){
     if (list.classList.contains("show")) {
@@ -60,6 +62,38 @@ for (let item of listItems) {
         };
 }
 
+function viewReviewer(event, button){
+    event.preventDefault();
+
+    const reviewerId = button.getAttribute('data-id');
+    const reviewerType = button.getAttribute('data-type');
+    const csrfToken = document.getElementById("_token_csrf").value;
+    const counterURL = document.getElementById('counter-url').value;
+
+    fetch(counterURL, {
+        method: 'PATCH',
+        headers: {
+            "Content-Type": "application/json",
+            'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({
+            'id': reviewerId,
+            'type': reviewerType
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        } 
+        return response.json();
+    })
+    .then(data => {
+        button.form.submit();
+    })
+    .catch(error => {
+        console.error("There was a problem with the fetch operation:", error);
+    });
+}
 
 function clearSearch(form){
     document.getElementById('search_input').value = ''; 
@@ -69,11 +103,100 @@ function clearSearch(form){
 function openInNewTab(button) {
     const link = button.getAttribute('data-link'); // Get the value of the data-link attribute
     if (link) {
-        window.open(link, '_blank'); // Open the link in a new tab
+        const note_id = button.getAttribute('data-id');
+        const csrfToken = document.getElementById("_token_csrf").value;
+        const counterURL = document.getElementById('counter-url').value;
+        fetch(counterURL, {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json",
+                'X-CSRF-Token': csrfToken
+            },
+            body: JSON.stringify({
+                'id': note_id
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            } 
+            return response.json();
+        })
+        .then(data => {
+            window.open(link, '_blank'); // Open the link in a new tab
+        })
+        .catch(error => {
+            console.error("There was a problem with the fetch operation:", error);
+        });
     } else {
         Swal.fire({
             text: "Link not found",
             icon: "warning"
         });
+    }
+}
+
+function saveReviewer(checkbox){
+    const checkboxData = checkbox.getAttribute("data-reviewer_id");
+    const isSaved = checkbox.checked;
+
+    fetch(saveURL, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({
+            'type': 'Reviewer',
+            'reviewer_id': checkboxData,
+            'isSaved': isSaved
+        })
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        toggleSaveIcon(checkbox);
+    })
+    .catch(error => {
+        console.error('Error saving reviewer:', error);
+    });
+}
+
+function saveNote(checkbox){
+    const checkboxData = checkbox.getAttribute("data-reviewer_id");
+    const isSaved = checkbox.checked;
+    
+    fetch(saveURL, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({
+            'type': 'Note',
+            'reviewer_id': checkboxData,
+            'isSaved': isSaved
+        })
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        toggleSaveIcon(checkbox);
+    })
+    .catch(error => {
+        console.error('Error saving reviewer:', error);
+    });
+}
+
+function toggleSaveIcon(checkbox) {
+    const reviewerId = checkbox.getAttribute('data-reviewer_id'); // Get the reviewer ID
+    const iconElement = document.querySelector(`#save-icon-${reviewerId} i`); // Find the icon inside the label
+
+    if (checkbox.checked) {
+        // Change to filled icon
+        iconElement.classList.remove('bi-bookmark');
+        iconElement.classList.add('bi-bookmark-fill');
+    } else {
+        // Change back to outline icon
+        iconElement.classList.remove('bi-bookmark-fill');
+        iconElement.classList.add('bi-bookmark');
     }
 }
