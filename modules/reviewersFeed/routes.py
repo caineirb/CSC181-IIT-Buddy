@@ -88,8 +88,8 @@ def take_reviewer(id :str, type :str):
             return redirect(url_for('reviewers.identifications.take', id=id))
         # case "Multiple Choice":
         #     return redirect(url_for('', id=id))
-        # case "Mixed":
-        #     return redirect(url_for('', id=id))
+        case "Mixed":
+            return redirect(url_for('reviewers.mixed.take', id=id))
         case _:
             return 'Invalid choice. <a href="\\">Go Back</a>'
         

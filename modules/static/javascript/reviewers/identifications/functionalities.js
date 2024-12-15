@@ -6,7 +6,7 @@ let identificationCount = 1;
 
 document.addEventListener("DOMContentLoaded", function() {
     const identifications = JSON.parse(document.getElementById("data-json").textContent);
-
+    allowCopy();
     // Load existing identifications into the identifications container
     identifications.forEach((identificationData, index) => {
         createidentificationFromData(identificationData, index + 1);
