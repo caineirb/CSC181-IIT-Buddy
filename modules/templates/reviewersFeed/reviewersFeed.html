@@ -153,18 +153,22 @@
                 <div class="card-body">
                     <div class="saved-part" style="display: flex; flex-direction: row; width: 100%;">
                         <div class="badge-viewcount" style="margin-right: auto;">
-                            {% if reviewer[6] <= 10 %}
-                            <img src="{{ url_for('static', filename='img/badges/Badges_bronze.png') }}" alt="Bronze Badge" style="width: 100px; height: 100px;">
+                            {% if reviewer[6] <= 9 %}
+                            <div class="badge-viewcount" style="margin-top: 100px;">
+                                <!-- Show nothing -->
+                            </div>
                             {% elif reviewer[6] <= 20 %}
-                            <img src="{{ url_for('static', filename='img/badges/Badges_silver.png') }}" alt="Silver Badge" style="width: 100px; height: 100px;">
+                            <img src="{{ url_for('static', filename='img/badges/Badges_bronze.png') }}" alt="Bronze Badge" style="width: 100px; height: 100px;" title="Bronze Badge">
                             {% elif reviewer[6] <= 30 %}
-                            <img src="{{ url_for('static', filename='img/badges/Badge_gold.png') }}" alt="Gold Badge" style="width: 100px; height: 100px;">
+                            <img src="{{ url_for('static', filename='img/badges/Badges_silver.png') }}" alt="Silver Badge" style="width: 100px; height: 100px;" title="Silver Badge">
                             {% elif reviewer[6] <= 40 %}
-                            <img src="{{ url_for('static', filename='img/badges/Badges_plat.png') }}" alt="Platinum Badge" style="width: 100px; height: 100px;">
+                            <img src="{{ url_for('static', filename='img/badges/Badges_gold.png') }}" alt="Gold Badge" style="width: 100px; height: 100px;" title="Gold Badge">
                             {% elif reviewer[6] <= 50 %}
-                            <img src="{{ url_for('static', filename='img/badges/Badges_ruby.png') }}" alt="Ruby Badge" style="width: 100px; height: 100px;">
+                            <img src="{{ url_for('static', filename='img/badges/Badges_plat.png') }}" alt="Platinum Badge" style="width: 100px; height: 100px;" title="Platinum Badge">
+                            {% elif reviewer[6] <= 60 %}
+                            <img src="{{ url_for('static', filename='img/badges/Badges_ruby.png') }}" alt="Ruby Badge" style="width: 100px; height: 100px;" title="Ruby Badge">
                             {% else %}
-                            <img src="{{ url_for('static', filename='img/badges/Badges_Dia.png') }}" alt="Diamond Badge" style="width: 100px; height: 100px;">
+                            <img src="{{ url_for('static', filename='img/badges/Badges_Dia.png') }}" alt="Diamond Badge" style="width: 100px; height: 100px;" title="Diamond Badge">
                             {% endif %}
                             <div class="view-count">Views: {{ reviewer[6] }}</div>
                         </div>
@@ -203,18 +207,22 @@
             <div class="card-body">
                 <div class="saved-part" style="display: flex; flex-direction: row; width: 100%;">
                     <div class="badge-viewcount" style="margin-right: auto;">
-                        {% if reviewer[6] <= 10 %}
-                        <img src="{{ url_for('static', filename='img/badges/Badges_bronze.png') }}" alt="Bronze Badge" style="width: 100px; height: 100px;">
+                        {% if reviewer[6] <= 9 %}
+                        <div class="badge-viewcount" style="margin-top: 100px;">
+                            <!-- Show nothing -->
+                        </div>
                         {% elif reviewer[6] <= 20 %}
-                        <img src="{{ url_for('static', filename='img/badges/Badges_silver.png') }}" alt="Silver Badge" style="width: 100px; height: 100px;">
+                        <img src="{{ url_for('static', filename='img/badges/Badges_bronze.png') }}" alt="Bronze Badge" style="width: 100px; height: 100px;" title="Bronze Badge">
                         {% elif reviewer[6] <= 30 %}
-                        <img src="{{ url_for('static', filename='img/badges/Badge_gold.png') }}" alt="Gold Badge" style="width: 100px; height: 100px;">
+                        <img src="{{ url_for('static', filename='img/badges/Badges_silver.png') }}" alt="Silver Badge" style="width: 100px; height: 100px;" title="Silver Badge">
                         {% elif reviewer[6] <= 40 %}
-                        <img src="{{ url_for('static', filename='img/badges/Badges_plat.png') }}" alt="Platinum Badge" style="width: 100px; height: 100px;">
+                        <img src="{{ url_for('static', filename='img/badges/Badges_gold.png') }}" alt="Gold Badge" style="width: 100px; height: 100px;" title="Gold Badge">
                         {% elif reviewer[6] <= 50 %}
-                        <img src="{{ url_for('static', filename='img/badges/Badges_ruby.png') }}" alt="Ruby Badge" style="width: 100px; height: 100px;">
+                        <img src="{{ url_for('static', filename='img/badges/Badges_plat.png') }}" alt="Platinum Badge" style="width: 100px; height: 100px;" title="Platinum Badge">
+                        {% elif reviewer[6] <= 60 %}
+                        <img src="{{ url_for('static', filename='img/badges/Badges_ruby.png') }}" alt="Ruby Badge" style="width: 100px; height: 100px;" title="Ruby Badge">
                         {% else %}
-                        <img src="{{ url_for('static', filename='img/badges/Badges_Dia.png') }}" alt="Diamond Badge" style="width: 100px; height: 100px;">
+                        <img src="{{ url_for('static', filename='img/badges/Badges_Dia.png') }}" alt="Diamond Badge" style="width: 100px; height: 100px;" title="Diamond Badge">
                         {% endif %}
                         <div class="view-count">Views: {{ reviewer[6] }}</div>
                     </div>
