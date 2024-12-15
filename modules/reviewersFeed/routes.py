@@ -1,7 +1,7 @@
 from flask import flash, render_template, request, session, redirect, url_for, make_response, jsonify
 from modules.controller import require_login, fetchStudent
 from modules.reviewers.controller import customErrorMessages, fetchReviewerInfo
-from modules.reviewersFeed.controller import countReviewers, fetchReviewers, addViewCount
+from modules.reviewersFeed.controller import countReviewers, fetchReviewers, addViewCount, saveReviewer, unsaveReviewer, saveNote, unsaveNote
 from . import reviewers_feed_bp
 from modules import mysql
 
@@ -24,7 +24,7 @@ def index():
         page = request.args.get('page', 1, type=int)
 
         reviewers_data = {
-            'data': fetchReviewers(type, searched_item, order, page, ITEMS_PER_PAGE),
+            'data': fetchReviewers(type, searched_item, order, page, ITEMS_PER_PAGE, session['user-id']),
             'details': {
                 'totalCount': countReviewers(type, searched_item, order),
                 'countPerPage': ITEMS_PER_PAGE
@@ -105,3 +105,29 @@ def viewCounter():
     except Exception as e:
         print(f"Error: {e}")  # Or log it to your logger
         return make_response(jsonify({'message': 'Invalid Request.'}), 400) 
+    
+
+
+@reviewers_feed_bp.route('/saved-items', methods=["POST"])
+@require_login
+def saveItems():
+    try:
+        req = request.get_json()
+        
+        if req['type'] == 'Reviewer':
+            if req['isSaved']:
+                saveReviewer(req['reviewer_id'], session['user-id'])
+            else:
+                unsaveReviewer(req['reviewer_id'], session['user-id'])
+        elif req['type'] == 'Note':
+            if req['isSaved']:
+                saveNote(req['reviewer_id'], session['user-id'])
+            else:
+                unsaveNote(req['reviewer_id'], session['user-id'])
+        else:
+            return make_response(jsonify({'message': 'Invalid Type.'}), 400)
+  
+        return make_response(jsonify({'message': f"{req['type']} Saved Successfully"}), 200)
+    except Exception as e:
+        print(f"Error: {e}")  # Or log it to your logger
+        return make_response(jsonify({'message': 'Invalid Request.'}), 400)  
