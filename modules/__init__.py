@@ -37,8 +37,6 @@ def start_app():
     app.register_blueprint(reviewers_bp, url_prefix="/reviewers")
     app.register_blueprint(notes_bp, url_prefix="/notes")
 
-   
-
     app.permanent_session_lifetime = timedelta(days=1)  # Make sure the session/login of the user is valid for 1 day only
     mysql.init_app(app)
     csrf.init_app(app)  
