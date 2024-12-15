@@ -273,6 +273,7 @@ body{
     text-align: center; /* Adjust alignment as needed */
     padding: 10px;
     overflow-y: auto; /* Enables scrolling if content overflows */
+    overflow: hidden;
 }
 
 .play-icon {
