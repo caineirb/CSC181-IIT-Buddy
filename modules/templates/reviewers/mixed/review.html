@@ -32,9 +32,18 @@
                 {% endif %}
             </div>
             <!-- Type Answer Section -->
-            <div class="type-answer">
-                <input type="text" class="answer-text" placeholder="Type your answer..." maxlength="150" />
-            </div>
+            <div class="type-answer" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around;">
+                {% if mix['type'] == "Identification" %}
+                <input type="text" data-num="{{ mix['number'] }}" class="answer-text" placeholder="Type your answer..." maxlength="150" />
+                {% else %}
+                    {% for answer in mix['answer'] %}
+                        <input type="radio" data-num="{{ mix['number'] }}" data-text="{{ answer[0] }}" class="user-answered-checkbox {{ mix['number'] }}" name="options-{{ mix['number'] }}" id="options-{{ mix['number'] }}-{{ loop.index }}" value="{{ answer[1] }}">
+                        <label for="options-{{ mix['number'] }}-{{ loop.index }}">{{ answer[0] }}</label>
+                    {% endfor %}
+                    <label class="remove-chosen-label" for="remove-chosen-{{ mix['number'] }}" style="cursor: pointer;">Remove Chosen</label>
+                    <input type="button" id="remove-chosen-{{ mix['number'] }}" onclick="removeChosen('{{ mix['number'] }}')" style="display: none;">
+                {% endif %}
+            </div>            
         </div>
     </div>
     {% endfor %}

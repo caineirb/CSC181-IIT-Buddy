@@ -1,5 +1,6 @@
 from modules import mysql
 import base64
+import random
 
 def addCard(data :dict):
     try:
@@ -87,6 +88,8 @@ def fetchMixed(id: str):
                 'type': "Identification" if len(answers) == 1 else "Multiple Choice",
                 'answer': answers
             }
+            if question_data['type'] == "Multiple Choice":
+                question_data['answer'] = tuple(random.sample(question_data['answer'], len(question_data['answer'])))
             mixed_data['cards'].append(question_data)
         
         return mixed_data

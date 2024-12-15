@@ -34,10 +34,8 @@ function createmixFromData(mixData, count) {
     }
 
     if (mixData.type === "Multiple Choice"){
-        console.log(mixData.answer);
         newmix.querySelectorAll('.correct-answer-checkbox').forEach((checkbox, index) => {
-            console.log(checkbox.value);
-            if (mixData.answer[index][1] === 1) checkbox.checked = true;
+            checkbox.checked = mixData.answer[index][1] === 1;
         });
     }
 
@@ -163,9 +161,8 @@ function handleTypeChange(event, count, mixData) {
     currentMix.innerHTML = getTemplate(newType, count, mixData);
 
     if (mixData.type === "Multiple Choice"){
-        currentMix.querySelectorAll('.correct-answer-checkbox').forEach((checkbox, index) => {
-            console.log(checkbox.value);
-            if (mixData.answer[index][1] === 1) checkbox.checked = true;
+        newmix.querySelectorAll('.correct-answer-checkbox').forEach((checkbox, index) => {
+            checkbox.checked = mixData.answer[index][1] === 1;
         });
     }
 
@@ -183,7 +180,7 @@ function createmix() {
     newmix.classList.add('mix');
     newmix.setAttribute('data-number', mixed_count);
 
-    const mixData = { type: "Identification", answer: "", question: "", image: "" };
+    const mixData = { type: "Identification", answer: [["", 1]], question: "", image: "" };
     newmix.innerHTML = getTemplate(mixData.type, parseInt(newmix.getAttribute('data-number')), mixData);
 
     // Attach type change event listener
