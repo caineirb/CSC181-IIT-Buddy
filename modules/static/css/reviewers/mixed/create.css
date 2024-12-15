@@ -120,11 +120,17 @@
     color: var(--primary-color);
 }
 
-.mix-content {
+.identification-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-top: 10px;
+}
+
+.mul-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adjust the space between elements */
 }
 
 .input-container {
@@ -370,4 +376,51 @@
     color: #218838;
     background-color: var(--white-color);
     transform: scale(1.05);
+}
+
+/* Styling for the Add Option button */
+.add-option-button {
+    width: 500px; 
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: inline-block; 
+}
+
+
+.add-option-button:hover {
+    background-color: #45a049;
+}
+
+
+.options-container {
+    margin: 10px auto;
+    width: 100%; /* Ensure the container spans the width of its parent, but buttons inside won't stretch */
+}
+
+/* Styling for the individual option fields */
+.option {
+    display: flex; 
+    align-items: center; 
+    width: 90%;
+    gap: 10px; 
+    margin: 10px auto;
+}
+
+.option-input {
+    width: 200px;
+    margin-left: 10px;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.correct-answer-checkbox {
+    margin-left: 10px;
 }

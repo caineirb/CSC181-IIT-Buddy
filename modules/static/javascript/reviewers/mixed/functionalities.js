@@ -11,6 +11,16 @@ document.addEventListener("DOMContentLoaded", function() {
     mixed.forEach((mixData, index) => {
         createmixFromData(mixData, index + 1);
     });
+
+    // Initialize Sortable
+    Sortable.create(document.querySelector('.mixed-container'), {
+        animation: 150,
+        handle: '.drag-button',
+        ghostClass: 'sortable-ghost',
+        onEnd: updatemixNumbers
+    });
+
+    document.getElementById('add-card-btn').addEventListener('click', createmix);
 });
 
 function createmixFromData(mixData, count) {
@@ -19,62 +29,127 @@ function createmixFromData(mixData, count) {
     newmix.classList.add('mix');
     newmix.setAttribute('data-number', count);
 
-    const imageUrl = mixData.image ? `data:image/jpeg;base64,${mixData.image}` : "";
+    // Insert the template content
+    newmix.innerHTML = getTemplate(mixData.type, parseInt(newmix.getAttribute('data-number')), mixData);
 
-    newmix.innerHTML = `
-        <div class="mix-header">
-            <span class="mix-number">${count}</span>
-            <div class="mix-actions">
-                <button type="button" class="switch-button" onclick="switchTermAndDefinition(${count})"><i class="material-icons">swap_horiz</i></button>
-                <button type="button" class="drag-button"><i class="material-icons">drag_handle</i></button>
-                <button type="button" class="delete-button"><i class="material-icons">remove_circle_outline</i></button>
-                <div class="ms-5 dropdowns">
-                    <div class="d-flex">
-                        <select name="reviewer-type-${count}" id="reviewer-type-${count}" class="form-select" style="max-width: 200px; color: black; transform: translate(100px, -145px);">
-                            <option value="Identification">Identification</option>
-                            <option value="Mixed">Mixed</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mix-content">
-            <div class="input-container">
-                <textarea class="term-input" name="term-${count}" placeholder="Enter term" maxlength="150">${mixData.answer}</textarea>
-                <label class="input-label">ANSWER</label>
-            </div>
-            <div class="input-container">
-                <textarea class="definition-input" name="definition-${count}" placeholder="Enter definition" maxlength="255">${mixData.question}</textarea>
-                <label class="input-label">QUESTION</label>
-            </div>
-            <input type="file" name="mix-image-${count}" id="mix-image-${count}" style="display: none;" accept="image/*" onchange="previewImage(event, ${count})">
-            <input type="hidden" id="mix-image-base64-${count}" value="${imageUrl}">
-            <label for="mix-image-${count}" class="image-button" style="${imageUrl ? 'background-image: url(' + imageUrl + '); background-size: cover;' : ''}">
-                <span class="button-label" ${imageUrl ? 'style="display: none;"' : ''}>IMAGE</span>
-            </label>
-            <button type="button" class="remove-image-button" title="Delete Card" onclick="removeImage(${count})">
-                <i class="bi bi-trash"></i>
-            </button>
-        </div>
-    `;
+    // Attach the change event listener programmatically
+    const selectElement = newmix.querySelector(`#reviewer-type-${parseInt(newmix.getAttribute('data-number'))}`);
+    selectElement.addEventListener('change', (event) => { handleTypeChange(event, parseInt(newmix.getAttribute('data-number')), mixData);});
 
     mixContainer.appendChild(newmix);
 
-    // Get the select element from the newly created newmix element
-    const selectElement = document.getElementById(`reviewer-type-${count}`);
+    mixed_count = Math.max(mixed_count, count + 1);
+}
 
-    // Backend data value
-    const mixType = mixData.type; // Value from the backend
+function getTemplate(type, count, mixData){
+    const imageUrl = mixData.image ? `data:image/jpeg;base64,${mixData.image}` : "";
 
-    // Preselect the option that matches the backend value
-    for (const option of selectElement.options) {
-        if (option.value === mixType) {
-            option.selected = true;
-            break;
-        }
-    }
+    const template = {
+        'Identification': `
+            <div class="mix-header">
+                <span class="mix-number">${count}</span>
+                <div class="mix-actions">
+                    <button type="button" class="switch-button" onclick="switchTermAndDefinition(${count})"><i class="material-icons">swap_horiz</i></button>
+                    <button type="button" class="drag-button"><i class="material-icons">drag_handle</i></button>
+                    <button type="button" class="delete-button"><i class="material-icons">remove_circle_outline</i></button>
+                    <div class="ms-5 dropdowns">
+                        <div class="d-flex">
+                            <select name="reviewer-type-${count}" id="reviewer-type-${count}" class="form-select" style="max-width: 200px; color: black; transform: translate(100px, -145px);">
+                                <option value="Identification" selected>Identification</option>
+                                <option value="Multiple Choice">Multiple Choice</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="identification-content">
+                <div class="input-container">
+                    <textarea class="term-input" name="answer-${count}" id="answer-${count}" placeholder="Enter answer" maxlength="150">${mixData.answer}</textarea>
+                    <label class="input-label">ANSWER</label>
+                </div>
+                <div class="input-container">
+                    <textarea class="definition-input" name="question-${count}" id="answer-${count}" placeholder="Enter question" maxlength="255">${mixData.question}</textarea>
+                    <label class="input-label">QUESTION</label>
+                </div>
+                <input type="file" name="mix-image-${count}" id="mix-image-${count}" style="display: none;" accept="image/*" onchange="previewImage(event, ${count})">
+                <input type="hidden" id="mix-image-base64-${count}" value="${imageUrl}">
+                <label for="mix-image-${count}" class="image-button" style="${imageUrl ? 'background-image: url(' + imageUrl + '); background-size: cover;' : ''}">
+                    <span class="button-label" ${imageUrl ? 'style="display: none;"' : ''}>IMAGE</span>
+                </label>
+                <button type="button" class="remove-image-button" title="Delete Card" onclick="removeImage(${count})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        `,
+        'Multiple Choice': `
+            <div class="mix-header">
+                <span class="mix-number">${count}</span>
+                <div class="mix-actions">
+                    <button type="button" class="drag-button"><i class="material-icons">drag_handle</i></button>
+                    <button type="button" class="delete-button"><i class="material-icons">remove_circle_outline</i></button>
+                    <div class="ms-5 dropdowns">
+                        <div class="d-flex">
+                            <select name="reviewer-type-${count}" id="reviewer-type-${count}" class="form-select" style="max-width: 200px; color: black; transform: translate(100px, -145px);">
+                                <option value="Identification">Identification</option>
+                                <option value="Multiple Choice" selected>Multiple Choice</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mul-content">
+                <div class="mul-container" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding-top: 10px; width: 100%;">
+                    <div style="width: 80%">
+                        <textarea class="definition-input" name="question-${count}" id=name="question-${count}" placeholder="Enter question" maxlength="255">${mixData.question}</textarea>
+                        <label class="input-label">QUESTION</label>
+                    </div>
+                    <input type="file" name="mix-image-${count}" id="mix-image-${count}" style="display: none;" accept="image/*" onchange="previewImage(event, ${count})">
+                    <input type="hidden" id="mix-image-base64-${count}" value="${imageUrl}">
+                    <label for="mix-image-${count}" class="image-button" style="${imageUrl ? 'background-image: url(' + imageUrl + '); background-size: cover;' : ''}">
+                        <span class="button-label" ${imageUrl ? 'style="display: none;"' : ''}>IMAGE</span>
+                    </label>
+                    <button type="button" class="remove-image-button" title="Delete Card" onclick="removeImage(${count})">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+                <div class="options-container" id="options-container-${count}">
+                    <div class="option">
+                        <input type="checkbox" class="correct-answer-checkbox" onclick="markCorrectOption(${count}, 0)">
+                        <input type="text" class="option-input" name="option-${count}-0" placeholder="Enter option" maxlength="150" style="width: 90%; height: 60px;" value=${mixData.answer}>
+                        <div class="upload-image">
+                            <input type="file" name="identification-image" id="identification-image" style="display: none;" accept="image/*" onchange="previewImage(event)">
+                            <input type="hidden" id="identification-image-base64" >
+                            <label for="mix-option-image-${count}" class="image-button">
+                                <span class="button-label">IMAGE</span>
+                            </label>
+                        </div>
+                        <button type="button" class="remove-image-button" title="Delete Card" onclick="removeImage">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                        <button type="button" class="remove-option-button" onclick="removeOption(${count}, 0)" style="background: none; border: none; padding: 0;">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+            </div>
+            <button type="button" class="add-option-button" onclick="addOption(${count})" style="margin-left: 60px;">+ Add Option</button>
+            </div>
+        `
+    };
 
-    mixed_count = count + 1;
+    return template[type]
+}
+
+// Function to handle type changes
+function handleTypeChange(event, count, mixData) {
+    const newType = event.target.value; // Get the selected value
+    const currentMix = document.querySelector(`.mix[data-number="${count}"]`); // Find the current mix element
+    console.log(count)
+    // Remove the old mix element
+    currentMix.innerHTML = getTemplate(newType, count, mixData);
+
+    // Attach the change event listener programmatically
+    const selectElement = currentMix.querySelector(`#reviewer-type-${count}`);
+    selectElement.addEventListener('change', (event) => handleTypeChange(event, count, mixData));
 }
 
 // Updated function to create a blank mix
@@ -84,41 +159,13 @@ function createmix() {
     newmix.classList.add('mix');
     newmix.setAttribute('data-number', mixed_count);
 
-    newmix.innerHTML = `
-        <div class="mix-header">
-            <span class="mix-number">${mixed_count}</span>
-            <div class="mix-actions">
-                <button type="button" class="switch-button" onclick="switchTermAndDefinition(${mixed_count})"><i class="material-icons">swap_horiz</i></button>
-                <button type="button" class="drag-button"><i class="material-icons">drag_handle</i></button>
-                <button type="button" class="delete-button"><i class="material-icons">remove_circle_outline</i></button>
-                <div class="ms-5 dropdowns">
-                    <div class="d-flex">
-                        <select name="reviewer-type-${mixed_count}" id="reviewer-type-${mixed_count}" class="form-select" style="max-width: 200px; color: black; transform: translate(100px, -145px);">
-                            <option value="Identification" selected>Identification</option>
-                            <option value="Mixed">Mixed</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mix-content">
-            <div class="input-container">
-                <textarea class="term-input" name="term-${mixed_count}" placeholder="Enter answer" maxlength="150"></textarea>
-                <label class="input-label">ANSWER</label>
-            </div>
-            <div class="input-container">
-                <textarea class="definition-input" name="definition-${mixed_count}" placeholder="Enter question" maxlength="255"></textarea>
-                <label class="input-label">QUESTION</label>
-            </div>
-            <input type="file" name="mix-image-${mixed_count}" id="mix-image-${mixed_count}" style="display: none;" accept="image/*" onchange="previewImage(event, ${mixed_count})">
-            <input type="hidden" id="mix-image-base64-${mixed_count}" value="">
-            <label for="mix-image-${mixed_count}" class="image-button">
-                <span class="button-label">IMAGE</span>
-            </label><button type="button" class="remove-image-button" title="Delete Card" onclick="removeImage(${mixed_count})">
-                <i class="bi bi-trash"></i>
-            </button>
-        </div>
-    `;
+    const mixData = { type: "Identification", answer: "", question: "", image: "" };
+    newmix.innerHTML = getTemplate(mixData.type, parseInt(newmix.getAttribute('data-number')), mixData);
+
+    // Attach type change event listener
+    
+    const selectElement = newmix.querySelector(`#reviewer-type-${parseInt(newmix.getAttribute('data-number'))}`);
+    selectElement.addEventListener('change', (event) => handleTypeChange(event, parseInt(newmix.getAttribute('data-number')), mixData));
 
     mixContainer.appendChild(newmix);
     mixed_count++;
@@ -126,8 +173,8 @@ function createmix() {
 
 // Function to switch term and definition
 function switchTermAndDefinition(count) {
-    const termInput = document.querySelector(`textarea[name="term-${count}"]`);
-    const definitionInput = document.querySelector(`textarea[name="definition-${count}"]`);
+    const termInput = document.querySelector(`textarea[name="answer-${count}"]`);
+    const definitionInput = document.querySelector(`textarea[name="question-${count}"]`);
     
     // Swap the values of term and definition
     const temp = termInput.value;
@@ -221,13 +268,13 @@ function updatemixNumbers() {
         const removeImageButton = mix.querySelector('.remove-image-button');
 
         if (termInput) {
-            termInput.setAttribute('name', `term-${newNumber}`);
-            termInput.setAttribute('id', `term-${newNumber}`);
+            termInput.setAttribute('name', `answer-${newNumber}`);
+            termInput.setAttribute('id', `answer-${newNumber}`);
         }
 
         if (definitionInput) {
-            definitionInput.setAttribute('name', `definition-${newNumber}`);
-            definitionInput.setAttribute('id', `definition-${newNumber}`);
+            definitionInput.setAttribute('name', `question-${newNumber}`);
+            definitionInput.setAttribute('id', `question-${newNumber}`);
         }
 
         if (imageInput) {
@@ -249,15 +296,3 @@ function updatemixNumbers() {
         }
     });
 }
-
-// Initialize Sortable
-Sortable.create(document.querySelector('.mixed-container'), {
-    animation: 150,
-    handle: '.drag-button',
-    ghostClass: 'sortable-ghost',
-    onEnd: updatemixNumbers
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('add-card-btn').addEventListener('click', createmix);
-});
