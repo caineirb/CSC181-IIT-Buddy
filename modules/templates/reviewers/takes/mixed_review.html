@@ -7,7 +7,7 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/mixed/review.css') }}">
 
-<button type="button" class="go-back-button" onclick='window.location.href="{{ url_for("reviewers.mixed.edit", id=mixed["id"], type="Mixed") }}"'>
+<button type="button" class="go-back-button" onclick='window.location.href="{{ url_for("reviewers_feed.take_reviewer", id=mixed["id"], type=mixed['information'][2]) }}"'>
     <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> 
     <b style="font-weight: normal;">Go Back</b>
 </button>
@@ -79,7 +79,6 @@
 </div>
 
 
-
 <div class="navigation-buttons">
     <button type="button" id="prev-btn" class="prev-btn" onclick="showPreviousMix()">
         <i class="bi bi-caret-left-fill"></i>
@@ -94,7 +93,7 @@
     </button>
 </div>
 
-<input type="hidden" name="congrats-url" id="congrats-url" value="{{ url_for('reviewers.mixed.congrats', type="Mixed", id=mixed['id'], isRandom=mixed['isRandom']) }}">
+<input type="hidden" name="congrats-url" id="congrats-url" value="{{ url_for('reviewers.mixed.take_congrats', type="Mixed", id=mixed['id'], isRandom=mixed['isRandom']) }}">
 
 <script type="application/json" id="data-json">
     {{ mixed['cards'] | tojson }}

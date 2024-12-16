@@ -14,7 +14,6 @@ def edit(id :str):
         return "Can't edit, not the owner."
 
     data['id'] = id
-    print(data)
     studentData = fetchStudent(session['user-id'])
     user_name = studentData[0][1] if studentData else None
     return render_template('reviewers/mixed/create.html', data=data, user_name=user_name)
@@ -98,3 +97,51 @@ def save_mix():
     except Exception as e:
         print(f"Error saving mixed: {e}")
         return jsonify({'message': 'Error saving mixed'}), 500
+    
+
+'''
+Take Reviewers
+'''
+@mixed_bp.route('/take/<string:id>', methods=["GET"])
+@require_login
+def take(id :str):
+    data = fetchMixed(id)
+    if data['information'][3] == "Private":
+        return 'Mixed is Private, access not allowed. <a href="\\">Go Back</a>'
+
+    data['id'] = id
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+    return render_template('reviewers/takes/mixed_take.html', data=data, user_name=user_name)
+
+@mixed_bp.route('/take/<string:id>/r=<string:isRandom>', methods=["GET"])
+@require_login
+def take_review(id: str, isRandom: str):
+    mixed = fetchMixed(id)
+    if mixed['information'][3] == "Private":
+        return 'Mixed is Private, access not allowed. <a href="\\">Go Back</a>'
+    mixed['id'] = id
+    mixed['isRandom'] = isRandom
+
+    if not isRandom.lower() == 'false':
+        # Convert isRandom to a boolean based on the string value
+        if isRandom.lower() == 'true':
+            random.shuffle(mixed['cards'])
+        else:
+            return "Invalid Parameter."
+        
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+    return render_template('reviewers/takes/mixed_review.html', mixed=mixed, user_name=user_name)
+
+@mixed_bp.route('/take/finished/<string:id>/<string:isRandom>', methods=["GET"])
+@require_login
+def take_congrats(id: str, isRandom: str):
+    info = {
+        'data': fetchReviewerInfo(id, "Mixed"),
+        'isRandom': isRandom.lower()
+    }
+
+    studentData = fetchStudent(session['user-id'])
+    user_name = studentData[0][1] if studentData else None
+    return render_template('reviewers/takes/mixed_congrats.html', info=info, user_name=user_name)

@@ -35,7 +35,7 @@
             </select>
         </div>
         <div class="d-flex">
-            <select name="reviewer-privacy" id="reviewer-privacy" class="form-select" style="max-width: 200px; color: black;">
+            <select name="reviewer-privacy" id="reviewer-privacy" class="form-select" style="max-width: 200px; color: black;" onchange="allowCopy()">
                 {% set privacy = ["Private", "Public", "Shared"] %}
                 {% for priv in privacy %}
                     <option value="{{ priv }}" {% if data['information'][3] == priv %}selected{% endif %}>{{ priv }}</option>

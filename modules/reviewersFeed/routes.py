@@ -78,8 +78,8 @@ def index():
 @require_login
 def take_reviewer(id :str, type :str):
     # Redirect to edit when the viewer is the owner
-    # if session['user-id'] == fetchReviewerInfo(id, type)[5]:
-    #     return redirect(url_for('reviewers.edit', id=id, type=type))
+    if session['user-id'] == fetchReviewerInfo(id, type)[5]:
+        return redirect(url_for('reviewers.edit', id=id, type=type))
     
     match type:
         case "Flashcard":
@@ -88,8 +88,8 @@ def take_reviewer(id :str, type :str):
             return redirect(url_for('reviewers.identifications.take', id=id))
         # case "Multiple Choice":
         #     return redirect(url_for('', id=id))
-        # case "Mixed":
-        #     return redirect(url_for('', id=id))
+        case "Mixed":
+            return redirect(url_for('reviewers.mixed.take', id=id))
         case _:
             return 'Invalid choice. <a href="\\">Go Back</a>'
         
@@ -99,8 +99,8 @@ def viewCounter():
     try:
         req = request.get_json()
         # Only increment when the viewer is not the owner
-        # if not session['user-id'] == fetchReviewerInfo(req['id'], req['type'])[5]:
-        addViewCount(req['id'])
+        if not session['user-id'] == fetchReviewerInfo(req['id'], req['type'])[5]:
+            addViewCount(req['id'])
         return make_response(jsonify({'message': 'Note Count Incremented Successfully'}), 200)
     except Exception as e:
         print(f"Error: {e}")  # Or log it to your logger
