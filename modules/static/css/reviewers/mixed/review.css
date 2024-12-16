@@ -144,6 +144,8 @@
     padding-right: 20px;
     font-family: "Lexend", sans-serif;
     font-size: 2rem;
+    white-space: normal;
+    word-break: break-word;
 }
 
 .type-answer {
