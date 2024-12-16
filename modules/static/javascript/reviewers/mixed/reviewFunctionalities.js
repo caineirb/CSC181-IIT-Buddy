@@ -36,7 +36,7 @@ function showNextMix() {
         // Gather user answers
         let userAnswers = {};
         let correctAnswers = {};
-        console.log(mixed);
+        
         //For Identification
         document.querySelectorAll('.iden-ans').forEach(answer => {
             const answerNumber = parseInt(answer.getAttribute('data-num')) - 1;
