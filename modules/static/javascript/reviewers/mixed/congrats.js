@@ -7,7 +7,6 @@ window.onload = function () {
     const mixed = JSON.parse(localStorage.getItem('mixed')) || {};
     const correctAnswers = JSON.parse(localStorage.getItem('correctAnswers')) || {};
     const userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || {};
-    console.log(correctAnswers);
     const resultsContainer = document.querySelector('.results');
 
     if (Object.keys(mixed).length > 0 && Object.keys(userAnswers).length > 0) {
