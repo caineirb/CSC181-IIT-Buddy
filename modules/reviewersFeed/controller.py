@@ -51,12 +51,12 @@ def fetchReviewers(type: str, param: str, order: str, page: int, items_per_page:
 
         if type == "Notes":
             fetch_query = """
-                SELECT `id`, `title`, `link`, `created_on`, `owner_id`, `view_count` FROM `notes`
+                SELECT `id`, `title`, `link`, `created_on`, `owner_id`, `view_count`, `take_count` FROM `notes`
                 WHERE `privacy` = "Public"
             """
         else:
             fetch_query = """
-                SELECT `id`, `title`, `type`, `created_on`, `owner_id`, `view_count` FROM `reviewers`
+                SELECT `id`, `title`, `type`, `created_on`, `owner_id`, `view_count`, `take_count` FROM `reviewers`
                 WHERE `privacy` = "Public"
             """
             if type != "All Reviewers":
@@ -79,10 +79,10 @@ def fetchReviewers(type: str, param: str, order: str, page: int, items_per_page:
         # Process `created_on` to calculate "time passed"
         processed_results = []
         for row in raw_results:
-            id, title, info, created_on, owner_id, view_count = row
+            id, title, info, created_on, owner_id, view_count, take_count = row
             time_passed = calculate_time_passed(created_on)
             owner_name = fetchStudent(owner_id)[0][1]
-            processed_results.append((id, title, info, time_passed, owner_name, isReviewerSaved(id, user_id) if not type == "Notes" else isNoteSaved(id, user_id), view_count))
+            processed_results.append((id, title, info, time_passed, owner_name, isReviewerSaved(id, user_id) if not type == "Notes" else isNoteSaved(id, user_id), view_count, take_count))
 
         return processed_results
 
@@ -102,6 +102,38 @@ def addViewCount(id :str):
         """
         cur.execute(counter_update, (id,))
         mysql.connection.commit()
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
+def addTakeCount(id: str):
+    try:
+        cur = mysql.connection.cursor()
+        counter_update = """
+            UPDATE `reviewers`
+            SET `take_count` = `take_count` + 1
+            WHERE `id` = %s;
+        """
+        cur.execute(counter_update, (id,))
+        mysql.connection.commit()
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()  # Rollback in case of error
+        raise e
+    finally:
+        cur.close()  # Ensure the cursor is closed
+
+def fetchTakeCount(id: str):
+    try:
+        cur = mysql.connection.cursor()
+        fetch_query = """
+            SELECT `take_count`
+            FROM `reviewers`
+            WHERE `id` = %s;
+        """
+        cur.execute(fetch_query, (id,))
+        return cur.fetchone()[0]
     except mysql.connection.Error as e:
         mysql.connection.rollback()  # Rollback in case of error
         raise e
