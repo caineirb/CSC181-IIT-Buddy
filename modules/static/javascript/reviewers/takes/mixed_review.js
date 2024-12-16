@@ -75,11 +75,10 @@ function showNextMix() {
                     }
                 });
 
-                if (!user_selected){
+                if (user_selected === null){
                     missing++;
                     userAnswers[i - 1] = null;
                 }
-                console.log(i);
             }
         }
         
