@@ -36,9 +36,11 @@ function showNextMix() {
         // Gather user answers
         let userAnswers = {};
         let correctAnswers = {};
+        console.log(mixed);
         //For Identification
-        document.querySelectorAll('.answer-text').forEach(answer => {
+        document.querySelectorAll('.iden-ans').forEach(answer => {
             const answerNumber = parseInt(answer.getAttribute('data-num')) - 1;
+            console.log(answerNumber);
             const correct_answer = mixed[answerNumber].answer[0][0];
 
             correctAnswers[answerNumber] = correct_answer;
@@ -59,11 +61,12 @@ function showNextMix() {
                 let user_selected = null;
 
                 user_choice.forEach((option, mindex) => {
+                    let dataNum = parseInt(option.getAttribute('data-text')) - 1;
                     if(parseInt(option.value) === 1){
-                        correctAnswers[i - 1] = option.getAttribute('data-text');
+                        correctAnswers[dataNum] = option.getAttribute('data-text');
                     }
                     if (option.checked){
-                        userAnswers[i - 1] = option.getAttribute('data-text');
+                        userAnswers[dataNum] = option.getAttribute('data-text');
                         user_selected = mindex;
 
                         if (parseInt(option.value) === 1){
@@ -77,9 +80,7 @@ function showNextMix() {
 
                 if (user_selected === null){
                     missing++;
-                    userAnswers[i - 1] = null;
                 }
-                console.log(i);
             }
         }
         
