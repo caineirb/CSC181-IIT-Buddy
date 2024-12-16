@@ -64,7 +64,7 @@ function sendFlashcardsToBackend(next_url = null) {
             text: "Complete every Term and Definition pair first before playing.",
             icon: "warning"
           });
-    } else if (validFlashcardCount > 0) {
+    } else if (validFlashcardCount > 0 || next_url) {
         formData.append("flashcard_count", validFlashcardCount);
         fetch(sFlashcardUrl, {
             method: 'PUT',

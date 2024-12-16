@@ -110,5 +110,5 @@ CREATE TABLE `saved_notes` (
 	`note_id` VARCHAR(40),
 	CONSTRAINT `pk_saved_note` PRIMARY KEY(`student_id`, `note_id`),
 	CONSTRAINT `fk_saved_note_student` FOREIGN KEY(`student_id`) REFERENCES `students`(`id`) ON DELETE CASCADE,
-	CONSTRAINT `fk_saved_note_reviewer` FOREIGN KEY(`note_id`) REFERENCES `notes`(`id`) ON DELETE CASCADE 
+	CONSTRAINT `fk_saved_note_note` FOREIGN KEY(`note_id`) REFERENCES `notes`(`id`) ON DELETE CASCADE 
 );

@@ -56,33 +56,34 @@
     background-color: var(--background-color-hover);
 }
 
-.review-identifications-header{
+.review-mixed-header{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 200px;
     text-align: center;
-    margin-top: -80px;
+    margin-top: -50px;
     margin-bottom: 0px;
 }
 
-.identifications-container {
+.mixed-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 200px;
+    max-height: fit-content;
     text-align: center;
     margin-top: -30px;
     gap: 20px; 
 }
 
-.identifications-container .p {
+.mixed-container .p {
     padding: 100px;
 }
 
-.identification {
+.mix {
     width: 900px;
     height: 630px;
     margin-top: -20px;
@@ -99,7 +100,7 @@
     overflow: hidden;
 }
 
-.identification-inner {
+.mix-inner {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -109,7 +110,7 @@
     position: relative;
 }
 
-.identification-front {
+.mix-front {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -119,7 +120,7 @@
     padding: 20px;
 }
 
-.number-identifications {
+.number-mixed {
     font-size: 2rem;
     font-weight: bold;
     align-self: flex-end;
@@ -130,14 +131,14 @@
     color: var(--white-color);
 }
 
-.identification .identification-front .identification-image {
+.mix .mix-front .mix-image {
     width: 300px;
     max-height: 200px;
     object-fit: cover;
     margin-bottom: 20px;
 }
 
-.identification-front p{
+.mix-front p{
     text-align: justify;
     padding-left: 20px;
     padding-right: 20px;
@@ -191,8 +192,8 @@ textarea.answer-text {
     height: 80%;
     resize: none;
 }
-.identification-inner,
-.identification-front p{
+.mix-inner,
+.mix-front p{
     flex-direction: column;
 }
 
