@@ -234,6 +234,8 @@ body{
 .content {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    top: -60px;
 }
 
 .content.sample {
@@ -254,6 +256,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
 }
 
 .card-content {

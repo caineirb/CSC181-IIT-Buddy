@@ -9,7 +9,7 @@ from modules import mysql
 Saved Page routes
 '''
 
-ITEMS_PER_PAGE = 5  # Change lang if ganahan ka
+ITEMS_PER_PAGE = 6  # Change lang if ganahan ka
 
 @saved_page_bp.route('/', methods=["GET"])
 @require_login
