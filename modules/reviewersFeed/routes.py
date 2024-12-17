@@ -130,4 +130,4 @@ def saveItems():
         return make_response(jsonify({'message': f"{req['type']} Saved Successfully"}), 200)
     except Exception as e:
         print(f"Error: {e}")  # Or log it to your logger
-        return make_response(jsonify({'message': 'Invalid Request.'}), 400)  
+        return make_response(jsonify({'message': 'Invalid Request.'}), 400)
