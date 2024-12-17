@@ -28,7 +28,7 @@ def countReviewers(type: str, param: str, order: str):
         
         # Apply filters if any
         if param:
-            fetch_query += " AND `title` COLLATE utf8mb4_bin LIKE %s"
+            fetch_query += " AND LOWER(`title`) LIKE LOWER(%s)"
             fetch_param.append(f"%{param}%")
 
         fetch_query += f" ORDER BY `created_on` {order};"
@@ -65,7 +65,7 @@ def fetchReviewers(type: str, param: str, order: str, page: int, items_per_page:
         
         # Apply filters if any
         if param:
-            fetch_query += " AND `title` COLLATE utf8mb4_bin LIKE %s"
+            fetch_query += " AND LOWER(`title`) LIKE LOWER(%s)"
             fetch_param.append(f"%{param}%")
 
         # Order and limit for pagination

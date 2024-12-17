@@ -170,7 +170,9 @@
                             {% else %}
                             <img src="{{ url_for('static', filename='img/badges/Badges_Dia.png') }}" alt="Diamond Badge" style="width: 100px; height: 100px;" title="Diamond Badge">
                             {% endif %}
+                            {% if reviewer[6] > 0 %}
                             <div class="view-count">Views: {{ reviewer[6] }}</div>
+                            {% endif %}
                         </div>
                         <!-- Add here take counts -->
                         <div class="badge-takecount" style="margin-right: auto;">
@@ -191,7 +193,9 @@
                             {% else %}
                             <img src="{{ url_for('static', filename='img/badges/Badges_Dia.png') }}" alt="Diamond Badge" style="width: 100px; height: 100px;" title="Diamond Badge">
                             {% endif %}
+                            {% if reviewer[7] > 0 %}
                             <div class="take-count">Takes: {{ reviewer[7] }}</div>
+                            {% endif %}
                         </div>
                         {% if reviewer[5] %}
                         <input style="display: none;" type="checkbox" name="save-reviewer" id="save-reviewer-{{ reviewer[0] }}" data-reviewer_id="{{ reviewer[0] }}" onchange="saveReviewer(this);" checked>
@@ -245,7 +249,9 @@
                         {% else %}
                         <img src="{{ url_for('static', filename='img/badges/Badges_Dia.png') }}" alt="Diamond Badge" style="width: 100px; height: 100px;" title="Diamond Badge">
                         {% endif %}
+                        {% if reviewer[6] > 0 %}
                         <div class="view-count">Views: {{ reviewer[6] }}</div>
+                        {% endif %}
                     </div>
                     <!-- Add here take counts -->
                     <div class="badge-takecount" style="margin-right: auto;">
@@ -266,7 +272,9 @@
                         {% else %}
                         <img src="{{ url_for('static', filename='img/badges/Badges_Dia.png') }}" alt="Diamond Badge" style="width: 100px; height: 100px;" title="Diamond Badge">
                         {% endif %}
+                        {% if reviewer[7] > 0 %}
                         <div class="take-count">Takes: {{ reviewer[7] }}</div>
+                        {% endif %}
                     </div>
                     {% if reviewer[5] %}
                     <input style="display: none;" type="checkbox" name="save-reviewer" id="save-reviewer-{{ reviewer[0] }}" data-reviewer_id="{{ reviewer[0] }}" onchange="saveNote(this);" checked>

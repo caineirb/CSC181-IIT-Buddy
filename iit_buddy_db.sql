@@ -27,6 +27,7 @@ CREATE TABLE `notes`(
 	`link` VARCHAR(200) NOT NULL,
 	`created_on` DATETIME DEFAULT CURRENT_TIMESTAMP,
 	`view_count` INT UNSIGNED DEFAULT 0,
+	`take_count` INT UNSIGNED DEFAULT 0,
 	CONSTRAINT `pk_note` PRIMARY KEY(`id`),
 	CONSTRAINT `unique_link` UNIQUE(`link`),
 	CONSTRAINT `unique_note_title` UNIQUE(`title`, `owner_id`),
