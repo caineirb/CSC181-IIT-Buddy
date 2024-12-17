@@ -49,7 +49,7 @@
     --white: #ffffff;
 }
 
-.mixed-container {
+.multiple_choice-container {
     width: 90%;
     margin: 0 auto;
     flex-direction: column;
@@ -58,7 +58,7 @@
     display: flex;
 }
 
-.mix {
+.mul {
     width: 90%;
     background-color: var(--background-color);
     border: 3px dashed var(--primary-color);
@@ -85,21 +85,13 @@
     box-sizing: border-box;
     margin-bottom: 20px;
 }
-.copy-clip button {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    width: 50px;
-    text-align: center;
-}
 
 .add-card-btn:hover {
     color: var(--secondary-color);
     background-color: rgb(0, 0, 0, 0.2);
 }
 
-.mix-header {
+.mul-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -107,13 +99,13 @@
     border-bottom: 2px solid var(--primary-color);
 }
 
-.mix-number {
+.mul-number {
     font-size: var(--number-size);
     font-weight: bold;
     color: var(--secondary-color);
 }
 
-.mix-actions {
+.mul-actions {
     display: flex;
     gap: 10px;
 }
@@ -126,13 +118,6 @@
     font-size: 16px;
     cursor: pointer;
     color: var(--primary-color);
-}
-
-.identification-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 10px;
 }
 
 .mul-content {
@@ -327,7 +312,7 @@
     width: 20%;
 }
 
-.delete-mixed-btn {
+.delete-multiple_choice-btn {
     font-size: 1rem;
     padding: 10px 20px;
     border: 1px solid var(--border-color);
@@ -339,7 +324,7 @@
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
-.delete-mixed-btn:hover {
+.delete-multiple_choice-btn:hover {
     background-color: var(--white-color);
     color: maroon;
     transform: scale(1.05);
@@ -368,7 +353,7 @@
     cursor: pointer;
 }
 
-.save-mixed-btn {
+.save-multiple_choice-btn {
     font-size: 1rem;
     padding: 10px 20px;
     border: 1px solid var(--border-color);
@@ -380,7 +365,7 @@
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
-.save-mixed-btn:hover {
+.save-multiple_choice-btn:hover {
     color: #218838;
     background-color: var(--white-color);
     transform: scale(1.05);
@@ -424,6 +409,14 @@
     width: 100%; /* Ensure the container spans the width of its parent, but buttons inside won't stretch */
 }
 
+.copy-clip button {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    width: 50px;
+    text-align: center;
+}
 /* Styling for the individual option fields */
 .option {
     display: flex; 

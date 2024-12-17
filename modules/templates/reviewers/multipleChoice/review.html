@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %} Review Mixs {% endblock %}
+
+{% block name %} {{ user_name }} {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/multipleChoice/review.css') }}">
+
+<button type="button" class="go-back-button" onclick='window.location.href="{{ url_for("reviewers.multiple_choice.edit", id=multiple_choice["id"], type="Multiple Choice") }}"'>
+    <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> 
+    <b style="font-weight: normal;">Go Back</b>
+</button>
+
+<div class="review-multiple_choice-header">
+    <div>
+        <h1>{{ multiple_choice['information'][0] }}</h1>
+    </div>      
+</div>
+
+<!-- for multiple_choice na ni diri literal -->
+<div class="multiple_choice-container">
+    {% for mul in multiple_choice['cards'] %}
+    <div class="mul" id="mul-{{ loop.index }}">
+        <div class="mul-inner">
+            <span class="number-multiple_choice">{{ loop.index }}</span>
+            <!-- Front of the card - Question -->
+            <div class="mul-front">
+                <p>{{ mul['question'] }}</p>
+                {% if mul['image'] %}
+                <img src="data:image/jpeg;base64,{{ mul['image'] }}" alt="Mix Image" class="mul-image" style="max-width: 100%; height: auto;">
+                {% endif %}
+            </div>
+            <!-- Type Answer Section -->
+            <div class="type-answer" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around;">
+                <button type="button" class="answer-text" data-bs-toggle="modal" data-bs-target="#choose-{{ mul['number'] }}">Select</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vertically centered scrollable modal -->
+    <div class="modal fade" id="choose-{{ mul['number'] }}" tabindex="-1" aria-labelledby="choose-{{ mul['number'] }}-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="choose-{{ mul['number'] }}-label">Select an Answer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% for answer in mul['answer'] %}
+                    <div class="form-check">
+                        <input 
+                            type="radio" 
+                            class="form-check-input user-answered-checkbox {{ mul['number'] }}" 
+                            data-num="{{ mul['number'] }}" 
+                            data-text="{{ answer[0] }}" 
+                            name="options-{{ mul['number'] }}" 
+                            id="options-{{ mul['number'] }}-{{ loop.index }}" 
+                            value="{{ answer[1] }}"
+                        >
+                        <label class="form-check-label" for="options-{{ mul['number'] }}-{{ loop.index }}">{{ answer[0] }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="removeChosen('{{ mul['number'] }}')">Remove Chosen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="navigation-buttons">
+    <button type="button" id="prev-btn" class="prev-btn" onclick="showPreviousMix()">
+        <i class="bi bi-caret-left-fill"></i>
+    </button>
+
+    <div class="counter">
+        <span id="current-count"> 1 </span> of {{ multiple_choice['cards'] | length }}
+    </div>
+
+    <button type="button" id="next-btn" class="next-btn" onclick="showNextMix()">
+        <i class="bi bi-caret-right-fill"></i>
+    </button>
+</div>
+
+<input type="hidden" name="congrats-url" id="congrats-url" value="{{ url_for('reviewers.multiple_choice.congrats', type="Mixed", id=multiple_choice['id'], isRandom=multiple_choice['isRandom']) }}">
+
+<script type="application/json" id="data-json">
+    {{ multiple_choice['cards'] | tojson }}
+</script>
+
+<script type="application/json" id="data-length">
+    {{ multiple_choice['cards'] | length }}
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/multipleChoice/reviewFunctionalities.js') }}"></script>
+
+{% endblock %}
