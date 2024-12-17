@@ -47,18 +47,19 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    {% set outer_index = loop.index %}
                     {% for answer in mul['answer'] %}
                     <div class="form-check">
                         <input 
                             type="radio" 
                             class="form-check-input user-answered-checkbox {{ mul['number'] }}" 
-                            data-num="{{ mul['number'] }}" 
+                            data-num="{{ outer_index }}" 
                             data-text="{{ answer[0] }}" 
-                            name="options-{{ mul['number'] }}" 
-                            id="options-{{ mul['number'] }}-{{ loop.index }}" 
+                            name="options-{{ outer_index }}" 
+                            id="options-{{ outer_index }}-{{ loop.index }}" 
                             value="{{ answer[1] }}"
                         >
-                        <label class="form-check-label" for="options-{{ mul['number'] }}-{{ loop.index }}">{{ answer[0] }}</label>
+                        <label class="form-check-label" for="options-{{ outer_index }}-{{ loop.index }}">{{ answer[0] }}</label>
                     </div>
                     {% endfor %}
                 </div>
