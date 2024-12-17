@@ -21,11 +21,12 @@ def index():
         searched_item = request.args.get('search_input', None, type=str)
         order = request.args.get('sort_by', 'DESC', type=str)
         page = request.args.get('page', 1, type=int)
+        #course = request.args.get('course', 'All Reviewers', type=str)
 
         reviewers_data = {
             'data': fetchReviewers(type, searched_item, order, page, ITEMS_PER_PAGE),
             'details': {
-                'totalCount': countReviewers(type, searched_item, order),
+                'totalCount': countReviewers(type, searched_item, order), #course
                 'countPerPage': ITEMS_PER_PAGE
             },
             'searchParams': {
@@ -33,6 +34,7 @@ def index():
                 'searched_item': searched_item,
                 'order': order,
                 'page': page
+                #'course': course
             },
             'bgcolor': {
                 'Flashcard': "#0C203E",

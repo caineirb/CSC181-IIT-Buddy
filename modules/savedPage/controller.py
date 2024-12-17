@@ -51,13 +51,27 @@ def fetchReviewers(type: str, param: str, order: str, page: int, items_per_page:
 
         if type == "Notes":
             fetch_query = """
-                SELECT `id`, `title`, `link`, `created_on`, `owner_id` FROM `notes`
-                WHERE `privacy` = "Public"
+                SELECT notes.id, 
+                    notes.title,
+                    notes.privacy,
+                    notes.link,
+                    notes.created_on,
+                    notes.owner_id
+                FROM saved_notes
+                LEFT JOIN notes ON saved_notes.note_id = notes.id
+                WHERE 1=1
             """
         else:
             fetch_query = """
-                SELECT `id`, `title`, `type`, `created_on`, `owner_id` FROM `reviewers`
-                WHERE `privacy` = "Public"
+                SELECT reviewers.id,
+                    reviewers.title, 
+                    reviewers.privacy,
+                    reviewers.type,
+                    reviewers.created_on,
+                    reviewers.owner_id
+                FROM saved_reviewers
+                LEFT JOIN reviewers ON saved_reviewers.reviewer_id = reviewers.id
+                WHERE 1=1
             """
             if type != "All Reviewers":
                 fetch_query += " AND `type` = %s"
@@ -80,10 +94,11 @@ def fetchReviewers(type: str, param: str, order: str, page: int, items_per_page:
         # Process `created_on` to calculate "time passed"
         processed_results = []
         for row in raw_results:
-            id, title, info, created_on, owner_id = row
+            print(row)
+            id, title, info, privacy, created_on, owner_id = row
             time_passed = calculate_time_passed(created_on)
             owner_name = fetchStudent(owner_id)[0][1]
-            processed_results.append((id, title, info, time_passed, owner_name))
+            processed_results.append((id, title, privacy, info, owner_name, time_passed))
 
         return processed_results
 

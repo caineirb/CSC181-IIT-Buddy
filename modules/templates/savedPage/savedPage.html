@@ -9,6 +9,9 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/savedPage/style.css') }}">
 
+<input type="hidden" name="save-url" id="save-url" value="{{ url_for('reviewers_feed.saveItems') }}" />
+<input type="hidden" name="_token_csrf" id="_token_csrf" value="{{ csrf_token() }}">x
+
 <div class="subheader">
     <div class="ForBgFixed">
         <!-- title ni diri -->
@@ -21,7 +24,7 @@
         <button type="button" class="btn btn-light btn-m ms-5 back-button" onclick='window.location.href = "{{ url_for('index') }}"'>
             <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> <b style="font-weight: normal;">Back</b>
         </button>
-        <form action="{{ url_for('reviewers_feed.index') }}" method="GET" id="searchForm">
+        <form action="{{ url_for('saved_page.index') }}" method="GET" id="searchForm">
             <div class="searchbar">
                 <!-- Types of reviewers -->
                 <div class="search-bar">
@@ -88,7 +91,7 @@
                         <!-- Previous Page -->
                         <li class="page-item {% if reviewers_data['searchParams']['page'] <= 1 %}disabled{% endif %}">
                             <a class="page-link" 
-                            href="{{ url_for('reviewers_feed.index', 
+                            href="{{ url_for('saved_page.index', 
                                     list=reviewers_data['searchParams']['type'], 
                                     search_input=reviewers_data['searchParams']['searched_item'],
                                     sort_by=reviewers_data['searchParams']['order'], 
@@ -103,7 +106,7 @@
                             {% if i <= 5 or i > total_pages - 3 or (i >= reviewers_data['searchParams']['page'] - 2 and i <= reviewers_data['searchParams']['page'] + 2) %}
                                 <li class="page-item {% if reviewers_data['searchParams']['page'] == i %}active{% endif %}">
                                     <a class="page-link" 
-                                    href="{{ url_for('reviewers_feed.index', 
+                                    href="{{ url_for('saved_page.index', 
                                             list=reviewers_data['searchParams']['type'], 
                                             search_input=reviewers_data['searchParams']['searched_item'],
                                             sort_by=reviewers_data['searchParams']['order'], 
@@ -121,7 +124,7 @@
                         <!-- Next Page -->
                         <li class="page-item {% if reviewers_data['searchParams']['page'] >= total_pages %}disabled{% endif %}">
                             <a class="page-link" 
-                            href="{{ url_for('reviewers_feed.index', 
+                            href="{{ url_for('saved_page.index', 
                                     list=reviewers_data['searchParams']['type'], 
                                     search_input=reviewers_data['searchParams']['searched_item'],
                                     sort_by=reviewers_data['searchParams']['order'], 
@@ -148,10 +151,21 @@
           <div>
             <div class="card-name"><b>{{ reviewer[1] }}</b></div>
             <div class="card-type">{{ reviewer[2] }}</div>
-            <div class="card-time">{{ reviewer[4] }}</div>
+            <div class="card-time">{{ reviewer[5] }}</div>
           </div>
+
+            <div class="save_unsaved" style="margin-bottom: 100px;">
+                {% if reviewer[5] %}
+                    <input style="display: none;" type="checkbox" name="save-reviewer" id="save-reviewer-{{ reviewer[0] }}" data-reviewer_id="{{ reviewer[0] }}" onchange="saveReviewer(this);" checked>
+                    <label style="cursor:pointer;" id="save-icon-{{ reviewer[0] }}" for="save-reviewer-{{ reviewer[0] }}"><i class="bi bi-bookmark-fill"></i></label>
+                {% else %}
+                    <input style="display: none;" type="checkbox" name="save-reviewer" id="save-reviewer-{{ reviewer[0] }}" data-reviewer_id="{{ reviewer[0] }}" onchange="saveReviewer(this);">
+                    <label style="cursor:pointer;" id="save-icon-{{ reviewer[0] }}" for="save-reviewer-{{ reviewer[0] }}"><i class="bi bi-bookmark"></i></label>
+                {% endif %}
+            </div>
+
           <div class="card-footer" style="border-color: {{ reviewers_data['fgcolor'][reviewer[2]] }};">
-            <span class="card-owner">{{ userName }}</span>
+            <span class="card-owner">{{ reviewer[4] }}</span>
             <span class="card-share-type">{{ reviewer[3] }}</span>
           </div>
         </div>
