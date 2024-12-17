@@ -14,13 +14,17 @@ def countReviewers(type: str, param: str, order: str):
 
         if type == "Notes":
             fetch_query = """
-                SELECT COUNT(`id`) FROM `notes`
-                WHERE `privacy` = "Public"
+                SELECT COUNT(notes.id)
+                FROM saved_notes
+                LEFT JOIN notes ON saved_notes.note_id = notes.id
+                WHERE 1=1
             """
         else:
             fetch_query = """
-                SELECT COUNT(`id`) FROM `reviewers`
-                WHERE `privacy` = "Public"
+                SELECT COUNT(reviewers.id)
+                FROM saved_reviewers
+                LEFT JOIN reviewers ON saved_reviewers.reviewer_id = reviewers.id
+                WHERE 1=1
             """
             if type != "All Reviewers":
                 fetch_query += " AND `type` = %s"
