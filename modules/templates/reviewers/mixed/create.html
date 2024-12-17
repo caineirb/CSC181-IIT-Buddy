@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/identifications/create.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/mixed/create.css') }}">
 
 <!-- For the swapping of the Cards' Orders -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
@@ -18,9 +18,8 @@
 </button>
 
 <div class="reviewer-info">
-    <input type="hidden" name="save_identification_url" id="save_identification_url" value="{{ url_for('reviewers.identifications.save_identification') }}">
+    <input type="hidden" name="save_mix_url" id="save_mix_url" value="{{ url_for('reviewers.mixed.save_mix') }}">
     <input type="hidden" name="check_duplicate_url" id="check_duplicate_url" value="{{ url_for('reviewers.check_duplicate') }}">
-    <input type="hidden" name="share-url" id="share-url" value="{{ url_for('reviewers_feed.take_reviewer', _external=True , id=data['id'], type=data['information'][2]) }}">
     <input type="hidden" name="_token_csrf" id="_token_csrf" value="{{ csrf_token() }}">
     <input type="hidden" name="reviewer-id" id="reviewer-id" value="{{ data['id'] }}" />
 
@@ -35,20 +34,12 @@
             </select>
         </div>
         <div class="d-flex">
-            <select name="reviewer-privacy" id="reviewer-privacy" class="form-select" style="max-width: 200px; color: black;" onchange="allowCopy()">
+            <select name="reviewer-privacy" id="reviewer-privacy" class="form-select" style="max-width: 200px; color: black;">
                 {% set privacy = ["Private", "Public", "Shared"] %}
                 {% for priv in privacy %}
                     <option value="{{ priv }}" {% if data['information'][3] == priv %}selected{% endif %}>{{ priv }}</option>
                 {% endfor %}
             </select>
-        </div>
-        <div class="d-flex copy-clip" title="Share Reviewer" style="position: relative;">
-            <button type="button" id="share-url-button" onclick="copyURL()">
-                <i class="bi bi-copy"></i>
-            </button>
-            <div id="copy-alert" style="display: none; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 5px; font-size: 0.9em; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
-                Copied!
-            </div>
         </div>
     </div>
 
@@ -58,7 +49,7 @@
 
 <div class="action-buttons-container">
     <div>
-        <button type="button" id="delete-identifications-btn" class="delete-identifications-btn" title="Delete Identification Reviewer" onclick="deleteCard()">
+        <button type="button" id="delete-mixed-btn" class="delete-mixed-btn" title="Delete Identification Reviewer" onclick="deleteCard()">
             <i class="bi bi-trash"></i>
         </button>
     </div>
@@ -67,14 +58,14 @@
             <label for="shuffle-switch">Randomize Order:</label>
             <input type="checkbox" id="shuffle-switch">
         </div>
-        <button type="button" id="save-identifications-btn" class="save-identifications-btn"  onclick="sendidentificationsToBackend()">
+        <button type="button" id="save-mixed-btn" class="save-mixed-btn"  onclick="sendmixedToBackend()">
             <i class="bi bi-play-circle"></i>
         </button>
     </div>
 </div>
 
 <!-- Identifications Container -->
-<div class="identifications-container">
+<div class="mixed-container">
     <!-- Identifications template will be appended here -->
 </div>
 
@@ -89,6 +80,6 @@
 <script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/saveDetails.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/deleteReviewer.js') }}"></script>
 
-<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/identifications/saveIdentifications.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/identifications/functionalities.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/mixed/saveMixed.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/mixed/functionalities.js') }}"></script>
 {% endblock %}
