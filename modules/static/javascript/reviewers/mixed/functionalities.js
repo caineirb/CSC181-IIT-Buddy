@@ -161,7 +161,7 @@ function handleTypeChange(event, count, mixData) {
     currentMix.innerHTML = getTemplate(newType, count, mixData);
 
     if (mixData.type === "Multiple Choice"){
-        newmix.querySelectorAll('.correct-answer-checkbox').forEach((checkbox, index) => {
+        currentMix.querySelectorAll('.correct-answer-checkbox').forEach((checkbox, index) => {
             checkbox.checked = mixData.answer[index][1] === 1;
         });
     }

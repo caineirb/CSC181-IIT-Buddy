@@ -9,10 +9,12 @@ window.onload = function () {
     const userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || {};
     const resultsContainer = document.querySelector('.results');
 
-    if (Object.keys(mixed).length > 0 && Object.keys(userAnswers).length > 0) {
+    if (Object.keys(mixed).length > 0) {
         mixed.forEach((mix, index) => {
-            const userAnswer = (userAnswers[index]?.trim() || "No Answer").toLowerCase();
-            const correctAnswer = correctAnswers[index].trim().toLowerCase();
+            const userKey = Object.keys(userAnswers)[index];
+            const correctKey = Object.keys(correctAnswers)[index];
+            const userAnswer = (userAnswers[userKey]?.trim() || "No Answer").toLowerCase();
+            const correctAnswer = correctAnswers[correctKey].trim().toLowerCase();
 
             const row = document.createElement('div');
             row.classList.add('table-row');
@@ -52,12 +54,12 @@ window.onload = function () {
             // Correct Answer Column
             const correctAnswerCell = document.createElement('div');
             correctAnswerCell.classList.add('table-column');
-            correctAnswerCell.textContent = correctAnswer; // Display all possible answers
+            correctAnswerCell.textContent = correctAnswers[correctKey];; // Display all possible answers
 
             // User Answer Column
             const userAnswerCell = document.createElement('div');
             userAnswerCell.classList.add('table-column');
-            userAnswerCell.textContent = userAnswers[index]?.trim() || "No Answer";
+            userAnswerCell.textContent = userAnswers[userKey] || "No Answer";
 
             // Apply color based on correctness
             if (userAnswer === correctAnswer) {

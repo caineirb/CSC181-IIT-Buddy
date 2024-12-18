@@ -8,12 +8,6 @@ window.onload = function () {
     const correctAnswers = JSON.parse(localStorage.getItem('correctAnswers')) || {};
     const userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || {};
     const resultsContainer = document.querySelector('.results');
-    console.log("Multi:", multi);
-    console.log("Correct Answers:", correctAnswers);
-    console.log("User Answers:", userAnswers);
-    console.log("Correct:", correct);
-    console.log("Mistakes:", mistake);
-    console.log("Missing:", missing);
     
     if (Object.keys(multi).length > 0) {
         multi.forEach((mix, index) => {
