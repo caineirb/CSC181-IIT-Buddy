@@ -42,7 +42,7 @@ function createmixFromData(mixData, count) {
     mixContainer.appendChild(newmix);
     
 
-    mixed_count = Math.max(mixed_count, count + 1); // Ensure mixed_count is updated
+    mixed_count = count + 1; // Ensure mixed_count is updated
 }
 
 function getTemplate(type, count, mixData) {

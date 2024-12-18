@@ -6,6 +6,16 @@ document.addEventListener("DOMContentLoaded", function() {
     mixed.forEach((mixData, index) => {
         createmixFromData(mixData, index + 1);
     });
+
+    // Initialize Sortable
+    Sortable.create(document.querySelector('.mixed-container'), {
+        animation: 150,
+        handle: '.drag-button',
+        ghostClass: 'sortable-ghost',
+        onEnd: updatemixNumbers
+    });
+
+    document.getElementById('add-card-btn').addEventListener('click', createmix);
 });
 
 function createmixFromData(mixData, count) {
@@ -32,7 +42,7 @@ function createmixFromData(mixData, count) {
     mixContainer.appendChild(newmix);
     
 
-    mixed_count = Math.max(mixed_count, count + 1); // Ensure mixed_count is updated
+    mixed_count = count + 1; // Ensure mixed_count is updated
 }
 
 function getTemplate(type, count, mixData) {
@@ -147,19 +157,4 @@ function takeReview(){
             console.error("There was a problem with the fetch operation:", error);
         });        
     }
-}
-
-function copyURL() {
-    const shareURL = document.getElementById('share-url').value;
-    navigator.clipboard.writeText(shareURL)
-        .then(() => {
-            const alertBox = document.getElementById("copy-alert");
-            alertBox.style.display = "block";
-            setTimeout(() => {
-                alertBox.style.display = "none";
-            }, 1000); // Hide the alert after 1 second
-        })
-        .catch(err => {
-            console.error("Failed to copy: ", err);
-        });
 }
