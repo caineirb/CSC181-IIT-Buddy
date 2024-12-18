@@ -79,8 +79,8 @@ def index():
 @require_login
 def take_reviewer(id :str, type :str):
     # Redirect to edit when the viewer is the owner
-    # if session['user-id'] == fetchReviewerInfo(id, type)[5]:
-    #     return redirect(url_for('reviewers.edit', id=id, type=type))
+    if session['user-id'] == fetchReviewerInfo(id, type)[5]:
+        return redirect(url_for('reviewers.edit', id=id, type=type))
     
     match type:
         case "Flashcard":
