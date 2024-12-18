@@ -1,5 +1,5 @@
 from flask import flash, render_template, request, session, redirect, url_for, make_response, jsonify
-from modules.controller import require_login, fetchStudent
+from modules.controller import require_login, fetchStudent, getCourses
 from modules.reviewers.controller import customErrorMessages, fetchReviewerInfo
 from modules.reviewersFeed.controller import countReviewers, fetchReviewers, addViewCount, saveReviewer, unsaveReviewer, saveNote, unsaveNote
 from . import reviewers_feed_bp
@@ -22,9 +22,9 @@ def index():
         searched_item = request.args.get('search_input', None, type=str)
         order = request.args.get('sort_by', 'DESC', type=str)
         page = request.args.get('page', 1, type=int)
-
+        course = request.args.get('sort_course', None, type=str)
         reviewers_data = {
-            'data': fetchReviewers(type, searched_item, order, page, ITEMS_PER_PAGE, session['user-id']),
+            'data': fetchReviewers(type, searched_item, order, page, course, ITEMS_PER_PAGE, session['user-id']),
             'details': {
                 'totalCount': countReviewers(type, searched_item, order),
                 'countPerPage': ITEMS_PER_PAGE
@@ -33,7 +33,8 @@ def index():
                 'type': type,
                 'searched_item': searched_item,
                 'order': order,
-                'page': page
+                'page': page,
+                'course': course
             },
             'bgcolor': {
                 'Flashcard': "#0C203E",
@@ -49,7 +50,7 @@ def index():
             }
         }
 
-        return render_template('reviewersFeed/reviewersFeed.html', user_name=user_name, reviewers_data=reviewers_data)
+        return render_template('reviewersFeed/reviewersFeed.html', user_name=user_name, courses=getCourses(), reviewers_data=reviewers_data)
 
     except mysql.connection.Error as e:
         flash(customErrorMessages(e), "danger")
@@ -78,8 +79,8 @@ def index():
 @require_login
 def take_reviewer(id :str, type :str):
     # Redirect to edit when the viewer is the owner
-    if session['user-id'] == fetchReviewerInfo(id, type)[5]:
-        return redirect(url_for('reviewers.edit', id=id, type=type))
+    # if session['user-id'] == fetchReviewerInfo(id, type)[5]:
+    #     return redirect(url_for('reviewers.edit', id=id, type=type))
     
     match type:
         case "Flashcard":

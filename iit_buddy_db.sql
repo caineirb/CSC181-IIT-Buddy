@@ -19,6 +19,13 @@ CREATE TABLE `timers`(
 	CONSTRAINT `fk_timer_student` FOREIGN KEY(`student_id`) REFERENCES `students`(`id`)
 );
 
+CREATE TABLE `courses`(
+	`code` VARCHAR(10),
+	`name` VARCHAR(100),
+	CONSTRAINT `pk_course` PRIMARY KEY(`code`),
+	CONSTRAINT `unique_name` UNIQUE(`name`)
+);
+
 CREATE TABLE `notes`(
 	`id` VARCHAR(40) NOT NULL,
 	`title` VARCHAR(100) NOT NULL,
@@ -28,10 +35,12 @@ CREATE TABLE `notes`(
 	`created_on` DATETIME DEFAULT CURRENT_TIMESTAMP,
 	`view_count` INT UNSIGNED DEFAULT 0,
 	`take_count` INT UNSIGNED DEFAULT 0,
+	`course` VARCHAR(10) NOT NULL,
 	CONSTRAINT `pk_note` PRIMARY KEY(`id`),
 	CONSTRAINT `unique_link` UNIQUE(`link`),
 	CONSTRAINT `unique_note_title` UNIQUE(`title`, `owner_id`),
-	CONSTRAINT `fk_note_student` FOREIGN KEY(`owner_id`) REFERENCES `students`(`id`)
+	CONSTRAINT `fk_note_student` FOREIGN KEY(`owner_id`) REFERENCES `students`(`id`),
+	CONSTRAINT `fk_note_course` FOREIGN KEY(`course`) REFERENCES `courses`(`code`)
 );
 
 DELIMITER //
@@ -59,9 +68,11 @@ CREATE TABLE `reviewers`(
 	`created_on` DATETIME DEFAULT CURRENT_TIMESTAMP,
 	`view_count` INT UNSIGNED DEFAULT 0,
 	`take_count` INT UNSIGNED DEFAULT 0,
+	`course` VARCHAR(10) NOT NULL,
 	CONSTRAINT `pk_reviewer` PRIMARY KEY(`id`),
 	CONSTRAINT `unique_reviewer` UNIQUE(`title`, `owner_id`, `type`),
-	CONSTRAINT `fk_reviewer_student` FOREIGN KEY(`owner_id`) REFERENCES `students`(`id`)
+	CONSTRAINT `fk_reviewer_student` FOREIGN KEY(`owner_id`) REFERENCES `students`(`id`),
+	CONSTRAINT `fk_reviewer_course` FOREIGN KEY(`course`) REFERENCES `courses`(`code`)
 );
 
 DELIMITER //
@@ -112,3 +123,13 @@ CREATE TABLE `saved_notes` (
 	CONSTRAINT `fk_saved_note_student` FOREIGN KEY(`student_id`) REFERENCES `students`(`id`) ON DELETE CASCADE,
 	CONSTRAINT `fk_saved_note_note` FOREIGN KEY(`note_id`) REFERENCES `notes`(`id`) ON DELETE CASCADE 
 );
+
+INSERT INTO `courses`(`code`, `name`) VALUES
+("CSC181", "Software Engineering"),
+("CCC181", "Applications Development and Emerging Technologies"),
+("CSC145", "Programming Languages"),
+("CSC155", "Introduction to Operating Systems"),
+("CSC171", "Introduction to Artificial Intelligence"),
+("CCC151", "Information Management"),
+("CSC112", "Computer Organization and Architecture"),
+("CSC124", "Design and Analysis of Algorithms");

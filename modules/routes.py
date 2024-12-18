@@ -1,6 +1,6 @@
 from . import app
 from flask import session, redirect, url_for, render_template, request, jsonify, make_response
-from modules.controller import checkStudent, createStudent, require_login, decode_google_jwt, fetchStudent, timer_get_set, timer_save_set, timer_get_state, timer_save_state, default_user_timer
+from modules.controller import checkStudent, createStudent, require_login, decode_google_jwt, fetchStudent, timer_get_set, timer_save_set, timer_get_state, timer_save_state, default_user_timer, getCourses
 from modules.reviewers.controller import fetchPreview
 from modules.notes.controller import fetchPreviewNotes
 from config import CLIENT_ID
@@ -32,7 +32,8 @@ def index():
             'Mixed': "#FFFFFF"
         }
     }
-    return render_template('main.html', userName = GetName, notes_data=notes_data, reviewers_data=reviewers_data)    # Pulihi nalang ni sa unsa ang e render pag naka login na
+    print(reviewers_data['data'])
+    return render_template('main.html', userName = GetName, courses=getCourses(), notes_data=notes_data, reviewers_data=reviewers_data)    # Pulihi nalang ni sa unsa ang e render pag naka login na
 
 @app.route('/login', methods=["POST"])
 def login():

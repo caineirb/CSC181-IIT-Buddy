@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const noteTitle = document.querySelector('#noteTitle').value.trim();
         const noteLink = document.querySelector('#noteLink').value.trim();
         const privacyValue = document.querySelector('#privacy_value').value;
+        const courseValue = document.querySelector('#reviewer-course').value;
         const csrfToken = document.querySelector('#csrf_token').value;
 
         // Create note data object
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
             title: noteTitle,
             link: noteLink,
             privacy: privacyValue,
+            course: courseValue
         };
 
         fetch('/notes/add_note', {
@@ -98,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     notesContainer.insertBefore(addNotesButton, notesContainer.firstChild)
                     data['notes'].forEach(note => {
                         console.log('Adding note:', note); // Log each note being added
-                        addNoteBox(note[0], note[1], note[2], note[3], note[4], notesContainer, note[5]);
+                        addNoteBox(note[0], note[1], note[2], note[3], note[4], notesContainer, note[5], note[6]);
                     });
                 }
             })
@@ -111,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // Add a note box to the UI
-function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt) {
+function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt, course) {
     const noteBox = document.createElement('div'); // Changed to div to contain both link and buttons
     noteBox.className = 'd-flex justify-content-center align-items-center position-relative col withpad note-box';
     noteBox.style.height = '245px'; // Set fixed height
@@ -219,11 +221,13 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
         document.getElementById('editNoteTitle').value = title;
         document.getElementById('editNoteLink').value = link;
         document.getElementById('editNotePrivacy').value = privacy;
+        document.getElementById('editreviewer-course').value = course;
 
         document.getElementById('saveEditNote').onclick = function() {
             const newTitle = document.getElementById('editNoteTitle').value.trim();
             const newLink = document.getElementById('editNoteLink').value.trim();
-            const newPrivacy = document.getElementById('editNotePrivacy').value;       
+            const newPrivacy = document.getElementById('editNotePrivacy').value;
+            const newCourse = document.getElementById('editreviewer-course').value;       
             
             if (!newTitle || !newLink || !newPrivacy) {
                 alert('All fields are required.');
@@ -245,7 +249,8 @@ function addNoteBox(id, title, link, privacy, userName, notesWrapper, createdAt)
                 'id': noteId,
                 'title': newTitle,
                 'privacy': newPrivacy,
-                'link': newLink
+                'link': newLink,
+                'course': newCourse
             }
 
             fetch(`/notes/update_note`, {

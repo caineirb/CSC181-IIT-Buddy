@@ -1,5 +1,5 @@
 from flask import render_template, request, url_for, session, make_response, jsonify
-from modules.controller import require_login, fetchStudent
+from modules.controller import require_login, fetchStudent, getCourses
 from modules.reviewers.identifications.controller import fetchIdentification, addCard, removeCards
 from modules.reviewers.controller import fetchReviewerInfo
 from . import identifications_bp
@@ -17,7 +17,7 @@ def edit(id :str):
 
     studentData = fetchStudent(session['user-id'])
     user_name = studentData[0][1] if studentData else None
-    return render_template('reviewers/identifications/create.html', data=data, user_name=user_name)
+    return render_template('reviewers/identifications/create.html', data=data, courses=getCourses(), user_name=user_name)
 
 @identifications_bp.route('/review/<string:id>/r=<string:isRandom>', methods=["GET"])
 @require_login
@@ -109,7 +109,7 @@ def take(id :str):
 
     studentData = fetchStudent(session['user-id'])
     user_name = studentData[0][1] if studentData else None
-    return render_template('reviewers/takes/identifications_take.html', data=data, user_name=user_name)
+    return render_template('reviewers/takes/identifications_take.html', data=data, courses=getCourses(), user_name=user_name)
 
 @identifications_bp.route('/take/<string:id>/r=<string:isRandom>', methods=["GET"])
 @require_login

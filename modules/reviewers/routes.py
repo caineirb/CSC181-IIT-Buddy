@@ -13,6 +13,7 @@ def create():
             'title': request.form.get('reviewer-title'),
             'type': request.form.get('reviewer-type'),
             'privacy': request.form.get('reviewer-privacy'),
+            'course': request.form.get('reviewer-course'),
             'owner_id': session['user-id']
         }
         reviewer_id = createReviewer(data)
@@ -49,6 +50,7 @@ def saveInfo():
             'title': req['title'],
             'description': req['description'],
             'type': req['type'],
+            'course': req['course'],
             'privacy': req['privacy']
         }
         editReviewerInfo(data)
