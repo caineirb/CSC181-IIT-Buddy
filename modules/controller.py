@@ -283,3 +283,28 @@ def calculate_time_passed(datetime_value):
         return f"{minutes} minutes ago" if minutes > 1 else f"{minutes} minute ago"
     else:
         return "Just now"
+    
+def customErrorMessages(error):
+    if error.args[0] == 1062:  # Check the error code first
+        try:
+            types = ["Flashcard", "Identification", "Multiple Choice", "Mixed"]
+            # Extract the duplicate value from the error message
+            value = error.args[1].split("'")[1]
+            
+            # Split the value by dashes
+            parts = value.split("-")
+            
+            # Extract the type and the name
+            entry_type = parts[-1]  # Last part
+
+            if entry_type not in types:
+                return "Reviewer with the same name and type already exist."
+
+            name = "-".join(parts[:-2])  # Join all but the last two parts
+            
+            return f"{entry_type} named '{name}' already exists."
+        except (IndexError, ValueError) as e:
+            # Handle unexpected splitting issues
+            return "An unexpected error occurred while processing the duplicate entry."
+    else:
+        return f"Error {error.args[0]} occurred. Please contact the developers."

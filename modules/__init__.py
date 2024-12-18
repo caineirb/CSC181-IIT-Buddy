@@ -15,6 +15,7 @@ e.g "from <modules.feature_module> import <blueprint_name>"
 from modules.reviewersFeed import reviewers_feed_bp
 from modules.reviewers import reviewers_bp
 from modules.notes import notes_bp
+from modules.savedPage import saved_page_bp
 
 
 app = Flask(__name__, instance_relative_config=True)
@@ -36,6 +37,7 @@ def start_app():
     app.register_blueprint(reviewers_feed_bp, url_prefix="/reviewers-feed")
     app.register_blueprint(reviewers_bp, url_prefix="/reviewers")
     app.register_blueprint(notes_bp, url_prefix="/notes")
+    app.register_blueprint(saved_page_bp, url_prefix="/saved-page")
 
     app.permanent_session_lifetime = timedelta(days=1)  # Make sure the session/login of the user is valid for 1 day only
     mysql.init_app(app)

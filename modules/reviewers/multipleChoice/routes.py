@@ -1,6 +1,11 @@
 from flask import render_template, request, url_for, session, make_response, jsonify
+<<<<<<< HEAD
 from modules.controller import require_login, fetchStudent, getCourses
 from modules.reviewers.multipleChoice.controller import fetchMulti, addCard, removeCards
+=======
+from modules.controller import require_login, fetchStudent
+from modules.reviewers.multiplechoice.controller import fetchMulti, addCard, removeCards
+>>>>>>> main
 from modules.reviewers.controller import fetchReviewerInfo
 from . import multiple_choice_bp
 import random
