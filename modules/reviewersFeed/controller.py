@@ -5,7 +5,7 @@ Controllers for the Reviewers List
 '''
 
 # Count how many reviewers there are based on the parameters
-def countReviewers(type: str, param: str, order: str):
+def countReviewers(type: str, param: str, order: str, course: str):
     try:
         cur = mysql.connection.cursor()
         
@@ -27,6 +27,10 @@ def countReviewers(type: str, param: str, order: str):
                 fetch_param.append(type)
         
         # Apply filters if any
+        if course and course != "All Course":
+            fetch_query += " AND `course` = %s"
+            fetch_param.append(course)
+
         if param:
             fetch_query += " AND LOWER(`title`) LIKE LOWER(%s)"
             fetch_param.append(f"%{param}%")
@@ -42,7 +46,7 @@ def countReviewers(type: str, param: str, order: str):
         cur.close()  # Ensure the cursor is closed
 
 # Fetch the reviewers based on the parameters n pieces at a time for pagination
-def fetchReviewers(type: str, param: str, order: str, page: int, items_per_page: int, user_id :str):
+def fetchReviewers(type: str, param: str, order: str, page: int, course: str, items_per_page: int, user_id :str):
     try:
         cur = mysql.connection.cursor()
         
@@ -64,6 +68,10 @@ def fetchReviewers(type: str, param: str, order: str, page: int, items_per_page:
                 fetch_param.append(type)
         
         # Apply filters if any
+        if course and course != "All Course":
+            fetch_query += " AND `course` = %s"
+            fetch_param.append(course)
+            
         if param:
             fetch_query += " AND LOWER(`title`) LIKE LOWER(%s)"
             fetch_param.append(f"%{param}%")

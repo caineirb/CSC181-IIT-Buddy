@@ -32,6 +32,17 @@
     <!-- Dropdowns -->
     <div class="ms-5 dropdowns" style="margin-top: -50px;">
             <div class="d-flex">
+                <select name="reviewer-course" id="reviewer-course" class="form-select" style="max-width: 200px; color: black;" disabled>
+                    {% for course in courses %}
+                    <option value="{{ course[1] }}" {% if data['information'][5] == course[0] %}selected{% endif %} title="{{ course[1] }}">{{ course[0] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <script>
+                const forTitle = document.getElementById('reviewer-course').value;
+                document.getElementById('reviewer-course').title = forTitle;
+            </script>
+            <div class="d-flex">
                 <select name="reviewer-type" id="reviewer-type" class="form-select" style="max-width: 200px; color: black;" disabled>
                     <option value="{{ data['information'][2] }}">{{ data['information'][2] }}</option>
                 </select>

@@ -5,7 +5,7 @@ from modules.controller import calculate_time_passed
 Controllers for the Reviewers List
 '''
 # Count how many reviewers there are based on the parameters
-def countReviewers(owner_id: str, type: str, param: str, privacy: str, order: str):
+def countReviewers(owner_id: str, type: str, param: str, privacy: str, order: str, course: str) :
     try:
         cur = mysql.connection.cursor()
         
@@ -29,6 +29,10 @@ def countReviewers(owner_id: str, type: str, param: str, privacy: str, order: st
             fetch_cards += " AND `privacy` = %s"
             fetch_param.append(privacy)
 
+        if course and course != "All Course":
+            fetch_cards += " AND `course` = %s"
+            fetch_param.append(course)
+
         fetch_cards += f" ORDER BY `created_on` {order};"
         cur.execute(fetch_cards, tuple(fetch_param))
 
@@ -40,7 +44,7 @@ def countReviewers(owner_id: str, type: str, param: str, privacy: str, order: st
         cur.close()  # Ensure the cursor is closed
 
 # Fetch the reviewers based on the parameters n pieces at a time for pagination
-def fetchReviewers(owner_id: str, type: str, param: str, privacy: str, order: str, page: int, items_per_page: int):
+def fetchReviewers(owner_id: str, type: str, param: str, privacy: str, order: str, page: int, items_per_page: int, course: str):
     try:
         cur = mysql.connection.cursor()
         
@@ -52,6 +56,10 @@ def fetchReviewers(owner_id: str, type: str, param: str, privacy: str, order: st
         fetch_param = [owner_id]
 
         # Apply filters if any
+        if course != "All Course":
+            fetch_cards += " AND `course` = %s"
+            fetch_param.append(course)
+            
         if param:
             fetch_cards += " AND `title` COLLATE utf8mb4_bin LIKE %s"
             fetch_param.append(f"%{param}%")
@@ -63,6 +71,7 @@ def fetchReviewers(owner_id: str, type: str, param: str, privacy: str, order: st
         if privacy != "All":
             fetch_cards += " AND `privacy` = %s"
             fetch_param.append(privacy)
+
 
         # Order and limit for pagination
         fetch_cards += f" ORDER BY `created_on` {order} LIMIT %s OFFSET %s"

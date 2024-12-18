@@ -56,6 +56,18 @@ def createStudent(student: tuple):
     finally:
         cur.close()
 
+def getCourses():
+    try:
+        cur = mysql.connection.cursor()
+        check_query = "SELECT * FROM `courses`;"
+        cur.execute(check_query)
+        return cur.fetchall()
+    except mysql.connection.Error as e:
+        mysql.connection.rollback()
+        raise e
+    finally:
+        cur.close()
+
 '''
 Timer controls
 '''        

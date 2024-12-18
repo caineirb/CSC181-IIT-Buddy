@@ -5,11 +5,11 @@ def createReviewer(data :dict):
     try:
         cur = mysql.connection.cursor()
         insert_statement =  """
-            INSERT INTO `reviewers` (`title`, `type`, `privacy`, `owner_id`)
-            VALUE (%s, %s, %s, %s);
+            INSERT INTO `reviewers` (`title`, `type`, `privacy`, `owner_id`, `course`)
+            VALUE (%s, %s, %s, %s, %s);
         """
         
-        cur.execute(insert_statement, (data['title'], data['type'], data['privacy'], data['owner_id']))
+        cur.execute(insert_statement, (data['title'], data['type'], data['privacy'], data['owner_id'], data['course']))
         mysql.connection.commit()
         
         fetch_id = """
@@ -27,14 +27,15 @@ def createReviewer(data :dict):
 
 def editReviewerInfo(data :dict):
     try:
+        print(data)
         cur = mysql.connection.cursor()
         update_statement =  """
             UPDATE `reviewers`
-            SET `title` = %s, `description` = %s, `type` = %s, `privacy` = %s
+            SET `title` = %s, `description` = %s, `type` = %s, `privacy` = %s, `course` = %s
             WHERE `id` = %s;
         """
         
-        cur.execute(update_statement, (data['title'], data['description'], data['type'], data['privacy'], data['id']))
+        cur.execute(update_statement, (data['title'], data['description'], data['type'], data['privacy'], data['course'], data['id']))
         mysql.connection.commit()
     except mysql.connection.Error as e:
         mysql.connection.rollback()  # Rollback in case of error
@@ -62,7 +63,7 @@ def fetchPreview(owner_id :str):
     try:
         cur = mysql.connection.cursor()
         fetch_id = """
-            SELECT `id`, `title`, `type`, `privacy`, `created_on`
+            SELECT `id`, `title`, `type`, `privacy`, `created_on`, `course`
             FROM `reviewers`
             WHERE `owner_id` = %s
             ORDER BY `created_on` DESC
@@ -75,9 +76,9 @@ def fetchPreview(owner_id :str):
         # Process `created_on` to calculate "time passed"
         processed_results = []
         for row in raw_results:
-            id, title, type, privacy, created_on = row
+            id, title, type, privacy, created_on, course = row
             time_passed = calculate_time_passed(created_on)
-            processed_results.append((id, title, type, privacy, time_passed))
+            processed_results.append((id, title, type, privacy, time_passed, course))
 
         return processed_results
     except mysql.connection.Error as e:
@@ -90,7 +91,7 @@ def fetchReviewerInfo(id :str, type :str):
     try:
         cur = mysql.connection.cursor()
         fetch_id = """
-            SELECT `id`, `title`, `description`, `type`, `privacy`, `owner_id` 
+            SELECT `id`, `title`, `description`, `type`, `privacy`, `owner_id`, `course`
             FROM `reviewers`
             WHERE `id` = %s and `type` = %s;
         """

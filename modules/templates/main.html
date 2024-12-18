@@ -94,6 +94,12 @@
               <option value="Public">Public</option>
               <option value="Shared">Shared</option>
             </select>
+            <select name="reviewer-course" id="reviewer-course" class="form-select me-3" title="Select Course">
+              {% for course in courses %}
+                <option value="{{ course[0] }}" title="{{ course[1] }}">{{ course[0] }}</option>
+              {% endfor %}
+            </select>
+
             <div class="modal-footer justify-content-center w-100 mt-3">
               <button type="submit" class="btn btn-dark">Add</button>
             </div>
@@ -130,6 +136,11 @@
               <option value="Private">Private</option>
               <option value="Public">Public</option>
               <option value="Shared">Shared</option>
+            </select>
+            <select name="editreviewer-course" id="editreviewer-course" class="form-select me-3" title="Select Course">
+              {% for course in courses %}
+                <option value="{{ course[0] }}" title="{{ course[1] }}">{{ course[0] }}</option>
+              {% endfor %}
             </select>
             <div class="modal-footer justify-content-center w-100 mt-3">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -171,6 +182,7 @@
           <div>
             <div class="card-name"><b>{{ reviewer[1] }}</b></div>
             <div class="card-type">{{ reviewer[2] }}</div>
+            <div class="card-course">{{ reviewer[5] }}</div>
             <div class="card-time">{{ reviewer[4] }}</div> <!-- here caine need i fix -->
           </div>
           <div class="card-footer" style="border-color: {{ reviewers_data['fgcolor'][reviewer[2]] }};">
@@ -243,6 +255,12 @@
                 style="max-width: 150px; color: black;">
                 {% for priv in privacy %}
                 <option value="{{ priv }}">{{ priv }}</option>
+                {% endfor %}
+              </select>
+
+              <select name="reviewer-course" id="reviewer-course" class="form-select me-3" title="Select Course">
+                {% for course in courses %}
+                  <option value="{{ course[0] }}" title="{{ course[1] }}">{{ course[0] }}</option>
                 {% endfor %}
               </select>
             </div>

@@ -59,6 +59,14 @@
                 <!-- Sort by option -->
                 <div class="ms-5 sort">
                     <div class="d-flex">
+                        <select name="sort_course" id="sort_course" class="form-select m-2" style="width: 150px; color: black;" onchange="document.getElementById('searchForm').submit()">
+                            <option value="All Course" selected title="Display All Course">All Course</option>
+                            {% for course in courses %}
+                            <option value="{{ course[0] }}" {% if reviewers_data['searchParams']['course'] == course[0] %}selected{% endif %} title="{{ course[1] }}">{{ course[0] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="d-flex">
                         <select name="sort_by" id="sort_by" class="form-select me-2" style="width: 150px; color: black;" onchange="document.getElementById('searchForm').submit()">
                             <option value="DESC" 
                                     class="arrow-option" 

@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('reviewer-type').addEventListener('change', handleChange);
     document.getElementById('reviewer-privacy').addEventListener('change', handleChange);
     document.getElementById('reviewer-description').addEventListener('blur', handleChange);
+    document.getElementById('reviewer-course').addEventListener('blur', handleChange);
 
     allowCopy();
 });
@@ -39,6 +40,7 @@ function handleChange(event) {
     const title = titleInput.value.trim();
     const type = document.getElementById('reviewer-type').value;
     const privacy = document.getElementById('reviewer-privacy').value;
+    const course = document.getElementById('reviewer-course').value;
     const description = document.getElementById('reviewer-description').value.trim();
 
     // Check if title is empty and display a required-like warning
@@ -68,6 +70,7 @@ function handleChange(event) {
             title: title,
             type: type,
             privacy: privacy,
+            course: course,
             description: description
         };
         sendDataToBackend(data); // Only send data if title is not empty

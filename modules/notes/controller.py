@@ -3,7 +3,7 @@ from modules.controller import calculate_time_passed
 def createNote(note: tuple):
     try:
         cur = mysql.connection.cursor()
-        create_query = "INSERT INTO `notes` (`title`, `privacy`, `owner_id`, `link`) VALUES (%s, %s, %s, %s);"
+        create_query = "INSERT INTO `notes` (`title`, `privacy`, `owner_id`, `link`, `course`) VALUES (%s, %s, %s, %s, %s);"
         cur.execute(create_query, note)
         mysql.connection.commit()
     except mysql.connection.IntegrityError as e:
@@ -35,7 +35,7 @@ def updateNote(note :tuple):
         cur = mysql.connection.cursor()
         update_query = """
             UPDATE `notes`
-            SET `title` = %s, `privacy` = %s, `link` = %s
+            SET `title` = %s, `privacy` = %s, `link` = %s, `course` = %s
             WHERE `id` = %s;
         """
         cur.execute(update_query, note)
@@ -51,7 +51,7 @@ def fetchPreviewNotes(owner_id :str):
     try:
         cur = mysql.connection.cursor()
         fetch_id = """
-            SELECT notes.id, notes.title, notes.link, notes.privacy, students.name, notes.created_on
+            SELECT notes.id, notes.title, notes.link, notes.privacy, students.name, notes.created_on, notes.course
             FROM notes
             JOIN students ON notes.owner_id = students.id
             WHERE notes.owner_id = %s
@@ -65,9 +65,9 @@ def fetchPreviewNotes(owner_id :str):
         # Process `created_on` to calculate "time passed"
         processed_results = []
         for row in raw_results:
-            id, title, link, privacy, owner_name, created_on = row
+            id, title, link, privacy, owner_name, created_on, course = row
             time_passed = calculate_time_passed(created_on)
-            processed_results.append((id, title, link, privacy, owner_name, time_passed))
+            processed_results.append((id, title, link, privacy, owner_name, time_passed, course))
 
 
         return processed_results

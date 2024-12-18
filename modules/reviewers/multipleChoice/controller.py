@@ -53,7 +53,7 @@ def fetchMulti(id: str):
         
         # Fetch basic flashcard information
         fetch_information = """
-            SELECT `title`, `description`, `type`, `privacy`, `owner_id` FROM `reviewers`
+            SELECT `title`, `description`, `type`, `privacy`, `owner_id`, `course` FROM `reviewers`
             WHERE `id` = %s AND `type` = 'Multiple Choice';
         """
         cur.execute(fetch_information, (id,))

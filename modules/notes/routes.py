@@ -12,12 +12,13 @@ def add_note():
         note_title = note_data.get('title')
         note_privacy = note_data.get('privacy')
         note_link = note_data.get('link')
+        note_course = note_data.get('course')
         owner_id = session['user-id']
 
         if not note_title or not note_privacy or not note_link:
             return make_response(jsonify({'message': 'All fields are required'}), 400)
 
-        note = (note_title, note_privacy, owner_id, note_link)
+        note = (note_title, note_privacy, owner_id, note_link, note_course)
         createNote(note)  # This function interacts with the database to add the note
 
         return make_response(jsonify({'message': 'Note added successfully'}), 201)
@@ -41,12 +42,14 @@ def delete_note(id :str):
 def update_note():
     try:
         note_data = request.get_json()
+        print("Update Note:", note_data)
         note_id = note_data.get('id')
         note_title = note_data.get('title')
         note_privacy = note_data.get('privacy')
+        note_course = note_data.get('course')
         note_link = note_data.get('link')
         
-        updateNote((note_title, note_privacy, note_link, note_id))
+        updateNote((note_title, note_privacy, note_link, note_course, note_id))
         return make_response(jsonify({'message': 'Note updated successfully'}), 200)
     except Exception as e:
         print(f"Error fetching notes: {str(e)}")  # Add detailed logging

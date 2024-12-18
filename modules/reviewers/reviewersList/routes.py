@@ -1,5 +1,5 @@
 from flask import flash, render_template, request, session
-from modules.controller import require_login, fetchStudent
+from modules.controller import require_login, fetchStudent, getCourses
 from modules.reviewers.controller import customErrorMessages
 from . import reviewers_list_bp
 from modules.reviewers.reviewersList.controller import fetchReviewers, countReviewers
@@ -19,11 +19,12 @@ def index():
         privacy = request.args.get('privacy_option', 'All', type=str)
         order = request.args.get('sort_by', 'DESC', type=str)
         page = request.args.get('page', 1, type=int)
+        course = request.args.get('sort_course', "All Course", type=str)
 
         reviewers = {
-            'data': fetchReviewers(session['user-id'], type, searched_item, privacy, order, page, ITEMS_PER_PAGE),
+            'data': fetchReviewers(session['user-id'], type, searched_item, privacy, order, page, ITEMS_PER_PAGE, course),
             'details': {
-                'totalCount': countReviewers(session['user-id'], type, searched_item, privacy, order),
+                'totalCount': countReviewers(session['user-id'], type, searched_item, privacy, order, course),
                 'countPerPage': ITEMS_PER_PAGE
             },
             'searchParams': {
@@ -31,7 +32,8 @@ def index():
                 'searched_item': searched_item,
                 'privacy': privacy,
                 'order': order,
-                'page': page
+                'page': page,
+                'course': course
             },
             'bgcolor': {
                 'Flashcard': "#0C203E",
@@ -46,10 +48,10 @@ def index():
                 'Mixed': "#FFFFFF"
             }
         }
-
+        
         studentData = fetchStudent(session['user-id'])
         user_name = studentData[0][1] if studentData else None
-        return render_template('reviewers/reviewersList/reviewerslist.html', user_name=user_name, reviewers=reviewers)
+        return render_template('reviewers/reviewersList/reviewerslist.html', user_name=user_name, reviewers=reviewers, courses=getCourses())
 
     except mysql.connection.Error as e:
         flash(customErrorMessages(e), "danger")

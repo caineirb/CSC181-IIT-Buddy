@@ -1,5 +1,5 @@
 from flask import flash, render_template, request, session
-from modules.controller import require_login, fetchStudent, customErrorMessages
+from modules.controller import require_login, fetchStudent, customErrorMessages, getCourses
 from modules.savedPage.controller import countReviewers, fetchReviewers
 from . import saved_page_bp
 from modules import mysql
@@ -21,20 +21,20 @@ def index():
         searched_item = request.args.get('search_input', None, type=str)
         order = request.args.get('sort_by', 'DESC', type=str)
         page = request.args.get('page', 1, type=int)
-        #course = request.args.get('course', 'All Reviewers', type=str)
+        course = request.args.get('sort_course', "All Course", type=str)
 
         reviewers_data = {
-            'data': fetchReviewers(type, searched_item, order, page, ITEMS_PER_PAGE),
+            'data': fetchReviewers(type, searched_item, order, page, course, ITEMS_PER_PAGE, session['user-id']),
             'details': {
-                'totalCount': countReviewers(type, searched_item, order), #course
+                'totalCount': countReviewers(type, searched_item, order, course), #course
                 'countPerPage': ITEMS_PER_PAGE
             },
             'searchParams': {
                 'type': type,
                 'searched_item': searched_item,
                 'order': order,
-                'page': page
-                #'course': course
+                'page': page,
+                'course': course
             },
             'bgcolor': {
                 'Flashcard': "#0C203E",
@@ -50,7 +50,7 @@ def index():
             }
         }
 
-        return render_template('savedPage/savedPage.html', user_name=user_name, reviewers_data=reviewers_data)
+        return render_template('savedPage/savedPage.html', user_name=user_name,courses=getCourses(), reviewers_data=reviewers_data)
 
     except mysql.connection.Error as e:
         flash(customErrorMessages(e), "danger")
