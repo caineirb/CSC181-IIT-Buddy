@@ -1,7 +1,7 @@
 from flask import Blueprint
 from modules.reviewers.flashcards import flashcards_bp
 from modules.reviewers.identifications import identifications_bp
-from modules.reviewers.multiplechoice import multiple_choice_bp
+from modules.reviewers.multipleChoice import multiple_choice_bp
 from modules.reviewers.mixed import mixed_bp
 from modules.reviewers.reviewersList import reviewers_list_bp
 

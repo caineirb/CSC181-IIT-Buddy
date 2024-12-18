@@ -22,11 +22,11 @@ def index():
         searched_item = request.args.get('search_input', None, type=str)
         order = request.args.get('sort_by', 'DESC', type=str)
         page = request.args.get('page', 1, type=int)
-        course = request.args.get('sort_course', None, type=str)
+        course = request.args.get('sort_course', "All Course", type=str)
         reviewers_data = {
             'data': fetchReviewers(type, searched_item, order, page, course, ITEMS_PER_PAGE, session['user-id']),
             'details': {
-                'totalCount': countReviewers(type, searched_item, order),
+                'totalCount': countReviewers(type, searched_item, order, course),
                 'countPerPage': ITEMS_PER_PAGE
             },
             'searchParams': {

@@ -5,7 +5,7 @@ Controllers for the Reviewers List
 '''
 
 # Count how many reviewers there are based on the parameters
-def countReviewers(type: str, param: str, order: str):
+def countReviewers(type: str, param: str, order: str, course: str):
     try:
         cur = mysql.connection.cursor()
         
@@ -27,6 +27,10 @@ def countReviewers(type: str, param: str, order: str):
                 fetch_param.append(type)
         
         # Apply filters if any
+        if course and course != "All Course":
+            fetch_query += " AND `course` = %s"
+            fetch_param.append(course)
+
         if param:
             fetch_query += " AND LOWER(`title`) LIKE LOWER(%s)"
             fetch_param.append(f"%{param}%")
@@ -64,9 +68,10 @@ def fetchReviewers(type: str, param: str, order: str, page: int, course: str, it
                 fetch_param.append(type)
         
         # Apply filters if any
-        if course:
+        if course and course != "All Course":
             fetch_query += " AND `course` = %s"
             fetch_param.append(course)
+            
         if param:
             fetch_query += " AND LOWER(`title`) LIKE LOWER(%s)"
             fetch_param.append(f"%{param}%")
