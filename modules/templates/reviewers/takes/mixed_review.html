@@ -21,9 +21,10 @@
 <!-- for mixed na ni diri literal -->
 <div class="mixed-container">
     {% for mix in mixed['cards'] %}
-    <div class="mix" id="mix-{{ loop.index }}">
+    {% set outer_index = loop.index %}
+    <div class="mix" id="mix-{{ outer_index }}">
         <div class="mix-inner">
-            <span class="number-mixed">{{ loop.index }}</span>
+            <span class="number-mixed">{{ outer_index }}</span>
             <!-- Front of the card - Question -->
             <div class="mix-front">
                 <p>{{ mix['question'] }}</p>
@@ -34,9 +35,9 @@
             <!-- Type Answer Section -->
             <div class="type-answer" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around;">
                 {% if mix['type'] == "Identification" %}
-                <input type="text" data-num="{{ mix['number'] }}" class="answer-text iden-ans" placeholder="Type your answer..." maxlength="150" />
+                <input type="text" data-num="{{ outer_index }}" data-answer_type="Identification" class="answer-text" placeholder="Type your answer..." maxlength="150" />
                 {% else %}
-                <button type="button" class="answer-text" data-bs-toggle="modal" data-bs-target="#choose-{{ mix['number'] }}">Select</button>
+                <button type="button" data-num="{{ outer_index }}" data-answer_type="Multiple Choice" class="answer-text" data-bs-toggle="modal" data-bs-target="#choose-{{ outer_index }}">Select</button>
                 {% endif %}
             </div>
         </div>
@@ -44,32 +45,26 @@
 
     {% if not mix['type'] == "Identification" %}
     <!-- Vertically centered scrollable modal -->
-    <div class="modal fade" id="choose-{{ mix['number'] }}" tabindex="-1" aria-labelledby="choose-{{ mix['number'] }}-label" aria-hidden="true">
+    <div class="modal fade" id="choose-{{ outer_index }}" tabindex="-1" aria-labelledby="choose-{{ outer_index }}-label">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="choose-{{ mix['number'] }}-label">Select an Answer</h5>
+                    <h5 class="modal-title" id="choose-{{ outer_index }}-label">Select an Answer</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     {% for answer in mix['answer'] %}
+                    {% set inner_index = loop.index %}
                     <div class="form-check">
-                        <input 
-                            type="radio" 
-                            class="form-check-input user-answered-checkbox {{ mix['number'] }}" 
-                            data-num="{{ mix['number'] }}" 
-                            data-text="{{ answer[0] }}" 
-                            name="options-{{ mix['number'] }}" 
-                            id="options-{{ mix['number'] }}-{{ loop.index }}" 
-                            value="{{ answer[1] }}"
-                        >
-                        <label class="form-check-label" for="options-{{ mix['number'] }}-{{ loop.index }}">{{ answer[0] }}</label>
+                        <input  type="radio"  class="form-check-input"  data-num="{{ inner_index }}"  data-text="{{ answer[0] }}"  name="options-{{ outer_index }}"  
+                            id="options-{{ outer_index }}-{{ inner_index }}"  value="{{ answer[1] }}" >
+                        <label class="form-check-label" for="options-{{ outer_index }}-{{ inner_index }}" style="width: 80%;">{{ answer[0] }}</label>
                     </div>
                     {% endfor %}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" onclick="removeChosen('{{ mix['number'] }}')">Remove Chosen</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-danger" onclick="removeChosen('{{ outer_index }}')">Remove Chosen</button>
                 </div>
             </div>
         </div>

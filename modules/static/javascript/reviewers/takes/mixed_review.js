@@ -37,52 +37,53 @@ function showNextMix() {
         let userAnswers = {};
         let correctAnswers = {};
         
-        //For Identification
-        document.querySelectorAll('.iden-ans').forEach(answer => {
-            const answerNumber = parseInt(answer.getAttribute('data-num')) - 1;
-            console.log(answerNumber);
-            const correct_answer = mixed[answerNumber].answer[0][0];
+        document.querySelectorAll('.answer-text').forEach((answer, mainIndex) => {
+            const answerType = answer.getAttribute('data-answer_type');
+            const answerNumber = parseInt(answer.getAttribute('data-num'));
+            
+            if (answerType === "Identification"){                
+                const correct_answer = mixed[mainIndex].answer[0][0];
+                correctAnswers[answerNumber] = correct_answer;
 
-            correctAnswers[answerNumber] = correct_answer;
-            if (answer.value.trim().toLowerCase() === ""){
-                missing++;
-            } else if (answer.value.trim().toLowerCase() === correct_answer.trim().toLowerCase()) {
-                correct++;
-            } else {
-                mistake++;
-            }
-
-            userAnswers[answerNumber] = answer.value;
-        });
-        
-        for (let i = 0; i <= totalMixed; i++){
-            const user_choice = document.getElementsByName(`options-${i}`);
-            if (user_choice.length > 0){
-                let user_selected = null;
-
-                user_choice.forEach((option, mindex) => {
-                    let dataNum = parseInt(option.getAttribute('data-text')) - 1;
-                    if(parseInt(option.value) === 1){
-                        correctAnswers[dataNum] = option.getAttribute('data-text');
-                    }
-                    if (option.checked){
-                        userAnswers[dataNum] = option.getAttribute('data-text');
-                        user_selected = mindex;
-
-                        if (parseInt(option.value) === 1){
-                            correct++;
-                        }
-                        if (parseInt(option.value) === 0){
-                            mistake++;
-                        }
-                    }
-                });
-
-                if (user_selected === null){
+                if (answer.value.trim().toLowerCase() === ""){
                     missing++;
+                } else if (answer.value.trim().toLowerCase() === correct_answer.trim().toLowerCase()) {
+                    correct++;
+                } else {
+                    mistake++;
+                }
+                userAnswers[answerNumber] = answer.value;
+            } else {
+                const user_choice = document.getElementsByName(`options-${answerNumber}`);
+
+                if (user_choice.length > 0){
+                    let user_selected = null;
+    
+                    user_choice.forEach((option, mindex) => {
+                        if(parseInt(option.value) === 1){
+                            correctAnswers[answerNumber] = option.getAttribute('data-text');
+                        }
+
+                        if (option.checked){
+                            userAnswers[answerNumber] = option.getAttribute('data-text');
+                            user_selected = mindex;
+    
+                            if (parseInt(option.value) === 1){
+                                correct++;
+                            }
+                            if (parseInt(option.value) === 0){
+                                mistake++;
+                            }
+                        }
+                    });
+    
+                    if (user_selected === null){
+                        userAnswers[answerNumber] = null;
+                        missing++;
+                    }
                 }
             }
-        }
+        });
         
         // Save data to local storage
         localStorage.setItem('score', correct);

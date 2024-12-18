@@ -87,5 +87,6 @@
     {{ data['cards'] | tojson }}
 </script>
 
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/saveDetails.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/takes/identifications_take.js') }}"></script>
 {% endblock %}

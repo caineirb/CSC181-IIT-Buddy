@@ -4,17 +4,17 @@ window.onload = function () {
     const correct = localStorage.getItem('score');
     const mistake = localStorage.getItem('mistakes');
     const missing = localStorage.getItem('missing');
-    const mixed = JSON.parse(localStorage.getItem('mixed')) || {};
+    const multi = JSON.parse(localStorage.getItem('multi')) || {};
     const correctAnswers = JSON.parse(localStorage.getItem('correctAnswers')) || {};
     const userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || {};
     const resultsContainer = document.querySelector('.results');
-
-    if (Object.keys(mixed).length > 0) {
-        mixed.forEach((mix, index) => {
+    
+    if (Object.keys(multi).length > 0) {
+        multi.forEach((mix, index) => {
             const userKey = Object.keys(userAnswers)[index];
             const correctKey = Object.keys(correctAnswers)[index];
             const userAnswer = (userAnswers[userKey]?.trim() || "No Answer").toLowerCase();
-            const correctAnswer = correctAnswers[correctKey].trim().toLowerCase();
+            const correctAnswer = correctAnswers[correctKey]?.trim().toLowerCase();
 
             const row = document.createElement('div');
             row.classList.add('table-row');
@@ -54,7 +54,7 @@ window.onload = function () {
             // Correct Answer Column
             const correctAnswerCell = document.createElement('div');
             correctAnswerCell.classList.add('table-column');
-            correctAnswerCell.textContent = correctAnswers[correctKey];; // Display all possible answers
+            correctAnswerCell.textContent = correctAnswers[correctKey]; // Display all possible answers
 
             // User Answer Column
             const userAnswerCell = document.createElement('div');
