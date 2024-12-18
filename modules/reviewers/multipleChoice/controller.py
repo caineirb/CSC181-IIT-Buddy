@@ -4,6 +4,7 @@ import random
 
 def addCard(data :dict):
     try:
+        print("Data:", data)
         cur = mysql.connection.cursor()
         insert_q_statement =  """
             INSERT INTO `items` (`reviewer_id`, `number`, `question`, `question_image`)
@@ -20,9 +21,8 @@ def addCard(data :dict):
         
         cur.execute(insert_a_statement, (data['reviewer_id'], data['number'], data['correct_answer'], True))
         
-        if data['type'] == "Multiple Choice":
-            for incorrect in data['incorrect_answers']:
-                cur.execute(insert_a_statement, (data['reviewer_id'], data['number'], incorrect, False))
+        for incorrect in data['incorrect_answers']:
+            cur.execute(insert_a_statement, (data['reviewer_id'], data['number'], incorrect, False))
         
         mysql.connection.commit()
     except mysql.connection.Error as e:
@@ -46,20 +46,20 @@ def removeCards(id :str):
     finally:
         cur.close()  # Ensure the cursor is closed
 
-def fetchMixed(id: str):
+def fetchMulti(id: str):
     try:
-        mixed_data = {}
+        multi_data = {}
         cur = mysql.connection.cursor()
         
         # Fetch basic flashcard information
         fetch_information = """
             SELECT `title`, `description`, `type`, `privacy`, `owner_id` FROM `reviewers`
-            WHERE `id` = %s AND `type` = 'Mixed';
+            WHERE `id` = %s AND `type` = 'Multiple Choice';
         """
         cur.execute(fetch_information, (id,))
-        mixed_data['information'] = cur.fetchone()
+        multi_data['information'] = cur.fetchone()
         
-        # Fetch Mixed items and answers
+        # Fetch Multiple Choice items and answers
         fetch_questions = """
             SELECT `number`, `question`, `question_image`
             FROM `items`
@@ -69,7 +69,7 @@ def fetchMixed(id: str):
         questions = cur.fetchall()
         
         # Structure the flashcard data
-        mixed_data['cards'] = []
+        multi_data['cards'] = []
         
         for question in questions:
             fetch_answers = """
@@ -82,16 +82,13 @@ def fetchMixed(id: str):
 
             question_data = {
                 'number': question[0],
-                'type': "Multiple Choice" if len(answers) > 1 else "Identification",
                 'question': question[1],
                 'image': base64.b64encode(question[2]).decode('utf-8') if question[2] else None,
-                'answer': list(answers)
+                'answer': tuple(random.sample(list(answers), len(answers)))
             }
-            if question_data['type'] == "Multiple Choice":
-                question_data['answer'] = tuple(random.sample(question_data['answer'], len(question_data['answer'])))
-            mixed_data['cards'].append(question_data)
+            multi_data['cards'].append(question_data)
         
-        return mixed_data
+        return multi_data
     
     except mysql.connection.Error as e:
         mysql.connection.rollback()  # Rollback in case of error

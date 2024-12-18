@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %} Review Identifications {% endblock %}
+
+{% block name %} {{ user_name }} {% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/multipleChoice/congrats.css') }}">
+
+<!-- container class -->
+<div class="container">
+    <!-- .congratulations section -->
+    <div class="congratulations">
+        <h1>Yippie! You've reviewed all the <br> cards.</h1>
+        <div class="hyd">How you’re doing</div>
+
+        <div class="checkbox-score-mistakes">
+            <div class="checkbox">
+                <i class="bi bi-check2-square"></i>
+            </div>
+            <div class="score-mistakes">
+                <div class="box-score">
+                    <div class="score-text">Score</div>
+                    <div class="score" id="user-score">0</div>
+                </div>
+                <div class="box-mistakes">
+                    <div class="mistakes-text">Mistakes</div>
+                    <div class="mistakes" id="user-mistakes">0</div>
+                </div>
+                <div class="box-unanswered">
+                    <div class="unanswered-text">Unanswered</div>
+                    <div class="unanswered" id="user-unanswered">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="review-again-section" type="button" onclick="window.location.href='{{ url_for('reviewers.multiple_choice.take_review', id=info['data'][0], isRandom=info['isRandom']) }}'">
+            <i class="bi bi-arrow-left"></i>
+            <span class="review-again">review again</span>
+        </div>
+        
+    </div>
+
+    <!-- .congrats section -->
+    <div class="congrats">
+        <div class="confetti">
+            <img src="{{ url_for('static', filename='img/confetti.png') }}" alt="Confetti" />
+        </div>
+
+        <div class="button-group">
+            <button type="button" class="home" onclick="window.location.href='{{ url_for('index') }}'"> Home </button>
+            <button type="button" class="edit" onclick="window.location.href='{{ url_for('reviewers_feed.take_reviewer', id=info['data'][0], type="Multiple Choice") }}'"> Edit </button>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- results section outside the container -->
+<div class="results">
+    <div class="table-title">
+        <h2>Review Your Answers</h2>
+    </div>
+    <div class="table-header">
+        <div class="table-column">Question</div>
+        <div class="table-column">Correct Answer</div>
+        <div class="table-column">Your Answer</div>
+    </div>
+</div>
+
+<script src="congrats.js"></script>
+
+
+<canvas id="congrats-confetti"></canvas>
+
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/confetti.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='javascript/reviewers/multipleChoice/congrats.js') }}"></script>
+
+{% endblock %}

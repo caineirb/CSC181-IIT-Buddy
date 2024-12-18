@@ -86,8 +86,8 @@ def take_reviewer(id :str, type :str):
             return redirect(url_for('reviewers.flashcards.take', id=id))
         case "Identification":
             return redirect(url_for('reviewers.identifications.take', id=id))
-        # case "Multiple Choice":
-        #     return redirect(url_for('', id=id))
+        case "Multiple Choice":
+            return redirect(url_for('reviewers.multiple_choice.take', id=id))
         case "Mixed":
             return redirect(url_for('reviewers.mixed.take', id=id))
         case _:

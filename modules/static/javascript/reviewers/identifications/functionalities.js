@@ -6,7 +6,6 @@ let identificationCount = 1;
 
 document.addEventListener("DOMContentLoaded", function() {
     const identifications = JSON.parse(document.getElementById("data-json").textContent);
-    allowCopy();
     // Load existing identifications into the identifications container
     identifications.forEach((identificationData, index) => {
         createidentificationFromData(identificationData, index + 1);
@@ -232,28 +231,6 @@ function updateidentificationNumbers() {
         }
     });
 }
-
-function allowCopy(){
-    const copyButton = document.getElementById('share-url-button');
-    const privacy = document.getElementById('reviewer-privacy').value;
-    copyButton.disabled = privacy === "Private";
-}
-
-function copyURL() {
-    const shareURL = document.getElementById('share-url').value;
-    navigator.clipboard.writeText(shareURL)
-        .then(() => {
-            const alertBox = document.getElementById("copy-alert");
-            alertBox.style.display = "block";
-            setTimeout(() => {
-                alertBox.style.display = "none";
-            }, 1000); // Hide the alert after 1 second
-        })
-        .catch(err => {
-            console.error("Failed to copy: ", err);
-        });
-}
-
 
 // Initialize Sortable
 Sortable.create(document.querySelector('.identifications-container'), {

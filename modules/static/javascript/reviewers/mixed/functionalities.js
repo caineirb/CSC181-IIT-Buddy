@@ -42,7 +42,7 @@ function createmixFromData(mixData, count) {
     mixContainer.appendChild(newmix);
     
 
-    mixed_count = Math.max(mixed_count, count + 1); // Ensure mixed_count is updated
+    mixed_count = count + 1; // Ensure mixed_count is updated
 }
 
 function getTemplate(type, count, mixData) {
@@ -161,7 +161,7 @@ function handleTypeChange(event, count, mixData) {
     currentMix.innerHTML = getTemplate(newType, count, mixData);
 
     if (mixData.type === "Multiple Choice"){
-        newmix.querySelectorAll('.correct-answer-checkbox').forEach((checkbox, index) => {
+        currentMix.querySelectorAll('.correct-answer-checkbox').forEach((checkbox, index) => {
             checkbox.checked = mixData.answer[index][1] === 1;
         });
     }
@@ -194,13 +194,13 @@ function createmix() {
 
 // Function to switch term and definition
 function switchTermAndDefinition(count) {
-    const termInput = document.querySelector(`textarea[name="answer-${count}"]`);
-    const definitionInput = document.querySelector(`textarea[name="question-${count}"]`);
+    const answerInput = document.querySelector(`textarea[name="option-mixed-${count}-0"]`);
+    const questionInput = document.querySelector(`textarea[name="question-mixed-${count}"]`);
     
     // Swap the values of term and definition
-    const temp = termInput.value;
-    termInput.value = definitionInput.value;
-    definitionInput.value = temp;
+    const temp = answerInput.value;
+    answerInput.value = questionInput.value;
+    questionInput.value = temp;
 }
 
 
