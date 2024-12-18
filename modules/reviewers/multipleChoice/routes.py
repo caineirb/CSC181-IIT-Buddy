@@ -108,7 +108,7 @@ def take(id :str):
     data['id'] = id
     studentData = fetchStudent(session['user-id'])
     user_name = studentData[0][1] if studentData else None
-    return render_template('reviewers/takes/multiple_choice_take.html', data=data, user_name=user_name)
+    return render_template('reviewers/takes/multipleChoice_take.html', data=data, user_name=user_name)
 
 @multiple_choice_bp.route('/take/<string:id>/r=<string:isRandom>', methods=["GET"])
 @require_login

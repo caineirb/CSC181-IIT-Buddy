@@ -1,0 +1,444 @@
+/* importing google fonts: inter and miniver */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Miniver&display=swap');
+
+/* importing google fonts: inter, miniver, and poppins */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Miniver&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+:root{
+    /* colors */
+    --white-color: #fff;
+    --black-color: #000;
+    --primary-color: #0D1A26;
+    --secondary-color: #0E7373;
+    --accent-color: #0C203E;
+    --navbar-bg-color: #FAFAFA;
+
+    /* font size */
+    --font-size-s: 0.9rem;
+    --font-size-n: 1rem;
+    --font-size-m: 1.12rem;
+    --font-size-l: 1.5rem;
+    --font-size-xl: 2rem;
+    --font-size-xxl: 2.3rem;
+
+    /* font weight */
+    --font-weight-norml: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* border radius */
+    --border-radius-s: 0.8px;
+    --border-radius-m: 30px;
+    --border-radius-circle: 50%;
+
+    /* site mas width */
+    --site-max-width: 1300px;
+
+    --background-color: #f8f9fa;
+    --background-color-hover: #e2e6ea;
+    --border-color: #ccc;
+    --number-size: 16px;
+    --white: #ffffff;
+}
+
+.multiple_choice-container {
+    width: 90%;
+    margin: 0 auto;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    display: flex;
+}
+
+.mul {
+    width: 90%;
+    background-color: var(--background-color);
+    border: 3px dashed var(--primary-color);
+    border-radius: 5px;
+    padding: 10px;
+    position: relative;
+    margin: 10px 0;
+}
+
+.add-button-container {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+/* add new mix button */
+.add-card-btn {
+    width: 88%;
+    background-color: var(--background-color);
+    border: 3px dashed var(--primary-color);
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.add-card-btn:hover {
+    color: var(--secondary-color);
+    background-color: rgb(0, 0, 0, 0.2);
+}
+
+.mul-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.mul-number {
+    font-size: var(--number-size);
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.mul-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.drag-button,
+.delete-button,
+.switch-button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+.mul-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adjust the space between elements */
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    position: relative;
+}
+
+.term-input,
+.definition-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: var(--background-color);
+    border: none;
+    border-bottom: 2px solid black;
+    color: black;
+    height: 100px;
+    resize: none;
+}
+
+.input-label {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin-top: 5px;
+}
+
+.image-button {
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    width: 170px;
+    height: 100px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px dashed var(--secondary-color);
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: var(--background-color);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    margin: 0 30px;
+    margin-right: 10px;
+}
+
+.image-button span {
+    font-size: var(--font-size-m);
+}
+
+.remove-image-button {
+    padding: 10px 20px;
+    background-color: maroon;
+    color: var(--white-color);
+    font-size: 1rem;
+    font-weight: bold;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-right: 10px;
+}
+
+.remove-image-button:hover {
+    background-color: var(--white-color); 
+    color: maroon;
+    transform: scale(1.05);
+}
+
+.button-label {
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.sortable-ghost {
+    opacity: 0.5;
+    background-color: var(--background-color);
+}
+
+.go-back-button {
+    transform: translateX(20px) translateY(10px);
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--background-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.go-back-button:hover {
+    background-color: var(--background-color-hover);
+}
+
+.reviewer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 200px;
+    padding-left: 20px;
+    margin-top: -30px;
+}
+
+.form-label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.reviewer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 200px;
+    margin-left: 230px;
+    padding-left: 20px;
+}
+
+.form-label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+#reviewer-title {
+    text-align: left;
+    margin-bottom: 15px;
+    width: 50%;
+    max-width: 600px;
+    padding: 10px;
+    font-size: 1.2rem;
+    border: 1px solid var(--white-color);
+    border-radius: 5px;
+    outline: none;
+}
+
+#reviewer-description {
+    width: 50%;
+    height: 90px;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid var(--white-color);
+    resize: none;
+    overflow: auto;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.dropdowns {
+    position: absolute;
+    top: 150px;
+    right: 230px;
+    display: flex;
+    gap: 10px;
+    z-index: 999;
+}
+
+.dropdown select {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    width: 150px;
+    text-align: center;
+}
+
+.action-buttons-container {
+    display: flex;
+    align-items: center;
+    width: 75%;
+    margin: 10px auto 0px auto;
+    justify-content: space-between;
+}
+
+.play-options{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 20%;
+}
+
+.delete-multiple_choice-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: not-allowed;
+    color: var(--white-color);
+    background-color: maroon;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    opacity: 50%;
+}
+
+.shuffle-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    height: 45px;
+    background-color: var(--background-color);
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#shuffle-switch {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.shuffle-toggle label {
+    margin: 0;
+    cursor: pointer;
+}
+
+.save-multiple_choice-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #218838;
+    color: var(--white-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.save-multiple_choice-btn:hover {
+    color: #218838;
+    background-color: var(--white-color);
+    transform: scale(1.05);
+}
+
+/* Styling for the Add Option button */
+.mul-question-container {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding-top: 10px; 
+    width: 100%;
+}
+
+.mul-question-input {
+    width: 80%;
+}
+
+.add-option-button {
+    width: 500px; 
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: inline-block; 
+}
+
+
+.add-option-button:hover {
+    background-color: #45a049;
+}
+
+
+.options-container {
+    margin: 10px auto;
+    width: 100%; /* Ensure the container spans the width of its parent, but buttons inside won't stretch */
+}
+
+.copy-clip button {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    width: 50px;
+    text-align: center;
+}
+/* Styling for the individual option fields */
+.option {
+    display: flex; 
+    align-items: center; 
+    width: 90%;
+    gap: 10px; 
+    margin: 10px auto;
+}
+
+.option-input {
+    width: 200px;
+    margin-left: 10px;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    height: 60px;
+}
+
+.correct-answer-checkbox {
+    margin-left: 10px;
+}
+
+.remove-chosen-label {
+    cursor: not-allowed; 
+    color: red;
+    margin-left: 40px;
+    font-size: smaller;
+    opacity: 50%;
+}

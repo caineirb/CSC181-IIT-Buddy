@@ -6,16 +6,6 @@ document.addEventListener("DOMContentLoaded", function() {
     mixed.forEach((mixData, index) => {
         createmixFromData(mixData, index + 1);
     });
-
-    // Initialize Sortable
-    Sortable.create(document.querySelector('.mixed-container'), {
-        animation: 150,
-        handle: '.drag-button',
-        ghostClass: 'sortable-ghost',
-        onEnd: updatemixNumbers
-    });
-
-    document.getElementById('add-card-btn').addEventListener('click', createmix);
 });
 
 function createmixFromData(mixData, count) {

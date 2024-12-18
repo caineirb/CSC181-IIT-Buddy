@@ -194,13 +194,13 @@ function createmix() {
 
 // Function to switch term and definition
 function switchTermAndDefinition(count) {
-    const termInput = document.querySelector(`textarea[name="answer-${count}"]`);
-    const definitionInput = document.querySelector(`textarea[name="question-${count}"]`);
+    const answerInput = document.querySelector(`textarea[name="option-mixed-${count}-0"]`);
+    const questionInput = document.querySelector(`textarea[name="question-mixed-${count}"]`);
     
     // Swap the values of term and definition
-    const temp = termInput.value;
-    termInput.value = definitionInput.value;
-    definitionInput.value = temp;
+    const temp = answerInput.value;
+    answerInput.value = questionInput.value;
+    questionInput.value = temp;
 }
 
 

@@ -78,16 +78,16 @@ def index():
 @require_login
 def take_reviewer(id :str, type :str):
     # Redirect to edit when the viewer is the owner
-    # if session['user-id'] == fetchReviewerInfo(id, type)[5]:
-    #     return redirect(url_for('reviewers.edit', id=id, type=type))
+    if session['user-id'] == fetchReviewerInfo(id, type)[5]:
+        return redirect(url_for('reviewers.edit', id=id, type=type))
     
     match type:
         case "Flashcard":
             return redirect(url_for('reviewers.flashcards.take', id=id))
         case "Identification":
             return redirect(url_for('reviewers.identifications.take', id=id))
-        # case "Multiple Choice":
-        #     return redirect(url_for('', id=id))
+        case "Multiple Choice":
+            return redirect(url_for('reviewers.multiple_choice.take', id=id))
         case "Mixed":
             return redirect(url_for('reviewers.mixed.take', id=id))
         case _:

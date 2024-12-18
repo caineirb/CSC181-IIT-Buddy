@@ -7,7 +7,7 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/reviewers/multipleChoice/review.css') }}">
 
-<button type="button" class="go-back-button" onclick='window.location.href="{{ url_for("reviewers.multiple_choice.edit", id=multiple_choice["id"], type="Multiple Choice") }}"'>
+<button type="button" class="go-back-button" onclick='window.location.href="{{ url_for("reviewers_feed.take_reviewer", id=multiple_choice["id"], type="Multiple Choice") }}"'>
     <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> 
     <b style="font-weight: normal;">Go Back</b>
 </button>
@@ -64,7 +64,7 @@
                     {% endfor %}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
                     <button type="button" class="btn btn-danger" onclick="removeChosen('{{ mul['number'] }}')">Remove Chosen</button>
                 </div>
             </div>
@@ -87,7 +87,7 @@
     </button>
 </div>
 
-<input type="hidden" name="congrats-url" id="congrats-url" value="{{ url_for('reviewers.multiple_choice.congrats', type="Mixed", id=multiple_choice['id'], isRandom=multiple_choice['isRandom']) }}">
+<input type="hidden" name="congrats-url" id="congrats-url" value="{{ url_for('reviewers.multiple_choice.take_congrats', type="Multiple Choice", id=multiple_choice['id'], isRandom=multiple_choice['isRandom']) }}">
 
 <script type="application/json" id="data-json">
     {{ multiple_choice['cards'] | tojson }}
