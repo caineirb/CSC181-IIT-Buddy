@@ -195,12 +195,6 @@
                 {% endfor %}
                 {% endif %}
                 {% endwith %}
-
-                <!-- Form for creating flashcards -->
-                <form action="{{ url_for('reviewers.create') }}" method="post">
-                    <!-- CSRF Token -->
-                    <input type="hidden" name="_csrf_token" id="_csrf_token" value="{{ csrf_token() }}" />
-                    <input type="hidden" name="from_url" id="from_url" value="{{ url_for('index') }}" />
                     
                     <!-- input fields -->
                     <div class="input-group mb-3">
@@ -212,11 +206,6 @@
                     <!-- suggestions search -->
                     <div class="suggestions-container">
                         <!-- will append here -->
-                    </div>
-
-                    <!-- Modal Footer -->
-                    <div class="modal-footer justify-content-center w-100 mt-3">
-                        <button type="submit" class="create-button btn btn-dark">Search</button>
                     </div>
                 </form>
             </div>

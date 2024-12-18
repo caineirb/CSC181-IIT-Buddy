@@ -358,7 +358,7 @@ body{
     position: relative;
     top: 100px;
     left: 300px;
-    width: 190px;
+    width: 200px;
 }
 
 .title-input{
@@ -387,3 +387,15 @@ body{
 .suggestion-item:hover {
     background-color: var(--suggestion-hover);
 }
+
+.custom-modal-width-height {
+    max-width: 700px;
+    width: 90%;
+}
+
+.custom-modal-width-height .modal-content {
+    height: 300px;
+    min-height: 400px;
+    overflow-y: auto;
+}
+
