@@ -5,26 +5,26 @@ Controllers for the Reviewers List
 '''
 
 # Count how many reviewers there are based on the parameters
-def countReviewers(type: str, param: str, order: str, course: str):
+def countReviewers(type: str, param: str, order: str, course: str, user_id: str):
     try:
         cur = mysql.connection.cursor()
         
         fetch_query = None
-        fetch_param = []
+        fetch_param = [user_id]
 
         if type == "Notes":
             fetch_query = """
                 SELECT COUNT(notes.id)
                 FROM saved_notes
                 LEFT JOIN notes ON saved_notes.note_id = notes.id
-                WHERE 1=1
+                WHERE saved_notes.student_id = %s
             """
         else:
             fetch_query = """
                 SELECT COUNT(reviewers.id)
                 FROM saved_reviewers
                 LEFT JOIN reviewers ON saved_reviewers.reviewer_id = reviewers.id
-                WHERE 1=1
+                WHERE saved_reviewers.student_id = %s
             """
             if type != "All Reviewers":
                 fetch_query += " AND `type` = %s"
@@ -54,7 +54,7 @@ def fetchReviewers(type: str, param: str, order: str, page: int, course: str, it
         cur = mysql.connection.cursor()
         
         fetch_query = None
-        fetch_param = []
+        fetch_param = [user_id]
 
         if type == "Notes":
             fetch_query = """
@@ -66,7 +66,7 @@ def fetchReviewers(type: str, param: str, order: str, page: int, course: str, it
                     notes.owner_id
                 FROM saved_notes
                 LEFT JOIN notes ON saved_notes.note_id = notes.id
-                WHERE 1=1
+                WHERE saved_notes.student_id = %s
             """
         else:
             fetch_query = """
@@ -78,7 +78,7 @@ def fetchReviewers(type: str, param: str, order: str, page: int, course: str, it
                     reviewers.owner_id
                 FROM saved_reviewers
                 LEFT JOIN reviewers ON saved_reviewers.reviewer_id = reviewers.id
-                WHERE 1=1
+                WHERE saved_reviewers.student_id = %s
             """
             if type != "All Reviewers":
                 fetch_query += " AND `type` = %s"

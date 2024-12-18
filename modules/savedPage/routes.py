@@ -26,7 +26,7 @@ def index():
         reviewers_data = {
             'data': fetchReviewers(type, searched_item, order, page, course, ITEMS_PER_PAGE, session['user-id']),
             'details': {
-                'totalCount': countReviewers(type, searched_item, order, course), #course
+                'totalCount': countReviewers(type, searched_item, order, course, session['user-id']), #course
                 'countPerPage': ITEMS_PER_PAGE
             },
             'searchParams': {
