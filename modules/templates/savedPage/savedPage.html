@@ -146,7 +146,8 @@
 
     <!-- change ni saved reviewers kay sample rani sa reviewerslist ni nga data -->
     {% for reviewer in reviewers_data['data'] %}
-      <a href="{{ url_for('reviewers.edit', id=reviewer[0], type=reviewer[2]) }}" class="card" style="background-color: {{ reviewers_data['bgcolor'][reviewer[2]] }};">
+    {% if not reviewers_data['searchParams']['type'] == "Notes" %}
+      <a href="{{ url_for('reviewers.edit', id=reviewer[0], type=reviewer[2]) }}" class="card" style="background-color: {{ reviewers_data['bgcolor'][reviewer[2]] }}">
         <div class="card-content" style="color: {{ reviewers_data['fgcolor'][reviewer[2]] }};">
           <div>
             <div class="card-name"><b>{{ reviewer[1] }}</b></div>
@@ -170,6 +171,32 @@
           </div>
         </div>
       </a>
+    {% else %}
+    <a href="{{ reviewer[2] }}" target="_blank" class="card" style="background-color: {{ reviewers_data['bgcolor'][reviewer[2]] }}">
+        <div class="card-content" style="color: {{ reviewers_data['fgcolor'][reviewer[2]] }};">
+          <div>
+            <div class="card-name"><b>{{ reviewer[1] }}</b></div>
+            <div class="card-type">Notes</div>
+            <div class="card-time">{{ reviewer[5] }}</div>
+          </div>
+
+            <div class="save_unsaved" style="margin-left: 445px;">
+                {% if reviewer[5] %}
+                    <input style="display: none;" type="checkbox" name="save-reviewer" id="save-reviewer-{{ reviewer[0] }}" data-reviewer_id="{{ reviewer[0] }}" onchange="saveReviewer(this);" checked>
+                    <label style="cursor:pointer;" id="save-icon-{{ reviewer[0] }}" for="save-reviewer-{{ reviewer[0] }}"><i class="bi bi-bookmark-fill"></i></label>
+                {% else %}
+                    <input style="display: none;" type="checkbox" name="save-reviewer" id="save-reviewer-{{ reviewer[0] }}" data-reviewer_id="{{ reviewer[0] }}" onchange="saveReviewer(this);">
+                    <label style="cursor:pointer;" id="save-icon-{{ reviewer[0] }}" for="save-reviewer-{{ reviewer[0] }}"><i class="bi bi-bookmark"></i></label>
+                {% endif %}
+            </div>
+
+          <div class="card-footer" style="border-color: {{ reviewers_data['fgcolor'][reviewer[2]] }};">
+            <span class="card-owner">{{ reviewer[4] }}</span>
+            <span class="card-share-type">{{ reviewer[3] }}</span>
+          </div>
+        </div>
+      </a>
+    {% endif %}
     {% endfor %}
 </section>
 
